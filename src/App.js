@@ -1,24 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { ChakraProvider, ColorModeScript, extendTheme, theme } from "@chakra-ui/react";
+import React from "react";
+import { AppRouter } from "./components";
+import { AuthContextProvider } from "./contexts/AuthContext";
+
+const customTheme = extendTheme({
+  config: {
+    initialColorMode: 'light',
+    useSystemColorMode: false
+  },
+  colors: {
+    primary: theme.colors.pink
+  }
+})
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.StrictMode>
+      <ChakraProvider theme={customTheme}>
+        <ColorModeScript initialColorMode={customTheme.config.initialColorMode} />
+        <AuthContextProvider>
+          <AppRouter />
+        </AuthContextProvider>
+      </ChakraProvider>
+    </React.StrictMode>
   );
 }
 
