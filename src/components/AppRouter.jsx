@@ -3,67 +3,67 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import ForgotPassword from '../pages/ForgotPassword'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
-import Notfound from '../pages/Notfound'
 import Profile from '../pages/Profile'
 import Protected from '../pages/Protected'
 import Register from '../pages/Register'
 import ResetPassword from '../pages/ResetPassword'
 import ProtectedRoute from './ProtectedRoute'
+import { path } from '../ultis/constant'
 
 
 
 const AppRouter = () => {
     return (
-        <>
-            <Router>
-                <Routes>
-                    <Route path='/' element={<Home />} />
-                    <Route path='/dang-nhap' element={
+
+        <Router>
+            <Routes>
+                <Route path={path.HOME} element={<Home />}>
+                    <Route path={path.LOGIN} element={
                         <ProtectedRoute>
                             <Login />
                         </ProtectedRoute>
                     }
                     />
-                    <Route path='/dang-ky' element={
+                    <Route path={path.REGISTER} element={
                         <ProtectedRoute>
                             <Register />
                         </ProtectedRoute>
                     }
                     />
-                    <Route path='/quan-ly-tai-khoan' element={
+                    <Route path={path.PROFILE} element={
                         <ProtectedRoute>
                             <Profile />
                         </ProtectedRoute>
                     }
                     />
-                    <Route path='/protected-page' element={
+                    <Route path='protected-page' element={
                         <ProtectedRoute>
                             <Protected />
                         </ProtectedRoute>
                     }
                     />
-                    <Route path='/dang-tin-moi' element={
+                    <Route path={path.CREATEPOST} element={
                         <ProtectedRoute>
                             <Protected />
                         </ProtectedRoute>
                     }
                     />
-                    <Route path='/quen-mat-khau' element={
+                    <Route path={path.FORGOTPASSWORD} element={
                         <ProtectedRoute>
                             <ForgotPassword />
                         </ProtectedRoute>
                     }
                     />
-                    <Route path='/tao-lai-mat-khau' element={
+                    <Route path={path.RESETPASSWORD} element={
                         <ProtectedRoute>
                             <ResetPassword />
                         </ProtectedRoute>
                     }
                     />
-                    <Route path='*' element={<Notfound />} />
-                </Routes>
-            </Router>
-        </>
+                </Route>
+                {/* <Route path={path.NOTFOUND} element={<Notfound />} /> */}
+            </Routes>
+        </Router>
     )
 }
 

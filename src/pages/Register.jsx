@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Card, DividerWithText, Layout } from '../components'
-import { Button, Center, FormControl, FormLabel, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
-import { FaGoogle } from 'react-icons/fa'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { Card, DividerWithText } from '../components'
+import { Box, Button, Center, FormControl, FormLabel, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
 import { useAuth } from '../contexts/AuthContext'
 import useMounted from '../hooks/useMounted'
+import { path } from '../ultis/constant'
+import { icons } from '../ultis/icons'
 
 const Register = () => {
     const [email, setEmail] = useState('')
@@ -13,6 +14,9 @@ const Register = () => {
     const toast = useToast()
     const navigate = useNavigate()
     const { register, signInWithGoogle } = useAuth()
+
+    const location = useLocation()
+    console.log(location)
 
     const mounted = useMounted()
 
@@ -30,7 +34,7 @@ const Register = () => {
         setIsSubmitting(true)
         try {
             await register(email, password)
-            navigate('/quan-ly-tai-khoan')
+            navigate(path.HOME)
         } catch (e) {
             console.log(e.message)
             toast({
@@ -45,19 +49,19 @@ const Register = () => {
         }
     }
     const goLogin = () => {
-        navigate('/dang-nhap')
+        navigate(`/${path.LOGIN}`)
     }
     const handleSigninGoogle = async () => {
         try {
             await signInWithGoogle()
-            navigate('/quan-ly-tai-khoan')
+            navigate(path.HOME)
         } catch (error) {
             console.log(error)
         }
     }
 
     return (
-        <Layout>
+        <Box>
             <Heading textAlign='center' my={12}>
                 ĐĂNG KÝ
             </Heading>
@@ -72,7 +76,7 @@ const Register = () => {
                                 name='email'
                                 onChange={e => setEmail(e.target.value)}
                                 type='email'
-                                // autoComplete='off'
+                                autoComplete='email'
                                 required
                             />
                         </FormControl>
@@ -82,7 +86,7 @@ const Register = () => {
                                 name='password'
                                 onChange={e => setPassword(e.target.value)}
                                 type='password'
-                                // autoComplete='off'
+                                autoComplete='new-password'
                                 required />
                         </FormControl>
                         <Button
@@ -104,13 +108,13 @@ const Register = () => {
                     variant='outline'
                     width={{ base: '100%' }}
                     colorScheme='red'
-                    leftIcon={<FaGoogle />}
+                    leftIcon={<icons.FaGoogle />}
                     onClick={handleSigninGoogle}
                 >
                     Đăng nhập với Google
                 </Button>
             </Card>
-        </Layout >
+        </Box >
 
     )
 }

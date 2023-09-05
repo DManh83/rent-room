@@ -3,6 +3,7 @@ import { Card, Layout } from '../components'
 import { Button, FormControl, FormLabel, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { path } from '../ultis/constant'
 
 const useQuery = () => {
     const location = useLocation()
@@ -29,7 +30,7 @@ const ResetPassword = () => {
                 duration: 9000,
                 isClosable: true,
             })
-            navigate('/dang-nhap')
+            navigate(path.LOGIN)
         } catch (e) {
             console.log(e.message)
             toast({
@@ -56,6 +57,7 @@ const ResetPassword = () => {
                                 type='password'
                                 name='password'
                                 onChange={e => setNewpassword(e.target.value)}
+                                autoComplete='new-password'
                                 required />
                         </FormControl>
                         <Button type='submit' colorScheme='primary' size='lg' fontSize='md'>

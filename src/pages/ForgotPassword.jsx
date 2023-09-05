@@ -3,6 +3,7 @@ import { Card, DividerWithText, Layout } from '../components'
 import { Button, Center, FormControl, FormLabel, Heading, Input, Stack, useToast, chakra } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { path } from '../ultis/constant'
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('')
@@ -45,6 +46,7 @@ const ForgotPassword = () => {
                                 name='email'
                                 type='email'
                                 onChange={e => setEmail(e.target.value)}
+                                autoComplete='email'
                                 required />
 
                         </FormControl>
@@ -60,7 +62,7 @@ const ForgotPassword = () => {
                 </chakra.form>
                 <DividerWithText my={6}>HOẶC</DividerWithText>
                 <Center>
-                    <Button variant='link' onClick={() => { navigate('/dang-nhap') }}>
+                    <Button variant='link' onClick={() => { navigate(path.LOGIN) }}>
                         Đăng nhập
                     </Button>
                 </Center>

@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { Card, DividerWithText, Layout } from '../components'
-import { Button, FormControl, FormLabel, HStack, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
+import { Card, DividerWithText } from '../components'
+import { Box, Button, FormControl, FormLabel, HStack, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { FaGoogle } from 'react-icons/fa'
+import { icons } from '../ultis/icons'
 import { useAuth } from '../contexts/AuthContext'
 import useMounted from '../hooks/useMounted'
+import { path } from '../ultis/constant'
 
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -20,7 +21,7 @@ const Login = () => {
     console.log(location)
 
     const handleRedirectToOrBack = () => {
-        navigate(location.state?.from ?? '/quan-ly-tai-khoan')
+        navigate('/')
     }
 
     const handleLogin = async (e) => {
@@ -52,6 +53,7 @@ const Login = () => {
         // }
         login(email, password)
             .then(res => {
+                // navigate('/')
                 handleRedirectToOrBack()
             })
             .catch(error => {
@@ -72,7 +74,7 @@ const Login = () => {
             })
     }
     const goRegister = () => {
-        navigate('/dang-ky')
+        navigate(path.REGISTER)
     }
     const handleSigninGoogle = async () => {
         try {
@@ -83,12 +85,8 @@ const Login = () => {
         }
     }
 
-    // useEffect(() => {
-    //     setValue(localStorage.getItem('email'))
-    // })
-
     return (
-        <Layout>
+        <Box>
             <Heading textAlign='center' my={12}>
                 ĐĂNG NHẬP
             </Heading>
@@ -103,7 +101,7 @@ const Login = () => {
                                 name='email'
                                 onChange={e => setEmail(e.target.value)}
                                 type='email'
-                                // autoComplete='email'
+                                autoComplete='email'
                                 required />
                         </FormControl>
                         <FormControl className='password'>
@@ -112,7 +110,7 @@ const Login = () => {
                                 name='password'
                                 onChange={e => setPassword(e.target.value)}
                                 type='password'
-                                // autoComplete='password'
+                                autoComplete='current-password'
                                 required />
                         </FormControl>
                         <Button
@@ -129,26 +127,25 @@ const Login = () => {
                 </chakra.form>
                 <HStack justifyContent='space-between' my={4}>
                     <Button variant='link'>
-                        <Link to='/quen-mat-khau'>Quên mật khẩu?</Link>
+                        <Link to={`/${path.FORGOTPASSWORD}`}>Quên mật khẩu?</Link>
                     </Button>
                     <Button variant='link' onClick={goRegister}>
                         Bạn chưa có tài khoản?
                     </Button>
                 </HStack>
                 <DividerWithText my={6}>HOẶC</DividerWithText>
-                {/* {value ? <Home /> : */}
                 <Button
                     variant='outline'
                     width={{ base: '100%' }}
                     colorScheme='red'
-                    leftIcon={<FaGoogle />}
+                    leftIcon={<icons.FaGoogle />}
                     onClick={handleSigninGoogle}
                 >
                     Đăng nhập với Google
                 </Button>
 
             </Card>
-        </Layout >
+        </Box>
     )
 }
 

@@ -1,4 +1,4 @@
-import { Box, HStack, Spacer, useColorModeValue } from '@chakra-ui/react'
+import { Box, HStack, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import Navlink from './Navlink'
 import optionsNav from '../ultis/optionsNav'
@@ -8,6 +8,7 @@ const Navbar = () => {
     return (
 
         <Box
+            backgroundColor={useColorModeValue('pink.200')}
             borderBottom='2px'
             borderBottomColor={useColorModeValue('gray.100', 'gray.700')}
             mb={4}

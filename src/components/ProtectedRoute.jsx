@@ -1,21 +1,23 @@
 import { Navigate, useLocation } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
+import { path } from "../ultis/constant"
 
 const ProtectedRoute = ({ children }) => {
     const { user } = useAuth()
     const location = useLocation()
 
-    const path = location.pathname
+    const pathname = location.pathname
+    console.log(pathname)
     if (
-        path === '/dang-nhap' ||
-        path === '/dang-ky' ||
-        path === '/quen-mat-khau' ||
-        path === '/tao-lai-mat-khau'
+        pathname === '/' + path.LOGIN ||
+        pathname === '/' + path.REGISTER ||
+        pathname === '/' + path.FORGOTPASSWORD ||
+        pathname === '/' + path.RESETPASSWORD
     ) {
-        return user ? <Navigate to={location.state?.from ?? '/quan-ly-tai-khoan'} /> : children
+        return user ? <Navigate to={location.state?.from ?? path.HOME} /> : children
     }
 
-    return user ? children : (<Navigate to={'/dang-nhap'} state={{ from: path }} />)
+    return user ? children : (<Navigate to={`/${path.LOGIN}`} replace />)
 }
 
 export default ProtectedRoute

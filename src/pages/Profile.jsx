@@ -1,12 +1,11 @@
-import { Badge, Container, Heading, chakra } from '@chakra-ui/react'
+import { Badge, Box, Container, Heading, chakra } from '@chakra-ui/react'
 import React from 'react'
-import { Layout } from '../components'
 import { useAuth } from '../contexts/AuthContext'
 
 const Profile = () => {
     const { user } = useAuth()
     return (
-        <Layout>
+        <Box>
             <Heading>
                 Profile
                 <Badge colorScheme='green' fontSize='lg' mx={4}>
@@ -18,7 +17,7 @@ const Profile = () => {
                     {user && <pre> {JSON.stringify(user, null, 2)}</pre>}
                 </chakra.pre>
             </Container>
-        </Layout>
+        </Box>
     )
 }
 
