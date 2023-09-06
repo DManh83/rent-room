@@ -6,7 +6,7 @@ const UserContext = createContext()
 
 export const AuthContextProvider = ({ children }) => {
 
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState({})
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -16,9 +16,6 @@ export const AuthContextProvider = ({ children }) => {
             unsubscribe()
         }
     }, [])
-    useEffect(() => {
-        console.log('The user is', user)
-    }, [user])
 
     const register = (email, password) => {
         return createUserWithEmailAndPassword(auth, email, password)

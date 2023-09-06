@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Card, DividerWithText, Layout } from '../components'
-import { Button, Center, FormControl, FormLabel, Heading, Input, Stack, useToast, chakra } from '@chakra-ui/react'
+import { Card, DividerWithText, Layout } from '../../components'
+import { Button, Center, FormControl, FormLabel, Heading, Input, Stack, useToast, chakra, Box } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
-import { path } from '../ultis/constant'
+import { useAuth } from '../../contexts/AuthContext'
+import { path } from '../../ultis/constant'
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('')
@@ -31,7 +31,7 @@ const ForgotPassword = () => {
         }
     }
     return (
-        <Layout>
+        <Box>
             <Heading textAlign='center' my={12}>
                 Forgot Password
             </Heading>
@@ -68,7 +68,7 @@ const ForgotPassword = () => {
                 </Center>
 
             </Card>
-        </Layout>
+        </Box>
     )
 }
 

@@ -1,10 +1,10 @@
 import React from 'react'
-import { Layout } from '../components'
-import { Badge, Container, Heading } from '@chakra-ui/react'
+import { Layout } from '../../components'
+import { Badge, Box, Container, Heading } from '@chakra-ui/react'
 
 const Protected = () => {
     return (
-        <Layout>
+        <Box>
             <Heading>
                 Protected
                 <Badge colorScheme='green' fontSize='lg' mx={4}>
@@ -12,7 +12,7 @@ const Protected = () => {
                 </Badge>
             </Heading>
             <Container maxW='container.lg' overflowX='auto' py={4} />
-        </Layout>
+        </Box>
     )
 }
 

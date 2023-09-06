@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { Card, DividerWithText } from '../components'
+import { useNavigate } from 'react-router-dom'
+import { Card, DividerWithText } from '../../components'
 import { Box, Button, Center, FormControl, FormLabel, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
-import { useAuth } from '../contexts/AuthContext'
-import useMounted from '../hooks/useMounted'
-import { path } from '../ultis/constant'
-import { icons } from '../ultis/icons'
+import { useAuth } from '../../contexts/AuthContext'
+import useMounted from '../../hooks/useMounted'
+import { path } from '../../ultis/constant'
+import { icons } from '../../ultis/icons'
 
 const Register = () => {
     const [email, setEmail] = useState('')
@@ -15,8 +15,6 @@ const Register = () => {
     const navigate = useNavigate()
     const { register, signInWithGoogle } = useAuth()
 
-    const location = useLocation()
-    console.log(location)
 
     const mounted = useMounted()
 

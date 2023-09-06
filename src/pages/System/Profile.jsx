@@ -1,6 +1,6 @@
 import { Badge, Box, Container, Heading, chakra } from '@chakra-ui/react'
 import React from 'react'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../../contexts/AuthContext'
 
 const Profile = () => {
     const { user } = useAuth()

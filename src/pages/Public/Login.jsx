@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { Card, DividerWithText } from '../components'
+import { Card, DividerWithText } from '../../components'
 import { Box, Button, FormControl, FormLabel, HStack, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { icons } from '../ultis/icons'
-import { useAuth } from '../contexts/AuthContext'
-import useMounted from '../hooks/useMounted'
-import { path } from '../ultis/constant'
+import { Link, useNavigate } from 'react-router-dom'
+import { icons } from '../../ultis/icons'
+import { useAuth } from '../../contexts/AuthContext'
+import useMounted from '../../hooks/useMounted'
+import { path } from '../../ultis/constant'
 
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -16,9 +16,6 @@ const Login = () => {
 
     const navigate = useNavigate()
     const mounted = useMounted()
-
-    const location = useLocation()
-    console.log(location)
 
     const handleRedirectToOrBack = () => {
         navigate('/')
@@ -36,42 +33,21 @@ const Login = () => {
             return
         }
         setIsSubmitting(true)
-        // try {
-        //     await login(email, password)
-        //     handleRedirectToOrBack()
-        // } catch (e) {
-        //     console.log(e.message)
-        //     toast({
-        //         description: e.message,
-        //         status: 'error',
-        //         duration: 9000,
-        //         isClosable: true
-        //     })
-        // }
-        // finally {
-        //     mounted.current && setIsSubmitting(false)
-        // }
-        login(email, password)
-            .then(res => {
-                // navigate('/')
-                handleRedirectToOrBack()
+        try {
+            await login(email, password)
+            handleRedirectToOrBack()
+        } catch (e) {
+            console.log(e.message)
+            toast({
+                description: e.message,
+                status: 'error',
+                duration: 9000,
+                isClosable: true
             })
-            .catch(error => {
-                console.log(error.message)
-                toast({
-                    description: error.message,
-                    status: 'error',
-                    duration: 9000,
-                    isClosable: true,
-                })
-            })
-            .finally(() => {
-                // setTimeout(() => {
-                //   mounted.current && setIsSubmitting(false)
-                //   console.log(mounted.current)
-                // }, 1000)
-                mounted.current && setIsSubmitting(false)
-            })
+        }
+        finally {
+            mounted.current && setIsSubmitting(false)
+        }
     }
     const goRegister = () => {
         navigate(path.REGISTER)

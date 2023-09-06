@@ -1,5 +1,5 @@
 const optionsNav = [
-    { id: 1, name: 'Trang chủ', path: ' ' },
+    { id: 1, name: 'Trang chủ', path: '' },
     { id: 2, name: 'Cho thuê phòng trọ', path: 'cho-thue-phong-tro' },
     { id: 3, name: 'Nhà cho thuê', path: 'nha-cho-thue' },
     { id: 4, name: 'Cho thuê căn hộ', path: 'cho-thue-can-ho' },

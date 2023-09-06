@@ -6,6 +6,7 @@ import menuManage from '../ultis/menuManage'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../ultis/constant'
 import { icons } from '../ultis/icons'
+import User from './User'
 
 const Header = () => {
     const { toggleColorMode } = useColorMode()
@@ -29,6 +30,9 @@ const Header = () => {
                 {!user && <Navlink to={path.LOGIN} name='Đăng nhập' />}
                 {!user && <Navlink to={path.REGISTER} name='Đăng ký' />}
                 {user &&
+                    <User />
+                }
+                {user &&
                     <Menu>
                         <MenuButton
                             as={Button} rightIcon={<icons.ChevronDownIcon />}
@@ -40,12 +44,34 @@ const Header = () => {
                         <MenuList>
                             {menuManage.map(item => {
                                 return (
-                                    <MenuItem className='hover:text-orange-500 border-b border-gray-200 py-2 flex items-center gap-2' key={item.id} onClick={() => navigate(item.path)}>
+                                    <MenuItem
+                                        alignItems='center'
+                                        _hover={{
+                                            textColor: 'orange.500'
+                                        }}
+                                        borderBottom='1px'
+                                        borderColor='gray.200'
+                                        py={2}
+                                        flex
+                                        gap={2}
+                                        key={item.id} onClick={() => navigate(item.path)}
+                                    >
                                         {item?.icon}{item.text}
                                     </MenuItem>
                                 )
                             })}
-                            <MenuItem className=' hover:text-orange-500 flex items-center gap-2' onClick={handleLogout}> <icons.AiOutlineLogout /> Đăng xuất </MenuItem>
+                            <MenuItem
+                                _hover={{
+                                    textColor: 'orange.500'
+                                }}
+                                flex
+                                gap={2}
+                                alignItems='center'
+                                // className=' hover:text-orange-500 flex items-center gap-2'
+                                onClick={handleLogout}
+                            >
+                                <icons.AiOutlineLogout /> Đăng xuất
+                            </MenuItem>
                         </MenuList>
                     </Menu>
                 }
