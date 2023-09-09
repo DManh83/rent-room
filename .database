@@ -9,7 +9,7 @@
             "target": "Tất cả/Nam/Nữ",
             "priceNumber": "Giá",
             "areaNumber": "Diện tích",
-            "images": "Địa chỉ ảnh",
+            "images": [],
             "province": "Thành phố",
             "timeStemp": ""
         }
