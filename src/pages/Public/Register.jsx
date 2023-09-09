@@ -6,10 +6,13 @@ import { useAuth } from '../../contexts/AuthContext'
 import useMounted from '../../hooks/useMounted'
 import { path } from '../../ultis/constant'
 import { icons } from '../../ultis/icons'
+import { addDoc, collection } from 'firebase/firestore'
+import { db } from '../../firebase'
 
 const Register = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [name, setName] = useState('')
     const [isSubmiting, setIsSubmitting] = useState(false)
     const toast = useToast()
     const navigate = useNavigate()
@@ -20,7 +23,7 @@ const Register = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault()
-        if (!email || !password) {
+        if (!email || !password || !name) {
             toast({
                 description: 'Credentials not valid.',
                 status: 'error',
@@ -31,7 +34,17 @@ const Register = () => {
         }
         setIsSubmitting(true)
         try {
-            await register(email, password)
+            await register(email, password).then(async (result) => {
+                try {
+                    const docRef = await addDoc(collection(db, 'users'), {
+                        name,
+                        userId: `${result.user.uid}`
+                    })
+                    console.log(docRef.id)
+                } catch (error) {
+                    console.log(error)
+                }
+            })
             navigate(path.HOME)
         } catch (e) {
             console.log(e.message)
@@ -68,6 +81,16 @@ const Register = () => {
                     onSubmit={handleRegister}
                 >
                     <Stack spacing='6'>
+                        <FormControl className='name'>
+                            <FormLabel>FULL NAME</FormLabel>
+                            <Input
+                                name='name'
+                                onChange={e => setName(e.target.value)}
+                                type='text'
+                                autoComplete='name'
+                                required
+                            />
+                        </FormControl>
                         <FormControl className='email'>
                             <FormLabel>EMAIL</FormLabel>
                             <Input

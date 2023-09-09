@@ -6,6 +6,7 @@ import menuSidebar from '../../ultis/menuSidebar'
 import Navlink from '../../components/Navlink'
 import { icons } from '../../ultis/icons'
 import { Link } from 'react-router-dom'
+import { isDragActive } from 'framer-motion'
 
 const SideBar = () => {
     const { user, logout } = useAuth()
@@ -39,8 +40,6 @@ const SideBar = () => {
                             borderBottom='1px'
                             borderColor='gray.200'
                             py={2}
-
-
                         >
                             <Link
                                 to={item?.path}

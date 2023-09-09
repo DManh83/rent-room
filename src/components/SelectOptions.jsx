@@ -1,15 +1,17 @@
 import { FormControl, FormLabel, Select } from '@chakra-ui/react'
 import React, { memo } from 'react'
 
-const SelectOptions = ({ label, options, value, setValue, type, reset }) => {
+const SelectOptions = ({ label, options, value, setValue, type, reset, name, ...rest }) => {
 
     return (
         <FormControl>
             <FormLabel htmlFor={label}>{label}</FormLabel>
             <Select
                 value={reset ? '' : value}
-                onChange={(e) => setValue(e.target.value)}
-                id={label}>
+                onChange={(e) => !name ? setValue(e.target.value) : setValue(prev => ({ ...prev, [name]: e.target.value }))}
+                id={label}
+                {...rest}
+            >
                 <option value=''>{`-- Chọn ${label} --`}</option>
                 {options?.map(item => {
                     return (

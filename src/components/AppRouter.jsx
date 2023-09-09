@@ -7,6 +7,8 @@ import {
     Protected,
     ForgotPassword,
     ResetPassword,
+    DetailPost,
+    HomePage,
 }
     from '../pages/Public'
 import { CreatePost, System, Profile, } from '../pages/System'
@@ -22,6 +24,10 @@ const AppRouter = () => {
         <Router>
             <Routes>
                 <Route path={path.HOME} element={<Home />}>
+                    <Route path='*' element={
+                        <HomePage />
+                    } />
+
                     <Route path={path.LOGIN} element={
                         <ProtectedRoute>
                             <Login />
@@ -35,32 +41,22 @@ const AppRouter = () => {
                     }
                     />
                     <Route path={path.CHO_THUE_PHONG_TRO} element={
-                        <ProtectedRoute>
-                            <Protected />
-                        </ProtectedRoute>
+                        <Protected />
                     }
                     />
                     <Route path={path.CHO_THUE_CAN_HO} element={
-                        <ProtectedRoute>
-                            <Protected />
-                        </ProtectedRoute>
+                        <Protected />
                     }
                     />
                     <Route path={path.CHO_THUE_MAT_BANG} element={
-                        <ProtectedRoute>
-                            <Protected />
-                        </ProtectedRoute>
+                        <Protected />
                     }
                     /><Route path={path.NHA_CHO_THUE} element={
-                        <ProtectedRoute>
-                            <Protected />
-                        </ProtectedRoute>
+                        <Protected />
                     }
                     />
                     <Route path={path.TIM_NGUOI_O_GHEP} element={
-                        <ProtectedRoute>
-                            <Protected />
-                        </ProtectedRoute>
+                        <Protected />
                     }
                     />
                     <Route path={path.FORGOTPASSWORD} element={
@@ -75,6 +71,8 @@ const AppRouter = () => {
                         </ProtectedRoute>
                     }
                     />
+                    <Route path={path.DETAIL} element={<DetailPost />} />
+                    <Route path={path.DETAIL_ALL} element={<DetailPost />} />
                 </Route>
 
                 <Route path={path.SYSTEM} element={

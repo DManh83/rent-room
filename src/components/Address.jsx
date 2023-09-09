@@ -1,10 +1,10 @@
-import { Box, Flex, FormControl, FormLabel, Heading, Input } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import { Box, Flex, Heading } from '@chakra-ui/react'
+import React, { memo, useEffect, useState } from 'react'
 import SelectOptions from './SelectOptions'
 import { apiGetPublicDistrict, apiGetPublicProvinces, apiGetPublicWard } from '../services'
 import InputReadOnly from './InputReadOnly'
 
-const Address = () => {
+const Address = ({ setPayload }) => {
 
     const [provinces, setProvinces] = useState([])
     const [districts, setDistricts] = useState([])
@@ -47,6 +47,14 @@ const Address = () => {
         !district && setWards([])
     }, [district])
 
+    useEffect(() => {
+        setPayload(prev => ({
+            ...prev,
+            address: `${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name},` : ''} ${district ? `${districts?.find(item => item.district_id === district)?.district_name},` : ''} ${province ? provinces?.find(item => item.province_id === province)?.province_name : ''}`,
+            province: province ? provinces?.find(item => item.province_id === province)?.province_name : ''
+        }))
+    }, [province, district, ward])
+
     console.log({ province, district })
     return (
         <Box>
@@ -73,4 +81,4 @@ const Address = () => {
     )
 }
 
-export default Address
+export default memo(Address)
