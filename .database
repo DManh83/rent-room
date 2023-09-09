@@ -11,7 +11,9 @@
             "areaNumber": "Diện tích",
             "images": [],
             "province": "Thành phố",
-            "timeStemp": ""
+            "timeStemp": "",
+            "areaCode": "",
+            "priceCode": ""
         }
     ]
 }
