@@ -1,0 +1,17 @@
+{
+    "posts": [
+        {
+            "uid": "",
+            "address": "",
+            "categoryCode": "",
+            "title": "Tiêu đề",
+            "description": "Thông tin mô tả",
+            "target": "Tất cả/Nam/Nữ",
+            "priceNumber": "Giá",
+            "areaNumber": "Diện tích",
+            "images": "Địa chỉ ảnh",
+            "province": "Thành phố",
+            "timeStemp": ""
+        }
+    ]
+}
