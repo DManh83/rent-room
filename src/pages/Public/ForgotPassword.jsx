@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Card, DividerWithText, Layout } from '../../components'
+import { Card, DividerWithText } from '../../components'
 import { Button, Center, FormControl, FormLabel, Heading, Input, Stack, useToast, chakra, Box } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'

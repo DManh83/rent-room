@@ -1,5 +1,4 @@
 import React from 'react'
-import { Layout } from '../../components'
 import { Badge, Box, Container, Heading } from '@chakra-ui/react'
 
 const Protected = () => {

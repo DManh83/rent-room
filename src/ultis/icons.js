@@ -7,7 +7,7 @@ import { AiOutlineLogout } from 'react-icons/ai'
 import { ImBin } from 'react-icons/im'
 import { BsCameraFill, BsChevronRight } from 'react-icons/bs'
 import { GrNext } from 'react-icons/gr'
-import { HiOutlineLocationMarker } from 'react-icons/hi'
+import { HiOutlineLocationMarker, HiLocationMarker } from 'react-icons/hi'
 import { TbReportMoney } from 'react-icons/tb'
 import { RiCrop2Line } from 'react-icons/ri'
 import { FiSearch } from 'react-icons/fi'
@@ -29,6 +29,7 @@ export const icons = {
     RiCrop2Line,
     MdOutlineHouseSiding,
     FiSearch,
+    HiLocationMarker,
 
     ChevronDownIcon,
 

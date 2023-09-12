@@ -3,10 +3,8 @@ import React from 'react'
 import AvatarDefault from '../../assets/avatar-default.jpg'
 import { useAuth } from '../../contexts/AuthContext'
 import menuSidebar from '../../ultis/menuSidebar'
-import Navlink from '../../components/Navlink'
 import { icons } from '../../ultis/icons'
 import { Link } from 'react-router-dom'
-import { isDragActive } from 'framer-motion'
 
 const SideBar = () => {
     const { user, logout } = useAuth()

@@ -11,7 +11,7 @@ export const path = {
     CHO_THUE_MAT_BANG: 'cho-thue-mat-bang',
     TIM_NGUOI_O_GHEP: 'tim-nguoi-o-ghep',
     DETAIL_POST_TITLE_POSTID: 'chi-tiet/:title/:postId',
-    DETAIL: 'chi-tiet/',
+    DETAIL: 'chi-tiet',
     DETAIL_ALL: 'chi-tiet/*',
 
     // NOTFOUND: '*',

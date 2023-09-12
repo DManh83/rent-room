@@ -1,11 +1,13 @@
 import { Box, Button, Flex, FormControl, FormLabel, Heading, Image, Input, Spinner, chakra } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { Address, Loading, Overview } from '../../components'
+import { Address, Overview } from '../../components'
 import { db, storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { icons } from '../../ultis/icons'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { useAuth } from '../../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
+import { path } from '../../ultis/constant'
 
 const CreatePost = () => {
     const [payload, setPayload] = useState({
@@ -24,6 +26,7 @@ const CreatePost = () => {
     const { user } = useAuth()
     const [imagesPreview, setImagesPreview] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const navigate = useNavigate()
 
     const handleFiles = async (e) => {
         e.stopPropagation()
@@ -57,6 +60,7 @@ const CreatePost = () => {
             timeStamp: serverTimestamp(),
             uid: user?.uid
         })
+        navigate(`/${path.DETAIL_ALL}`)
         console.log(res)
     }
 

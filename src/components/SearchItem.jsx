@@ -1,4 +1,4 @@
-import { Box, Button, Flex, chakra } from '@chakra-ui/react'
+import { Flex, chakra } from '@chakra-ui/react'
 import React, { memo } from 'react'
 
 const SearchItem = ({ text, leftIcon, rightIcon, fontWeight }) => {

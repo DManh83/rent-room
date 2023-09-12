@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Card, Layout } from '../../components'
+import { Card } from '../../components'
 import { Box, Button, FormControl, FormLabel, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
