@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { Card, DividerWithText } from '../../components'
 import { Box, Button, FormControl, FormLabel, HStack, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
 import { Link, useNavigate } from 'react-router-dom'
-import { icons } from '../../ultis/icons'
+import { icons } from '../../ultils/icons'
 import { useAuth } from '../../contexts/AuthContext'
 import useMounted from '../../hooks/useMounted'
-import { path } from '../../ultis/constant'
+import { path } from '../../ultils/constant'
 
 const Login = () => {
     const [email, setEmail] = useState('')

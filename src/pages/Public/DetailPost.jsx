@@ -4,10 +4,10 @@ import { SliderCustom } from '../../components'
 import { Box, Flex, Heading, Table, Tbody, Td, Tr, chakra } from '@chakra-ui/react'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../firebase'
-import { icons } from '../../ultis/icons'
+import { icons } from '../../ultils/icons'
 
 
-const docPostsRef = doc(db, 'posts', '')
+const docPostsRef = doc(db, 'posts', 'fZXVmqiTEtfpT75tPxoD')
 const postDatas = await getDoc(docPostsRef)
 console.log(postDatas)
 

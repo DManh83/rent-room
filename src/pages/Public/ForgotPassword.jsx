@@ -3,7 +3,7 @@ import { Card, DividerWithText } from '../../components'
 import { Button, Center, FormControl, FormLabel, Heading, Input, Stack, useToast, chakra, Box } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
-import { path } from '../../ultis/constant'
+import { path } from '../../ultils/constant'
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('')

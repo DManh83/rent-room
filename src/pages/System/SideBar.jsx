@@ -2,8 +2,8 @@ import { Box, Button, Flex, Image, chakra } from '@chakra-ui/react'
 import React from 'react'
 import AvatarDefault from '../../assets/avatar-default.jpg'
 import { useAuth } from '../../contexts/AuthContext'
-import menuSidebar from '../../ultis/menuSidebar'
-import { icons } from '../../ultis/icons'
+import menuSidebar from '../../ultils/menuSidebar'
+import { icons } from '../../ultils/icons'
 import { Link } from 'react-router-dom'
 
 const SideBar = () => {

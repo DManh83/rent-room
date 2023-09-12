@@ -1,7 +1,7 @@
 import { Box, Flex, FormControl, FormLabel, Heading, Input, Textarea } from '@chakra-ui/react'
 import React from 'react'
 import SelectOptions from './SelectOptions'
-import optionsCategory from '../ultis/optionsCategory'
+import optionsCategory from '../ultils/optionsCategory'
 import { useAuth } from '../contexts/AuthContext'
 import InputForm from './InputForm'
 

@@ -1,8 +1,8 @@
 import { Box } from '@chakra-ui/react'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { path } from '../ultis/constant'
-import { formatVietnameseToString } from '../ultis/formatVietnameseToString'
+import { path } from '../ultils/constant'
+import { formatVietnameseToString } from '../ultils/formatVietnameseToString'
 
 const Item = ({ title, images }) => {
     return (

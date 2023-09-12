@@ -14,7 +14,7 @@ import {
 import { CreatePost, System, Profile, } from '../pages/System'
 import Notfound from '../pages/Notfound'
 import ProtectedRoute from './ProtectedRoute'
-import { path } from '../ultis/constant'
+import { path } from '../ultils/constant'
 
 
 

@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
-import { path } from "../ultis/constant"
+import { path } from "../ultils/constant"
 
 const ProtectedRoute = ({ children }) => {
     const { user } = useAuth()

@@ -3,11 +3,11 @@ import React, { useState } from 'react'
 import { Address, Overview } from '../../components'
 import { db, storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
-import { icons } from '../../ultis/icons'
+import { icons } from '../../ultils/icons'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { useAuth } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import { path } from '../../ultis/constant'
+import { path } from '../../ultils/constant'
 
 const CreatePost = () => {
     const [payload, setPayload] = useState({

@@ -1,7 +1,7 @@
 import { Button, Flex } from '@chakra-ui/react'
 import React from 'react'
 import { SearchItem } from '../../components'
-import { icons } from '../../ultis/icons'
+import { icons } from '../../ultils/icons'
 
 const Search = () => {
   return (

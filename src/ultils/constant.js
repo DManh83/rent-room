@@ -1,3 +1,7 @@
+import locationHCM from '../assets/location_hcm.jpg'
+import locationHN from '../assets/location_hn.jpg'
+import locationDN from '../assets/location_dn.jpg'
+
 export const path = {
     HOME: '/*',
     LOGIN: 'dang-nhap',
@@ -20,3 +24,21 @@ export const path = {
     CREATE_POST: 'tao-tin-dang',
 
 }
+
+export const location = [
+    {
+        id: 'hcm',
+        name: 'Phòng trọ Hồ Chí Minh',
+        image: locationHCM,
+    },
+    {
+        id: 'hn',
+        name: 'Phòng trọ Hà Nội',
+        image: locationHN,
+    },
+    {
+        id: 'dn',
+        name: 'Phòng trọ Đà Nẵng',
+        image: locationDN,
+    },
+]

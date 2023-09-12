@@ -1,7 +1,7 @@
 import { Box, HStack, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import Navlink from './Navlink'
-import optionsNav from '../ultis/optionsNav'
+import optionsNav from '../ultils/optionsNav'
 
 const Navbar = () => {
 
