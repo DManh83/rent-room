@@ -13,6 +13,7 @@ const Register = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [name, setName] = useState('')
+    const [phone, setPhone] = useState('')
     const [isSubmiting, setIsSubmitting] = useState(false)
     const toast = useToast()
     const navigate = useNavigate()
@@ -23,9 +24,9 @@ const Register = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault()
-        if (!email || !password || !name) {
+        if (!email || !password || !name || !phone) {
             toast({
-                description: 'Credentials not valid.',
+                description: 'Thông tin không hợp lệ',
                 status: 'error',
                 duration: 9000,
                 isClosable: true,
@@ -37,7 +38,10 @@ const Register = () => {
             await register(email, password).then(async (result) => {
                 try {
                     const docRef = await addDoc(collection(db, 'users'), {
-                        name,
+                        name: name,
+                        password: password,
+                        email: email,
+                        phone: phone,
                         userId: `${result.user.uid}`
                     })
                     console.log(docRef.id)
@@ -49,7 +53,7 @@ const Register = () => {
         } catch (e) {
             console.log(e.message)
             toast({
-                description: e.message,
+                description: e.message === 'Firebase: Error (auth/invalid-email).' ? 'Email không đúng' : e.message === 'Firebase: Password should be at least 6 characters (auth/weak-password).' ? 'Mật khẩu phải có 6 ký tự' : 'Tài khoản đã tồn tại',
                 status: 'error',
                 duration: 9000,
                 isClosable: true
@@ -88,6 +92,16 @@ const Register = () => {
                                 onChange={e => setName(e.target.value)}
                                 type='text'
                                 autoComplete='name'
+                                required
+                            />
+                        </FormControl>
+                        <FormControl className='name'>
+                            <FormLabel>PHONE</FormLabel>
+                            <Input
+                                name='phone'
+                                onChange={e => setPhone(e.target.value)}
+                                type='text'
+                                autoComplete='phone'
                                 required
                             />
                         </FormControl>
