@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { SliderCustom } from '../../components'
 import { Box, Flex, Heading, Table, Tbody, Td, Tr, chakra } from '@chakra-ui/react'
 import { doc, getDoc } from 'firebase/firestore'
@@ -7,20 +7,17 @@ import { db } from '../../firebase'
 import { icons } from '../../ultils/icons'
 
 
-const docPostsRef = doc(db, 'posts', 'fZXVmqiTEtfpT75tPxoD')
-const postDatas = await getDoc(docPostsRef)
-console.log(postDatas)
-
-
 const DetailPost = () => {
+    const location = useLocation()
+    const { state: post } = location
 
     return (
         <Flex gap={4} >
             <Box w='70%' >
-                <SliderCustom images={postDatas?.data()?.images} />
+                <SliderCustom images={post?.images} />
                 <Flex direction='column' gap={2}>
                     <Heading textColor='red.400'>
-                        {postDatas?.data()?.title}
+                        {post?.title}
                     </Heading>
                     <Flex alignItems='center' gap={2}>
                         <chakra.span> Chuyên mục: </chakra.span>
@@ -30,19 +27,19 @@ const DetailPost = () => {
                             _hover={{
                                 textColor: 'orange.400'
                             }}>
-                            {postDatas?.data()?.categoryCode}
+                            {post?.categoryCode}
                         </chakra.span>
                     </Flex>
                     <Flex alignItems='center' gap={2}>
                         <icons.HiLocationMarker color='blue' />
                         <chakra.span>Địa chỉ:</chakra.span>
-                        <chakra.span>{postDatas?.data()?.address}</chakra.span>
+                        <chakra.span>{post?.address}</chakra.span>
                     </Flex>
                     <Flex alignItems='center' justifyContent='space-between'>
-                        <chakra.span fontWeight='semibold' fontSize='18px' lineHeight='28px' textColor='green.400'>{postDatas?.data()?.priceNumber}</chakra.span>
-                        <chakra.span>{postDatas?.data()?.areaNumber}</chakra.span>
-                        <chakra.span>{postDatas?.data()?.priceNumber}</chakra.span>
-                        <chakra.span>{postDatas?.data()?.priceNumber}</chakra.span>
+                        <chakra.span fontWeight='semibold' fontSize='18px' lineHeight='28px' textColor='green.400'>{post?.priceNumber}</chakra.span>
+                        <chakra.span>{post?.areaNumber}</chakra.span>
+                        <chakra.span>{post?.priceNumber}</chakra.span>
+                        <chakra.span>{post?.priceNumber}</chakra.span>
                     </Flex>
                 </Flex>
                 <Box mt={8}>
@@ -50,7 +47,7 @@ const DetailPost = () => {
                         Thông tin mô tả
                     </Heading>
                     <Box >
-                        {postDatas?.data()?.description}
+                        {post?.description}
                     </Box>
                 </Box>
                 <Box mt={8}>
@@ -61,7 +58,7 @@ const DetailPost = () => {
                         <Tbody>
                             <Tr>
                                 <Td>Mã tin</Td>
-                                <Td>{postDatas?.data()?.priceNumber}</Td>
+                                <Td>{post?.priceNumber}</Td>
                             </Tr>
                         </Tbody>
                     </Table>

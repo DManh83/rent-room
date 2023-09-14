@@ -55,7 +55,7 @@ const Address = ({ setPayload }) => {
         }))
     }, [province, district, ward])
 
-    console.log({ province, district })
+    // console.log({ province, district })
     return (
         <Box>
             <Heading size='lg' py={4}>

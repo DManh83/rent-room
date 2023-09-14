@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 
 const SideBar = () => {
     const { user, logout } = useAuth()
-    console.log(user?.email)
+    // console.log(user?.email)
     const handleLogout = async (e) => {
         e.preventDefault()
         logout()

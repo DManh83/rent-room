@@ -61,7 +61,7 @@ const CreatePost = () => {
             uid: user?.uid
         })
         navigate(`/${path.DETAIL_ALL}`)
-        console.log(res)
+        // console.log(res)
     }
 
     return (

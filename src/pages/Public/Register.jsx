@@ -44,7 +44,7 @@ const Register = () => {
                         phone: phone,
                         userId: `${result.user.uid}`
                     })
-                    console.log(docRef.id)
+                    console.log(docRef)
                 } catch (error) {
                     console.log(error)
                 }

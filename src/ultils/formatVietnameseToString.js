@@ -1,4 +1,4 @@
-export const formatVietnameseToString = (keword) => {
+export const formatVietnameseToString = (keyword) => {
     return keyword
         .toLowerCase()
         .normalize("NFD")

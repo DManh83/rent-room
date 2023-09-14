@@ -7,7 +7,7 @@ import avatarDefault from '../assets/avatar-default.jpg'
 const User = () => {
 
     const { user } = useAuth()
-    console.log(user?.photoURL)
+    // console.log(user?.photoURL)
     return (
         <HStack justifyContent={'flex-end'}>
             <Image src={user?.photoURL || avatarDefault} alt='avatar' borderRadius='full' boxSize='45px' />

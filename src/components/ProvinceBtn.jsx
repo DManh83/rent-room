@@ -1,14 +1,13 @@
 import React, { memo } from 'react'
 import { Box, Image } from '@chakra-ui/react'
-import locationHCM from '../assets/location_hcm.jpg'
 
 const ProvinceBtn = ({ name, image }) => {
     return (
-        <Box shadow='md' roundedBottomLeft='md' roundedBottomRight='md'>
+        <Box shadow='md' roundedBottomLeft='md' roundedBottomRight='md' cursor='pointer' textColor='blue.600' _hover={{ textColor: 'orange.600' }}>
             <Image src={image} alt='name'
                 w='190px' h='110px' objectFit='cover' roundedTopLeft='md' roundedTopRight='md'
             />
-            <Box textAlign='center' fontWeight='medium' p={2} textColor='blue.600'>{name}</Box>
+            <Box textAlign='center' fontWeight='medium' p={2} >{name}</Box>
         </Box>
 
     )
