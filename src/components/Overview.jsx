@@ -2,8 +2,8 @@ import { Box, Flex, FormControl, FormLabel, Heading, Input, Textarea } from '@ch
 import React from 'react'
 import SelectOptions from './SelectOptions'
 import optionsCategory from '../ultils/optionsCategory'
-import { useAuth } from '../contexts/AuthContext'
 import InputForm from './InputForm'
+import { useAuth } from '../hooks/useAuthContext'
 
 const targets = [
     { code: 'All', value: 'Tất cả' },

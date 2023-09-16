@@ -6,14 +6,14 @@ import Search from '../pages/Public/Search'
 
 const Layout = (props) => {
     return (
-        <>
+        <Flex direction='column' justifyContent='center' >
             <Header />
             <Navbar />
             <Flex w='full' justifyContent='center' alignItems='center' >
                 <Search />
             </Flex>
-            <Container maxW='container.lg'>{props.children}</Container>
-        </>
+            <Container maxW='1100px'>{props.children}</Container>
+        </Flex>
     )
 }
 

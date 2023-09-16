@@ -3,25 +3,21 @@ import { Card, DividerWithText } from '../../components'
 import { Box, Button, FormControl, FormLabel, HStack, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
 import { Link, useNavigate } from 'react-router-dom'
 import { icons } from '../../ultils/icons'
-import { useAuth } from '../../contexts/AuthContext'
 import useMounted from '../../hooks/useMounted'
 import { path } from '../../ultils/constant'
+import { useAuthentication } from '../../hooks/useAuthentication'
 
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isSubmiting, setIsSubmitting] = useState(false)
-    const { login, signInWithGoogle } = useAuth()
+    const { login, signInWithGoogle } = useAuthentication()
     const toast = useToast()
 
     const navigate = useNavigate()
     const mounted = useMounted()
 
-    const handleRedirectToOrBack = () => {
-        navigate('/')
-    }
-
-    const handleLogin = async (e) => {
+    const handleLogin = (e) => {
         e.preventDefault()
         if (!email || !password) {
             toast({
@@ -33,36 +29,20 @@ const Login = () => {
             return
         }
         setIsSubmitting(true)
-        try {
-            await login(email, password)
-            handleRedirectToOrBack()
-        } catch (e) {
-            console.log(e.message)
-            toast({
-                description: e.message,
-                status: 'error',
-                duration: 9000,
-                isClosable: true
-            })
-        }
-        finally {
-            mounted.current && setIsSubmitting(false)
-        }
+        login(email, password)
+        navigate(path.HOME)
+        mounted.current && setIsSubmitting(false)
     }
     const goRegister = () => {
         navigate(path.REGISTER)
     }
-    const handleSigninGoogle = async () => {
-        try {
-            await signInWithGoogle()
-            handleRedirectToOrBack()
-        } catch (error) {
-            console.log(error)
-        }
+    const handleSigninGoogle = () => {
+        signInWithGoogle()
+        navigate(path.HOME)
     }
 
     return (
-        <Box>
+        <Box w='full'>
             <Heading textAlign='center' my={12}>
                 ĐĂNG NHẬP
             </Heading>

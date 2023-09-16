@@ -5,7 +5,7 @@ import List from './List'
 
 const HomePage = () => {
     return (
-        <Flex direction='column' gap={3} w='full'>
+        <Flex direction='column' gap={3} w='1100px' justify='space-between' alignItems='center'>
             <Province />
             <Flex w='full' gap={4}>
                 <Box w='70%'>

@@ -12,7 +12,7 @@ const DetailPost = () => {
     const { state: post } = location
 
     return (
-        <Flex gap={4} >
+        <Flex w='full' gap={4} >
             <Box w='70%' >
                 <SliderCustom images={post?.images} />
                 <Flex direction='column' gap={2}>

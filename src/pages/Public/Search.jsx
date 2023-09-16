@@ -5,7 +5,7 @@ import { icons } from '../../ultils/icons'
 
 const Search = () => {
   return (
-    <Flex width={['100%', '1024px']} p={4} bg='yellow.300' rounded='lg' alignItems='center' justifyContent='space-around' gap={2}>
+    <Flex maxW='1100px' w='full' p={4} bg='yellow.300' rounded='lg' alignItems='center' justifyContent='space-around' gap={2}>
       <SearchItem leftIcon={<icons.MdOutlineHouseSiding />} rightIcon={<icons.BsChevronRight />} text='Phòng trọ, nhà trọ' />
       <SearchItem leftIcon={<icons.HiOutlineLocationMarker />} rightIcon={<icons.BsChevronRight />} text='Toàn quốc' />
       <SearchItem leftIcon={<icons.TbReportMoney />} rightIcon={<icons.BsChevronRight />} text='Chọn giá' />

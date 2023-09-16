@@ -1,15 +1,17 @@
 import { Box, Button, Flex, Image, chakra } from '@chakra-ui/react'
 import React from 'react'
 import AvatarDefault from '../../assets/avatar-default.jpg'
-import { useAuth } from '../../contexts/AuthContext'
 import menuSidebar from '../../ultils/menuSidebar'
 import { icons } from '../../ultils/icons'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuthContext'
+import { useAuthentication } from '../../hooks/useAuthentication'
 
 const SideBar = () => {
-    const { user, logout } = useAuth()
+    const { logout } = useAuthentication()
+    const { user } = useAuth()
     // console.log(user?.email)
-    const handleLogout = async (e) => {
+    const handleLogout = (e) => {
         e.preventDefault()
         logout()
     }

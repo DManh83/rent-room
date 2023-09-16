@@ -14,7 +14,7 @@ const Navbar = () => {
         // mb={4}
         >
 
-            <HStack py={2} justifyContent='flex-start' maxW='container.lg' mx='auto'>
+            <HStack py={2} justifyContent='space-between' maxW='1100px' mx='auto'>
 
                 {optionsNav?.length > 0 && optionsNav.map((item) => {
                     return (

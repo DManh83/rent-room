@@ -2,12 +2,10 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, DividerWithText } from '../../components'
 import { Box, Button, Center, FormControl, FormLabel, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
-import { useAuth } from '../../contexts/AuthContext'
 import useMounted from '../../hooks/useMounted'
 import { path } from '../../ultils/constant'
 import { icons } from '../../ultils/icons'
-import { addDoc, collection } from 'firebase/firestore'
-import { db } from '../../firebase'
+import { useAuthentication } from '../../hooks/useAuthentication'
 
 const Register = () => {
     const [email, setEmail] = useState('')
@@ -17,7 +15,7 @@ const Register = () => {
     const [isSubmiting, setIsSubmitting] = useState(false)
     const toast = useToast()
     const navigate = useNavigate()
-    const { register, signInWithGoogle } = useAuth()
+    const { register, signInWithGoogle } = useAuthentication()
 
 
     const mounted = useMounted()
@@ -34,49 +32,21 @@ const Register = () => {
             return
         }
         setIsSubmitting(true)
-        try {
-            await register(email, password).then(async (result) => {
-                try {
-                    const docRef = await addDoc(collection(db, 'users'), {
-                        name: name,
-                        password: password,
-                        email: email,
-                        phone: phone,
-                        userId: `${result.user.uid}`
-                    })
-                    console.log(docRef)
-                } catch (error) {
-                    console.log(error)
-                }
-            })
-            navigate(path.HOME)
-        } catch (e) {
-            console.log(e.message)
-            toast({
-                description: e.message === 'Firebase: Error (auth/invalid-email).' ? 'Email không đúng' : e.message === 'Firebase: Password should be at least 6 characters (auth/weak-password).' ? 'Mật khẩu phải có 6 ký tự' : 'Tài khoản đã tồn tại',
-                status: 'error',
-                duration: 9000,
-                isClosable: true
-            })
-        }
-        finally {
-            mounted.current && setIsSubmitting(false)
-        }
+        register(email, password, name, phone)
+
+        navigate(path.HOME)
+        mounted.current && setIsSubmitting(false)
     }
     const goLogin = () => {
         navigate(`/${path.LOGIN}`)
     }
     const handleSigninGoogle = async () => {
-        try {
-            await signInWithGoogle()
-            navigate(path.HOME)
-        } catch (error) {
-            console.log(error)
-        }
+        signInWithGoogle()
+        navigate(path.HOME)
     }
 
     return (
-        <Box>
+        <Box w='full'>
             <Heading textAlign='center' my={12}>
                 ĐĂNG KÝ
             </Heading>

@@ -1,56 +1,37 @@
-import { GoogleAuthProvider, confirmPasswordReset, createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect, signOut } from 'firebase/auth'
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import { auth } from '../firebase'
+import { onAuthStateChanged } from 'firebase/auth'
+import React, { createContext, useEffect, useReducer } from 'react'
+import { auth, db } from '../firebase'
+import userReducer from '../store/reducers/userReducer'
+import { doc, setDoc } from 'firebase/firestore'
 
-const UserContext = createContext()
+export const AuthContext = createContext()
 
 export const AuthContextProvider = ({ children }) => {
 
-    const [user, setUser] = useState({})
+    const [state, dispatch] = useReducer(userReducer, { user: null, isLoggedIn: false })
+
+    console.log('Auth state is', state)
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser ? currentUser : null)
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                dispatch({ type: 'LOGOUT' })
+            }
+            else {
+                const docRef = doc(db, 'users', user.uid)
+                setDoc(docRef, { email: user.email, name: user.displayName, phone: user.phoneNumber, zalo: user.phoneNumber })
+                dispatch({ type: 'ISLOGGEDIN', payload: user })
+            }
+
         })
         return () => {
             unsubscribe()
         }
     }, [])
 
-    const register = (email, password) => {
-        return createUserWithEmailAndPassword(auth, email, password)
-    }
-
-    const login = (email, password) => {
-        return signInWithEmailAndPassword(auth, email, password)
-    }
-
-    const signInWithGoogle = () => {
-        const provider = new GoogleAuthProvider()
-        return signInWithRedirect(auth, provider)
-    }
-
-    const forgotPassword = (email) => {
-        return sendPasswordResetEmail(auth, email, { url: 'http://localhost:3000/login' })
-    }
-
-    const resetPassword = (oobCode, newPassword) => {
-        return confirmPasswordReset(auth, oobCode, newPassword)
-    }
-
-    const logout = () => {
-        return signOut(auth)
-    }
-
-
     return (
-        <UserContext.Provider value={{ register, login, logout, signInWithGoogle, forgotPassword, resetPassword, user }}>
+        <AuthContext.Provider value={{ ...state, dispatch }}>
             {children}
-        </UserContext.Provider>
+        </AuthContext.Provider>
     )
-}
-
-
-export const useAuth = () => {
-    return useContext(UserContext)
 }

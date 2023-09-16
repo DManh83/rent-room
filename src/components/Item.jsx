@@ -3,26 +3,25 @@ import React, { memo } from 'react'
 import avatarDefault from '../assets/avatar-default.jpg'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../ultils/constant'
+import { formatVietnameseToString } from '../ultils/formatVietnameseToString'
 
-const indexs = [1, 2, 3, 4]
+const indexs = [0, 1, 2, 3]
 
 const Item = ({ post }) => {
     const navigate = useNavigate()
     const handleClick = () => {
-        navigate(`/${path.DETAIL}/${post.id}`, { state: post })
+        navigate(`/${path.DETAIL}/${formatVietnameseToString(post.title)}/${post.id}`, { state: post })
     }
-    console.log(post.images[0])
-
     return (
-        <Flex w='full' borderTop='1px' borderTopColor='orange.600' p={4} onClick={handleClick}>
+        <Flex w='full' borderTop='1px' borderTopColor='orange.600' py={4} onClick={handleClick}>
             <Wrap w='40%' spacing='2px' align='center' position='relative' cursor='pointer'>
-                {post?.images?.length > 0 && post?.images?.filter((i, index) => indexs.some(i => i === index))?.map((i, index) => {
+                {post?.images.length > 0 && post?.images.filter((i, index) => indexs.some(i => i === index))?.map((i, index) => {
                     return (
-                        <Image key={index} src={i} alt='preview' w='120px' h='120px' objectFit='cover' />
+                        <Image key={index} src={i} alt='preview' w='47%' h='140px' objectFit='cover' />
 
                     )
                 })}
-                <chakra.span bg='rgba(0, 0, 0, 0.5)' textColor='white' px={2} rounded='md' position='absolute' left={1} bottom={1}>{`${post?.images?.length} ảnh`}</chakra.span>
+                <chakra.span bg='rgba(0, 0, 0, 0.5)' textColor='white' px={2} rounded='md' position='absolute' left={1} bottom={2}>{`${post?.images?.length} ảnh`}</chakra.span>
             </Wrap>
             <Box w='60%'>
                 <Flex justify='space-between' gap={4} w='full'>
@@ -30,10 +29,10 @@ const Item = ({ post }) => {
                         {post?.title}
                     </Box>
                 </Flex>
-                <Flex my={2} align='center' justify='space-between'>
-                    <chakra.span fontWeight='bold' textColor='green'>{post?.priceNumber}</chakra.span>
-                    <chakra.span>{post?.areaNumber}</chakra.span>
-                    <chakra.span>{post?.province}</chakra.span>
+                <Flex my={2} align='center' justify='space-between' gap={2}>
+                    <chakra.span fontWeight='bold' textColor='green' flex={2} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap' >{post?.priceNumber}</chakra.span>
+                    <chakra.span flex={1}>{post?.areaNumber}</chakra.span>
+                    <chakra.span flex={3} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap' fontSize='sm'>{`${post?.address.split(',')[post.address.split(',').length - 2]}${post.address.split(',')[post.address.split(',').length - 1]}`}</chakra.span>
                 </Flex>
                 <chakra.p textColor='gray.500' w='full' h='100px' textOverflow='ellipsis' overflow='hidden'>
                     {post?.description}

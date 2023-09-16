@@ -5,9 +5,10 @@ import { db, storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { icons } from '../../ultils/icons'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
-import { useAuth } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../../ultils/constant'
+import { useAuth } from '../../hooks/useAuthContext'
+import { useFirestore } from '../../hooks/useFirestore'
 
 const CreatePost = () => {
     const [payload, setPayload] = useState({
@@ -24,6 +25,7 @@ const CreatePost = () => {
         province: ''
     })
     const { user } = useAuth()
+    const { addDocument } = useFirestore('posts')
     const [imagesPreview, setImagesPreview] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
@@ -54,12 +56,15 @@ const CreatePost = () => {
         }))
     }
 
-    const handleSubmit = async () => {
-        const res = await addDoc(collection(db, 'posts'), {
-            ...payload,
-            timeStamp: serverTimestamp(),
-            uid: user?.uid
-        })
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        addDocument({ ...payload, userId: user.uid })
+        // const res = await addDoc(collection(db, 'posts'), {
+        //     ...payload,
+        //     createAt: serverTimestamp(),
+        //     uid: user?.uid
+        // })
         navigate(`/${path.DETAIL_ALL}`)
         // console.log(res)
     }
