@@ -34,10 +34,15 @@ const List = () => {
                     const userDoc = await getDoc(doc(db, 'users', postData.userId));
                     const categoryDoc = await getDoc(doc(db, 'categorys', postData.categoryCode))
                     const labelDoc = await getDoc(doc(db, 'posts', post.id, 'label', postData.labelCode))
+                    const attributeDoc = await getDoc(doc(db, 'posts', post.id, 'attribute', postData.attributeCode))
+                    const overviewDoc = await getDoc(doc(db, 'posts', post.id, 'overview', postData.overviewCode))
+
 
                     const userData = userDoc.data();
                     const categoryData = categoryDoc.data()
                     const labelData = labelDoc.data()
+                    const attributeData = attributeDoc.data()
+                    const overviewData = overviewDoc.data()
 
                     const postWithUser = {
                         id: post.id,
@@ -45,6 +50,8 @@ const List = () => {
                         user: userData ?? null,
                         category: categoryData ?? null,
                         label: labelData ?? null,
+                        attribute: attributeData ?? null,
+                        overview: overviewData ?? null,
 
                         // label: `${categoryData?.value} ${postData?.address?.split(',')[0]}`
                     };

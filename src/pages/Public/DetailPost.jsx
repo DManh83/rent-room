@@ -35,10 +35,10 @@ const DetailPost = () => {
                         <chakra.span>{post?.address}</chakra.span>
                     </Flex>
                     <Flex alignItems='center' justifyContent='space-between'>
-                        <chakra.span fontWeight='semibold' fontSize='18px' lineHeight='28px' textColor='green.400'>{post?.price}</chakra.span>
-                        <chakra.span>{post?.area}</chakra.span>
-                        <chakra.span>{post?.price}</chakra.span>
-                        <chakra.span>{post?.price}</chakra.span>
+                        <chakra.span fontWeight='semibold' fontSize='18px' lineHeight='28px' textColor='green.400'>{post?.attribute?.price}</chakra.span>
+                        <chakra.span>{post?.attribute?.area}</chakra.span>
+                        <chakra.span>{post?.attribute?.published?.seconds}</chakra.span>
+                        <chakra.span>#{post?.attributeCode}</chakra.span>
                     </Flex>
                 </Flex>
                 <Box mt={8}>
@@ -59,10 +59,14 @@ const DetailPost = () => {
                         <Tbody>
                             <Tr>
                                 <Td>Mã tin</Td>
-                                <Td>{post?.price}</Td>
+                                <Td>{post?.attributeCode}</Td>
                             </Tr>
+
                         </Tbody>
                     </Table>
+                </Box>
+                <Box h='200px'>
+                    Maps
                 </Box>
             </Box>
             <Box w='30%'>

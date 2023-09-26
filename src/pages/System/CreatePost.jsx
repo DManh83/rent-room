@@ -29,6 +29,8 @@ const CreatePost = () => {
         parking: '',
         furniture: '',
         labelCode: '',
+        attributeCode: '',
+        overviewCode: '',
         userId: user.uid
     })
     const [postId, setPostId] = useState('')
@@ -81,22 +83,39 @@ const CreatePost = () => {
             // price: payload.price / 1000000 + ' triệu/tháng',
             // area: payload.area + ' m²',
             labelCode: postId?.match(/\d/g)?.join(''),
+            attributeCode: postId?.match(/\d/g)?.join(''),
+            overviewCode: postId?.match(/\d/g)?.join(''),
+
         }
         const postsRef = doc(db, 'posts', postId)
         const labelRef = doc(db, 'posts', postId, 'label', postId?.match(/\d/g)?.join(''))
         const attributeRef = doc(db, 'posts', postId, 'attribute', postId?.match(/\d/g)?.join(''))
+        const overviewRef = doc(db, 'posts', postId, 'overview', postId?.match(/\d/g)?.join(''))
 
+        //add post
         await setDoc(postsRef, { ...finalPayload, createAt: serverTimestamp() })
+
+        //add subcollection label
         await setDoc(labelRef, {
             label: `${categoryDoc?.data().value} ${payload?.address?.split(', ')[1]}`,
             createAt: serverTimestamp()
         })
 
+        //add subcollection attribute   
         await setDoc(attributeRef, {
             price: payload.price / 1000000 + ' triệu/tháng',
             area: payload.area + ' m²',
-            hashtag: postId?.match(/\d/g)?.join(''),
             published: serverTimestamp(),
+            createAt: serverTimestamp()
+        })
+
+        //add sbcollection overview
+        await setDoc(overviewRef, {
+            area: `${categoryDoc?.data().value} ${payload?.address?.split(', ')[2]}`,
+            type: categoryDoc?.data().value,
+            target: payload.target,
+            create: serverTimestamp(),
+            expire: serverTimestamp(),
             createAt: serverTimestamp()
         })
 
