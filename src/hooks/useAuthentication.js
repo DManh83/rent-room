@@ -1,28 +1,50 @@
+import { useEffect } from 'react'
+
 import { auth, db } from '../firebase'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, setDoc, getDoc } from 'firebase/firestore'
 import { useToast } from '@chakra-ui/react'
 import { useAuth } from './useAuthContext'
-import { GoogleAuthProvider, confirmPasswordReset, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect, signOut } from 'firebase/auth'
+import { GoogleAuthProvider, confirmPasswordReset, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect, signOut, updatePhoneNumber, updateProfile, onAuthStateChanged } from 'firebase/auth'
 
 export const useAuthentication = () => {
-    // const [error, setError] = useState(null)
-    // const [isSubmiting, setIsSubmitting] = useState(false)
     const toast = useToast()
-    // const mounted = useMounted()
-
     const { dispatch } = useAuth()
 
+    useEffect(() => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const docRef = doc(db, 'users', user.uid)
+                    const docSnap = await getDoc(docRef)
+                    const userData = docSnap.data()
+
+                    dispatch({ type: 'ISLOGGEDIN', payload: { ...user, ...userData } })
+                } catch (error) {
+                    console.error('Lỗi tải thông tin người dùng:', error)
+                }
+            } else {
+                dispatch({ type: 'LOGOUT' })
+            }
+        })
+    }, [dispatch])
+
     const register = (email, password, name, phone) => {
-        // setError(null)
         createUserWithEmailAndPassword(auth, email, password)
             .then((res) => {
                 const user = res.user
+                updateProfile(user, {
+                    displayName: name,
+                })
                 const docRef = doc(db, 'users', user.uid)
-                setDoc(docRef, { email, name, phone, zalo: phone })
+                setDoc(docRef, {
+                    email,
+                    name,
+                    phone,
+                    zalo: phone,
+                })
                 dispatch({ type: 'LOGIN', payload: user })
             })
             .catch((error) => {
-                // setError(error.message)
                 toast({
                     description: error.message === 'Firebase: Error (auth/invalid-email).' ? 'Email không đúng' : error.message === 'Firebase: Password should be at least 6 characters (auth/weak-password).' ? 'Mật khẩu phải có 6 ký tự' : 'Tài khoản đã tồn tại',
                     status: 'error',
@@ -33,7 +55,6 @@ export const useAuthentication = () => {
     }
 
     const login = (email, password) => {
-        // setError(null)
         signInWithEmailAndPassword(auth, email, password)
             .then((res) => {
                 const user = res.user
@@ -69,9 +90,6 @@ export const useAuthentication = () => {
             })
     }
 
-    // const updateProfileUser = () => { 
-    //     updateProfile(auth.currentUser, {})
-    //  }
 
     const forgotPassword = (email) => {
         return sendPasswordResetEmail(auth, email, { url: 'http://localhost:3000/login' })

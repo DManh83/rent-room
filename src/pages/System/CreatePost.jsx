@@ -1,34 +1,51 @@
-import { Box, Button, Flex, FormControl, FormLabel, Heading, Image, Input, Spinner, chakra } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { Box, Button, Flex, FormControl, FormLabel, Heading, Image, Input, Spinner, Toast, chakra, useToast } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
 import { Address, Overview } from '../../components'
 import { db, storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { icons } from '../../ultils/icons'
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { path } from '../../ultils/constant'
 import { useAuth } from '../../hooks/useAuthContext'
 import { useFirestore } from '../../hooks/useFirestore'
+import { formatVietnameseToString } from '../../ultils/formatVietnameseToString'
+import { addDoc, collection, doc, getDoc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
+import { v4 } from 'uuid'
 
 const CreatePost = () => {
+    const { user } = useAuth()
     const [payload, setPayload] = useState({
         categoryCode: '',
         title: '',
-        priceNumber: 0,
-        areaNumber: 0,
+        price: 0,
+        area: 0,
         images: '',
         address: '',
-        priceCode: '',
-        areaCode: '',
         description: '',
         target: '',
-        province: ''
+        province: '',
+        kitchen: '',
+        wc: '',
+        parking: '',
+        furniture: '',
+        labelCode: '',
+        userId: user.uid
     })
-    const { user } = useAuth()
-    const { addDocument } = useFirestore('posts')
+    const [postId, setPostId] = useState('')
+    useEffect(() => {
+        setPostId(v4().replace(/-/g, '').substr(0, 10))
+        // const fetchData = async () => {
+        //     const docRef = doc(db, 'posts', postId)
+        //     await setDoc(docRef, { ...payload })
+        // }
+        // fetchData()
+    }, [])
+
+    // const { addDocument, document } = useFirestore('posts')
+    // const { addDocumentUser } = useFirestore(`users/${user.uid}/posts`)
     const [imagesPreview, setImagesPreview] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const navigate = useNavigate()
+    const toast = useToast()
 
     const handleFiles = async (e) => {
         e.stopPropagation()
@@ -58,15 +75,43 @@ const CreatePost = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        const categoryDoc = await getDoc(doc(db, 'categorys', payload.categoryCode))
+        const finalPayload = {
+            ...payload,
+            // price: payload.price / 1000000 + ' triệu/tháng',
+            // area: payload.area + ' m²',
+            labelCode: postId?.match(/\d/g)?.join(''),
+        }
+        const postsRef = doc(db, 'posts', postId)
+        const labelRef = doc(db, 'posts', postId, 'label', postId?.match(/\d/g)?.join(''))
+        const attributeRef = doc(db, 'posts', postId, 'attribute', postId?.match(/\d/g)?.join(''))
 
-        addDocument({ ...payload, userId: user.uid })
-        // const res = await addDoc(collection(db, 'posts'), {
-        //     ...payload,
-        //     createAt: serverTimestamp(),
-        //     uid: user?.uid
-        // })
-        navigate(`/${path.DETAIL_ALL}`)
-        // console.log(res)
+        await setDoc(postsRef, { ...finalPayload, createAt: serverTimestamp() })
+        await setDoc(labelRef, {
+            label: `${categoryDoc?.data().value} ${payload?.address?.split(', ')[1]}`,
+            createAt: serverTimestamp()
+        })
+
+        await setDoc(attributeRef, {
+            price: payload.price / 1000000 + ' triệu/tháng',
+            area: payload.area + ' m²',
+            hashtag: postId?.match(/\d/g)?.join(''),
+            published: serverTimestamp(),
+            createAt: serverTimestamp()
+        })
+
+        // console.log(docRef)
+        // addDoc(collection())
+        // addDocument({ ...finalPayload, userId: user.uid })
+        // addDocumentUser({ ...finalPayload })
+        // navigate(`/${path.DETAIL}/${formatVietnameseToString(payload.title)}/${postId}`)
+        toast({
+            description: 'Tạo tin đăng thành công',
+            status: 'success',
+            duration: 9000,
+            isClosable: true,
+        })
+
     }
 
     return (
@@ -127,7 +172,6 @@ const CreatePost = () => {
                                                 />
                                             </Box>
                                         )
-
                                     })}
                                 </Flex>
                             </Box>

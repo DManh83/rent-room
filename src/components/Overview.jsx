@@ -6,9 +6,21 @@ import InputForm from './InputForm'
 import { useAuth } from '../hooks/useAuthContext'
 
 const targets = [
-    { code: 'All', value: 'Tất cả' },
+    { code: 'Tất cả', value: 'Tất cả' },
     { code: 'Nam', value: 'Nam' },
     { code: 'Nữ', value: 'Nữ' }
+]
+const optionKitchen = [
+    { code: 'Riêng', value: 'Bếp riêng' },
+    { code: 'Chung', value: 'Bếp chung' }
+]
+const optionWc = [
+    { code: 'Riêng', value: 'Nhà vệ sinh riêng' },
+    { code: 'Chung', value: 'Nhà vệ sinh chung' }
+]
+const optionParking = [
+    { code: 'Có', value: 'Có' },
+    { code: 'Không', value: 'Không' }
 ]
 
 const Overview = ({ payload, setPayload }) => {
@@ -45,29 +57,53 @@ const Overview = ({ payload, setPayload }) => {
                     />
                 </FormControl>
                 <Flex w='50%' direction='column' gap={2}>
-                    <FormControl>
-                        <FormLabel htmlFor='name'>Thông tin liên hệ</FormLabel>
-                        <Input type='text' id='name' defaultValue={user?.displayName} />
-                    </FormControl>
-                    <InputForm type='tel' id='phone' label='Điện thoại' />
                     <InputForm
                         small='Nhập đầy đủ số, ví dụ 1 triệu thì nhập là 1000000'
                         type='text'
                         id='price'
                         label='Giá cho thuê'
                         unit='đồng'
-                        name='priceNumber'
-                        value={payload.priceNumber}
+                        name='price'
+                        value={payload.price}
                         setValue={setPayload}
                     />
                     <InputForm
                         type='text'
                         id='area'
                         label='Diện tích'
-                        unit='m2'
-                        name='areaNumber'
-                        value={payload.areaNumber}
+                        unit='m²'
+                        name='area'
+                        value={payload.area}
                         setValue={setPayload}
+                    />
+                    <InputForm
+                        type='text'
+                        id='furniture'
+                        label='Nội thất'
+                        name='furniture'
+                        value={payload.furniture}
+                        setValue={setPayload}
+                    />
+                    <SelectOptions
+                        value={payload.kitchen}
+                        setValue={setPayload}
+                        name='kitchen'
+                        options={optionKitchen}
+                        label='Bếp'
+                    />
+                    <SelectOptions
+                        value={payload.wc}
+                        setValue={setPayload}
+                        name='wc'
+                        options={optionWc}
+                        label='Nhà vệ sinh'
+                    />
+                    <SelectOptions
+                        value={payload.parking}
+                        setValue={setPayload}
+                        name='parking'
+                        options={optionParking}
+                        label='Chỗ để xe'
                     />
                     <SelectOptions
                         value={payload.target}
@@ -76,6 +112,14 @@ const Overview = ({ payload, setPayload }) => {
                         options={targets}
                         label='Đối tượng cho thuê'
                     />
+                    <FormControl>
+                        <FormLabel htmlFor='name'>Thông tin liên hệ</FormLabel>
+                        <Input type='text' id='name' defaultValue={user?.displayName} />
+                    </FormControl>
+                    <FormControl>
+                        <FormLabel htmlFor='phone'>Số điện thoại</FormLabel>
+                        <Input type='text' id='phone' defaultValue={user?.phone} />
+                    </FormControl>
                 </Flex>
 
             </Flex>

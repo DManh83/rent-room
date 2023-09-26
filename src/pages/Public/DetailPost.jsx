@@ -1,15 +1,14 @@
 import React from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { SliderCustom } from '../../components'
 import { Box, Flex, Heading, Table, Tbody, Td, Tr, chakra } from '@chakra-ui/react'
-import { doc, getDoc } from 'firebase/firestore'
-import { db } from '../../firebase'
 import { icons } from '../../ultils/icons'
 
 
 const DetailPost = () => {
     const location = useLocation()
     const { state: post } = location
+    console.log(post)
 
     return (
         <Flex w='full' gap={4} >
@@ -27,7 +26,7 @@ const DetailPost = () => {
                             _hover={{
                                 textColor: 'orange.400'
                             }}>
-                            {post?.categoryCode}
+                            {post?.category?.value}
                         </chakra.span>
                     </Flex>
                     <Flex alignItems='center' gap={2}>
@@ -36,10 +35,10 @@ const DetailPost = () => {
                         <chakra.span>{post?.address}</chakra.span>
                     </Flex>
                     <Flex alignItems='center' justifyContent='space-between'>
-                        <chakra.span fontWeight='semibold' fontSize='18px' lineHeight='28px' textColor='green.400'>{post?.priceNumber}</chakra.span>
-                        <chakra.span>{post?.areaNumber}</chakra.span>
-                        <chakra.span>{post?.priceNumber}</chakra.span>
-                        <chakra.span>{post?.priceNumber}</chakra.span>
+                        <chakra.span fontWeight='semibold' fontSize='18px' lineHeight='28px' textColor='green.400'>{post?.price}</chakra.span>
+                        <chakra.span>{post?.area}</chakra.span>
+                        <chakra.span>{post?.price}</chakra.span>
+                        <chakra.span>{post?.price}</chakra.span>
                     </Flex>
                 </Flex>
                 <Box mt={8}>
@@ -47,7 +46,9 @@ const DetailPost = () => {
                         Thông tin mô tả
                     </Heading>
                     <Box >
-                        {post?.description}
+                        {post?.description.split('\n').map((line, index) => (
+                            <chakra.p key={index}>{line}</chakra.p>
+                        ))}
                     </Box>
                 </Box>
                 <Box mt={8}>
@@ -58,7 +59,7 @@ const DetailPost = () => {
                         <Tbody>
                             <Tr>
                                 <Td>Mã tin</Td>
-                                <Td>{post?.priceNumber}</Td>
+                                <Td>{post?.price}</Td>
                             </Tr>
                         </Tbody>
                     </Table>

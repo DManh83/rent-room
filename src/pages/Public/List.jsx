@@ -9,42 +9,59 @@ const List = () => {
     const [posts, setPosts] = useState(null)
 
     useEffect(() => {
-        const collectionRef = collection(db, 'posts')
+        // const collectionPosts = collection(db, 'posts')
 
-        getDocs(collectionRef)
-            .then((snapshot) => {
-                let results = []
-                snapshot.docs.forEach((postDoc) => {
-                    results.push({ ...postDoc.data(), id: postDoc.id })
-                })
-                setPosts(results)
-            })
-            .catch(error => console.log(error))
+        // getDocs(collectionPosts)
+        //     .then((snapshot) => {
+        //         let results = []
+        //         snapshot.docs.forEach(async (postDoc) => {
+        //             results.push({ ...postDoc.data(), id: postDoc.id })
+        //         })
+        //         setPosts(results)
+        //     })
+        //     .catch(error => console.log(error))
 
-        // const setPostState = async () => {
-        //     const queryPost = collection(db, 'posts');
-        //     await getDocs(queryPost).then((querySnapshot) => {
-        //         querySnapshot.forEach(async (postDoc) => {
-        //             const postData = postDoc.data();
-        //             const userId = postData?.uId;
-        //             const queryUser = query(collection(db, "user"), where("userId", "==", userId));
+        const fetchPosts = async () => {
+            try {
+                const postSnapshots = await getDocs(collection(db, 'posts'));
 
-        //             await getDocs(queryUser).then((userDoc) => {
-        //                 const userData = userDoc.data();
+                const allPosts = [];
 
-        //                 console.log({
-        //                     post: postData,
-        //                     user: userData,
-        //                 });
-        //             });
-        //         });
-        //     });
-        // }
+                for (const post of postSnapshots.docs) {
+                    const postData = post.data();
 
-        // setPostState()
+                    // Truy vấn thông tin user dựa trên userId
+                    const userDoc = await getDoc(doc(db, 'users', postData.userId));
+                    const categoryDoc = await getDoc(doc(db, 'categorys', postData.categoryCode))
+                    const labelDoc = await getDoc(doc(db, 'posts', post.id, 'label', postData.labelCode))
 
+                    const userData = userDoc.data();
+                    const categoryData = categoryDoc.data()
+                    const labelData = labelDoc.data()
+
+                    const postWithUser = {
+                        id: post.id,
+                        ...postData,
+                        user: userData ?? null,
+                        category: categoryData ?? null,
+                        label: labelData ?? null,
+
+                        // label: `${categoryData?.value} ${postData?.address?.split(',')[0]}`
+                    };
+
+                    allPosts.push(postWithUser);
+                }
+
+                setPosts(allPosts);
+            } catch (error) {
+                console.error('Lỗi truy vấn:', error);
+            }
+        };
+        fetchPosts();
     }, [])
+
     console.log(posts)
+
     return (
         <Box w='full' p={1} bg='white' shadow='md' rounded='md'>
             <Flex alignItems='center' justifyContent='space-between'>
@@ -58,7 +75,9 @@ const List = () => {
             </Flex>
             <Box >
                 {posts && posts.map((post) => {
-                    return <Item post={post} key={post?.id} />
+                    return (
+                        post && post.user && post.id && <Item post={post} key={post.id} />
+                    )
                 })}
 
             </Box>

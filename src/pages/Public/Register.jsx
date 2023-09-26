@@ -20,7 +20,7 @@ const Register = () => {
 
     const mounted = useMounted()
 
-    const handleRegister = async (e) => {
+    const handleRegister = (e) => {
         e.preventDefault()
         if (!email || !password || !name || !phone) {
             toast({
