@@ -4,8 +4,10 @@ import { Card, DividerWithText } from '../../components'
 import { Box, Button, Center, FormControl, FormLabel, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
 import useMounted from '../../hooks/useMounted'
 import { path } from '../../ultils/constant'
-import { icons } from '../../ultils/icons'
+import icons from '../../ultils/icons'
 import { useAuthentication } from '../../hooks/useAuthentication'
+
+const { FaGoogle } = icons
 
 const Register = () => {
     const [email, setEmail] = useState('')
@@ -113,7 +115,7 @@ const Register = () => {
                     variant='outline'
                     width={{ base: '100%' }}
                     colorScheme='red'
-                    leftIcon={<icons.FaGoogle />}
+                    leftIcon={<FaGoogle />}
                     onClick={handleSigninGoogle}
                 >
                     Đăng nhập với Google

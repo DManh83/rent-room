@@ -3,7 +3,7 @@ import React from 'react'
 import SelectOptions from './SelectOptions'
 import optionsCategory from '../ultils/optionsCategory'
 import InputForm from './InputForm'
-import { useAuth } from '../hooks/useAuthContext'
+import { useAuth } from '../hooks/useReducerContext'
 
 const targets = [
     { code: 'Tất cả', value: 'Tất cả' },
@@ -14,7 +14,7 @@ const optionKitchen = [
     { code: 'Riêng', value: 'Bếp riêng' },
     { code: 'Chung', value: 'Bếp chung' }
 ]
-const optionWc = [
+const optionBathroom = [
     { code: 'Riêng', value: 'Nhà vệ sinh riêng' },
     { code: 'Chung', value: 'Nhà vệ sinh chung' }
 ]
@@ -92,11 +92,11 @@ const Overview = ({ payload, setPayload }) => {
                         label='Bếp'
                     />
                     <SelectOptions
-                        value={payload.wc}
+                        value={payload.bathroom}
                         setValue={setPayload}
-                        name='wc'
-                        options={optionWc}
-                        label='Nhà vệ sinh'
+                        name='bathroom'
+                        options={optionBathroom}
+                        label='Nhà tắm'
                     />
                     <SelectOptions
                         value={payload.parking}

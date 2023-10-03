@@ -1,7 +1,7 @@
 import { ChakraProvider, ColorModeScript, extendTheme, theme } from "@chakra-ui/react";
 import React from "react";
 import { AppRouter } from "./components";
-import { AuthContextProvider } from "./contexts/AuthContext";
+import { ReducerContextProvider } from "./contexts/ReducerContext";
 
 const customTheme = extendTheme({
   config: {
@@ -18,9 +18,9 @@ function App() {
     <React.StrictMode>
       <ChakraProvider theme={customTheme}>
         <ColorModeScript initialColorMode={customTheme.config.initialColorMode} />
-        <AuthContextProvider>
+        <ReducerContextProvider>
           <AppRouter />
-        </AuthContextProvider>
+        </ReducerContextProvider>
       </ChakraProvider>
     </React.StrictMode>
   );

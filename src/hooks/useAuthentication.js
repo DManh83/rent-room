@@ -3,12 +3,12 @@ import { useEffect } from 'react'
 import { auth, db } from '../firebase'
 import { doc, setDoc, getDoc } from 'firebase/firestore'
 import { useToast } from '@chakra-ui/react'
-import { useAuth } from './useAuthContext'
+import { useAuth } from './useReducerContext'
 import { GoogleAuthProvider, confirmPasswordReset, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect, signOut, updatePhoneNumber, updateProfile, onAuthStateChanged } from 'firebase/auth'
 
 export const useAuthentication = () => {
     const toast = useToast()
-    const { dispatch } = useAuth()
+    const { dispatchUser } = useAuth()
 
     useEffect(() => {
         onAuthStateChanged(auth, async (user) => {
@@ -18,15 +18,15 @@ export const useAuthentication = () => {
                     const docSnap = await getDoc(docRef)
                     const userData = docSnap.data()
 
-                    dispatch({ type: 'ISLOGGEDIN', payload: { ...user, ...userData } })
+                    dispatchUser({ type: 'ISLOGGEDIN', payload: { ...user, ...userData } })
                 } catch (error) {
                     console.error('Lỗi tải thông tin người dùng:', error)
                 }
             } else {
-                dispatch({ type: 'LOGOUT' })
+                dispatchUser({ type: 'LOGOUT' })
             }
         })
-    }, [dispatch])
+    }, [dispatchUser])
 
     const register = (email, password, name, phone) => {
         createUserWithEmailAndPassword(auth, email, password)
@@ -42,7 +42,7 @@ export const useAuthentication = () => {
                     phone,
                     zalo: phone,
                 })
-                dispatch({ type: 'LOGIN', payload: user })
+                dispatchUser({ type: 'LOGIN', payload: user })
             })
             .catch((error) => {
                 toast({
@@ -58,7 +58,7 @@ export const useAuthentication = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then((res) => {
                 const user = res.user
-                dispatch({ type: 'LOGIN', payload: user })
+                dispatchUser({ type: 'LOGIN', payload: user })
             })
             .catch((error) => {
                 toast({
@@ -78,7 +78,7 @@ export const useAuthentication = () => {
                 const docRef = doc(db, 'users', user.uid)
                 console.log(user)
                 setDoc(docRef, { email: user.email, name: user.displayName, phone: user.phoneNumber, zalo: user.phoneNumber })
-                dispatch({ type: 'LOGIN', payload: user })
+                dispatchUser({ type: 'LOGIN', payload: user })
             })
             .catch((error) => {
                 toast({
@@ -103,7 +103,7 @@ export const useAuthentication = () => {
         signOut(auth)
             .then((res) => {
                 console.log('Successfully Logout')
-                dispatch({ type: 'LOGOUT' })
+                dispatchUser({ type: 'LOGOUT' })
             })
             .catch((error) => {
                 console.log(error.message)

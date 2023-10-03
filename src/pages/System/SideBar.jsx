@@ -2,10 +2,12 @@ import { Box, Button, Flex, Image, chakra } from '@chakra-ui/react'
 import React from 'react'
 import AvatarDefault from '../../assets/avatar-default.jpg'
 import menuSidebar from '../../ultils/menuSidebar'
-import { icons } from '../../ultils/icons'
+import icons from '../../ultils/icons'
 import { Link } from 'react-router-dom'
-import { useAuth } from '../../hooks/useAuthContext'
+import { useAuth } from '../../hooks/useReducerContext'
 import { useAuthentication } from '../../hooks/useAuthentication'
+
+const { AiOutlineLogout } = icons
 
 const SideBar = () => {
     const { logout } = useAuthentication()
@@ -68,7 +70,7 @@ const SideBar = () => {
                         onClick={handleLogout}
                         w='full'
                         bg='red.300'
-                        leftIcon={<icons.AiOutlineLogout />}
+                        leftIcon={<AiOutlineLogout />}
                     >
                         Đăng xuất
                     </Button>

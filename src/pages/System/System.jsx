@@ -32,7 +32,6 @@ const System = () => {
                 <SideBar />
                 <Box
                     flex='auto'
-                    bg='white'
                     shadow='md'
                     p={4}
                 >

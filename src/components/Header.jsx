@@ -4,10 +4,12 @@ import Navlink from './Navlink'
 import menuManage from '../ultils/menuManage'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../ultils/constant'
-import { icons } from '../ultils/icons'
+import icons from '../ultils/icons'
 import User from './User'
 import { useAuthentication } from '../hooks/useAuthentication'
-import { useAuth } from '../hooks/useAuthContext'
+import { useAuth } from '../hooks/useReducerContext'
+
+const { ChevronDownIcon, AiOutlineLogout, FaMoon, FaSun } = icons
 
 const Header = () => {
     const { toggleColorMode } = useColorMode()
@@ -37,7 +39,7 @@ const Header = () => {
                 {user &&
                     <Menu>
                         <MenuButton
-                            as={Button} rightIcon={<icons.ChevronDownIcon />}
+                            as={Button} rightIcon={<ChevronDownIcon />}
                             variant='ghost'
                             colorScheme='gray'
                         >
@@ -72,7 +74,7 @@ const Header = () => {
                                 // className=' hover:text-orange-500 flex items-center gap-2'
                                 onClick={handleLogout}
                             >
-                                <icons.AiOutlineLogout /> Đăng xuất
+                                <AiOutlineLogout /> Đăng xuất
                             </MenuItem>
                         </MenuList>
                     </Menu>
@@ -82,7 +84,7 @@ const Header = () => {
                 }
                 <IconButton
                     variant='outline'
-                    icon={useColorModeValue(<icons.FaSun />, <icons.FaMoon />)}
+                    icon={useColorModeValue(<FaSun />, <FaMoon />)}
                     onClick={toggleColorMode}
                     aria-label='toggle-dark-mode'
                 />

@@ -5,14 +5,14 @@ import { MdOutlineLibraryBooks, MdOutlineHouseSiding } from 'react-icons/md'
 import { BiUserPin } from 'react-icons/bi'
 import { AiOutlineLogout } from 'react-icons/ai'
 import { ImBin } from 'react-icons/im'
-import { BsCameraFill, BsChevronRight } from 'react-icons/bs'
+import { BsCameraFill, BsChevronRight, BsStopwatch, BsHash } from 'react-icons/bs'
 import { GrNext } from 'react-icons/gr'
 import { HiOutlineLocationMarker, HiLocationMarker } from 'react-icons/hi'
 import { TbReportMoney } from 'react-icons/tb'
 import { RiCrop2Line } from 'react-icons/ri'
 import { FiSearch } from 'react-icons/fi'
 
-export const icons = {
+const icons = {
     FaGoogle,
     FaMoon,
     FaSun,
@@ -30,7 +30,11 @@ export const icons = {
     MdOutlineHouseSiding,
     FiSearch,
     HiLocationMarker,
+    BsStopwatch,
+    BsHash,
 
     ChevronDownIcon,
 
-} 
+}
+
+export default icons

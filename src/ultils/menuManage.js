@@ -1,24 +1,26 @@
 
-import { icons } from './icons'
+import icons from './icons'
+
+const { ImPencil2, MdOutlineLibraryBooks, BiUserPin } = icons
 
 const menuManage = [
     {
         id: 1,
         text: 'Đăng tin cho thuê',
         path: '/he-thong/tao-tin-dang',
-        icon: <icons.ImPencil2 />
+        icon: <ImPencil2 />
     },
     {
         id: 2,
         text: 'Quản lý tin đăng',
         path: '/he-thong/quan-ly-bai-dang',
-        icon: <icons.MdOutlineLibraryBooks />
+        icon: <MdOutlineLibraryBooks />
     },
     {
         id: 3,
         text: 'Thông tin tài khoản',
         path: '/he-thong/thong-tin-tai-khoan',
-        icon: <icons.BiUserPin />
+        icon: <BiUserPin />
     }
 ]
 

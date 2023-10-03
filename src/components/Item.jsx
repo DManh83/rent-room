@@ -3,10 +3,7 @@ import React, { memo, useEffect, useState } from 'react'
 import avatarDefault from '../assets/avatar-default.jpg'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../ultils/constant'
-import { formatVietnameseToString } from '../ultils/formatVietnameseToString'
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore'
-import { db } from '../firebase'
-import { data } from 'autoprefixer'
+import { formatVietnameseToString } from '../ultils/common/formatVietnameseToString'
 
 const indexs = [0, 1, 2, 3]
 
@@ -39,7 +36,7 @@ const Item = ({ post }) => {
                 <chakra.span bg='rgba(0, 0, 0, 0.5)' textColor='white' px={2} rounded='md' position='absolute' left={1} bottom={2}>{`${post?.images?.length} ảnh`}</chakra.span>
             </Wrap>
             <Box w='60%'>
-                <Flex justify='space-between' gap={4} w='full'>
+                <Flex justify='space-between' gap={4} w='full' cursor='pointer'>
                     <Box fontWeight='medium' textColor='orange.600'>
                         {post?.title}
                     </Box>

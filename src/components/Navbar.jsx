@@ -1,24 +1,31 @@
 import { Box, HStack, useColorModeValue } from '@chakra-ui/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navlink from './Navlink'
-import optionsNav from '../ultils/optionsNav'
+import { useApp } from '../hooks/useReducerContext'
+import { fetchCategories } from '../store/fetch/app'
+import { formatVietnameseToString } from '../ultils/common/formatVietnameseToString'
 
 const Navbar = () => {
+    const { categories, dispatchApp } = useApp()
+    useEffect(() => {
+        fetchCategories(dispatchApp)
+    }, [])
 
     return (
 
         <Box
             backgroundColor={useColorModeValue('pink.200')}
             borderBottom='2px'
-            borderBottomColor={useColorModeValue('gray.100', 'gray.700')}
+            borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
         // mb={4}
         >
 
             <HStack py={2} justifyContent='space-between' maxW='1100px' mx='auto'>
+                <Navlink to={`/`} name={'Trang chủ'} />
 
-                {optionsNav?.length > 0 && optionsNav.map((item) => {
+                {categories?.length > 0 && categories.map((item) => {
                     return (
-                        <Navlink key={item.id} to={`/${item.path}`} name={item.name} />
+                        <Navlink key={item.id} to={`/${formatVietnameseToString(item.value)}`} name={item.value} />
                     )
                 })}
             </HStack>

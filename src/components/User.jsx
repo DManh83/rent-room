@@ -1,7 +1,7 @@
 import React from 'react'
 import { HStack, Image, chakra } from '@chakra-ui/react'
 import avatarDefault from '../assets/avatar-default.jpg'
-import { useAuth } from '../hooks/useAuthContext'
+import { useAuth } from '../hooks/useReducerContext'
 
 
 const User = () => {

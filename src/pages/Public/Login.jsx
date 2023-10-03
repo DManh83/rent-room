@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import { Card, DividerWithText } from '../../components'
 import { Box, Button, FormControl, FormLabel, HStack, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
 import { Link, useNavigate } from 'react-router-dom'
-import { icons } from '../../ultils/icons'
+import icons from '../../ultils/icons'
 import useMounted from '../../hooks/useMounted'
 import { path } from '../../ultils/constant'
 import { useAuthentication } from '../../hooks/useAuthentication'
+
+const { FaGoogle } = icons
 
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -94,7 +96,7 @@ const Login = () => {
                     variant='outline'
                     width={{ base: '100%' }}
                     colorScheme='red'
-                    leftIcon={<icons.FaGoogle />}
+                    leftIcon={<FaGoogle />}
                     onClick={handleSigninGoogle}
                 >
                     Đăng nhập với Google

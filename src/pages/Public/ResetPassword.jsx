@@ -3,7 +3,7 @@ import { Card } from '../../components'
 import { Box, Button, FormControl, FormLabel, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { path } from '../../ultils/constant'
-import { useAuth } from '../../hooks/useAuthContext'
+import { useAuth } from '../../hooks/useReducerContext'
 
 const useQuery = () => {
     const location = useLocation()
