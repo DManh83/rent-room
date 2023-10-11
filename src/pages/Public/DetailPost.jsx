@@ -30,7 +30,7 @@ const DetailPost = () => {
                                 _hover={{
                                     textColor: 'orange.400'
                                 }}>
-                                {post?.category?.value}
+                                {post?.label?.value}
                             </chakra.span>
                         </Flex>
                         <Flex alignItems='center' gap={2}>
@@ -53,7 +53,7 @@ const DetailPost = () => {
                             </chakra.span>
                             <chakra.span display='flex' alignItems='center' gap={1}>
                                 <BsHash />
-                                <chakra.span>{post?.attributeCode}</chakra.span>
+                                <chakra.span>{post?.attribute?.hashtag}</chakra.span>
                             </chakra.span>
                         </Flex>
                     </Flex>
@@ -127,7 +127,7 @@ const DetailPost = () => {
                             <Tbody>
                                 <Tr>
                                     <Td width='150px'>Mã tin</Td>
-                                    <Td>#{post?.overviewCode}</Td>
+                                    <Td>#{post?.overview?.code}</Td>
                                 </Tr>
                                 <Tr bg='gray.200'>
                                     <Td width='150px'>Khu vực</Td>
@@ -152,32 +152,6 @@ const DetailPost = () => {
                             </Tbody>
                         </Table>
                     </Box>
-
-                    {/* <Box mt={8}>
-                        <Heading fontSize='xl' fontWeight='bold' my={4}>
-                            Thông tin liên hệ
-                        </Heading>
-                        <Table>
-                            <Tbody display='flex' flexWrap='wrap'>
-                                <Tr flexBasis='50%'>
-                                    <Td width='200px'>Liên hệ</Td>
-                                    <Td>{post?.user?.name}</Td>
-                                </Tr>
-                                <Tr flexBasis='50%' bg='gray.200'>
-                                    <Td width='200px'>Email</Td>
-                                    <Td>{post?.user?.email}</Td>
-                                </Tr>
-                                <Tr flexBasis='50%'>
-                                    <Td width='200px'>Điện thoại</Td>
-                                    <Td>{post?.user?.phone}</Td>
-                                </Tr>
-                                <Tr bg='gray.200' flexBasis='50%'>
-                                    <Td width='200px'>Zalo</Td>
-                                    <Td>{post?.user?.zalo}</Td>
-                                </Tr>
-                            </Tbody>
-                        </Table>
-                    </Box> */}
 
                     <Box mt={8} h='250px'>
                         <Heading fontSize='xl' fontWeight='bold' my={4}>

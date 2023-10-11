@@ -6,7 +6,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import icons from '../../ultils/icons'
 import { useAuth } from '../../hooks/useReducerContext'
 import { v4 } from 'uuid'
-import { createDocPost } from '../../services'
+import { createDocPost, createPricesAndAreas } from '../../services'
 
 const { ImBin, BsCameraFill } = icons
 
@@ -27,13 +27,6 @@ const CreatePost = () => {
         furniture: '',
         userId: user.uid
     })
-
-    const [postId, setPostId] = useState('')
-
-    useEffect(() => {
-        // createPricesAndAreas()
-        setPostId(v4().replace(/-/g, '').substr(0, 10))
-    }, [])
 
     const [imagesPreview, setImagesPreview] = useState([])
     const [isLoading, setIsLoading] = useState(false)
@@ -67,7 +60,7 @@ const CreatePost = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        createDocPost(payload, postId)
+        createDocPost(payload)
         toast({
             description: 'Tạo tin đăng thành công',
             status: 'success',

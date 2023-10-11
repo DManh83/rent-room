@@ -7,20 +7,14 @@ const { GrLinkPrevious } = icons
 const Modal = ({ setIsShowModal, content, name }) => {
 
     const [sliderValue, setSliderValue] = useState([0, 100])
-    const [percent1, setPercent1] = useState()
-    const [percent2, setPercent2] = useState()
+    const [percent1, setPercent1] = useState(0)
+    const [percent2, setPercent2] = useState(100)
 
     const handleChange = (value) => {
         setSliderValue(value)
         setPercent1(sliderValue[0])
         setPercent2(sliderValue[1])
     }
-
-    const formatAriaValueText = (value) => {
-        // console.log(value)
-        return value
-    }
-
 
     return (
         <Flex onClick={() => { setIsShowModal(false) }}

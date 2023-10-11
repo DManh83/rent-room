@@ -5,7 +5,7 @@ import generateDate from "../ultils/common/generateDate"
 import generateCode from "../ultils/common/generateCode"
 import { v4 } from "uuid"
 
-export const createDocPost = async (payload, postId) => {
+export const createDocPost = async (payload) => {
 
     try {
         const categoryDoc = await getDoc(doc(db, 'categorys', payload.categoryCode))
@@ -14,6 +14,7 @@ export const createDocPost = async (payload, postId) => {
         let currentArea = payload.area
         let attributeId = v4()
         let overviewId = v4()
+        let code = v4().replace(/-/g, '').substr(0, 10).match(/\d/g).join('')
 
         const finalPayload = {
             ...payload,
@@ -25,14 +26,14 @@ export const createDocPost = async (payload, postId) => {
             priceCode: dataPrice.find(area => area.max > currentPrice && area.min <= currentPrice)?.code,
         }
 
-        const postsRef = doc(db, 'posts', postId)
+        // const postsRef = doc(db, 'posts', postId)
         const labelRef = doc(db, 'labels', finalPayload.labelCode)
         const provinceRef = doc(db, 'provinces', finalPayload.provinceCode)
         const attributeRef = doc(db, 'attributes', finalPayload.attributeId)
         const overviewRef = doc(db, 'overviews', finalPayload.overviewId)
 
         //add post
-        await setDoc(postsRef, { ...finalPayload, createAt: serverTimestamp() })
+        await addDoc(collection(db, 'posts'), { ...finalPayload, createAt: serverTimestamp() })
 
         //add subcollection label
         await setDoc(labelRef, {
@@ -44,6 +45,7 @@ export const createDocPost = async (payload, postId) => {
         await setDoc(attributeRef, {
             price: payload.price / 1000000 + ' triệu/tháng',
             area: payload.area + ' m²',
+            hashtag: code,
             published: serverTimestamp(),
             createAt: serverTimestamp()
         })
@@ -52,6 +54,7 @@ export const createDocPost = async (payload, postId) => {
         await setDoc(overviewRef, {
             area: `${categoryDoc?.data().value} ${payload?.address?.split(', ')[2]}`,
             type: categoryDoc?.data().value,
+            code: code,
             target: payload.target,
             created: generateDate().today,
             expired: generateDate().expireDay,
@@ -72,14 +75,14 @@ export const createDocPost = async (payload, postId) => {
 export const createPricesAndAreas = () => {
     try {
         dataPrice.forEach(async (item, index) => {
-            const priceRef = doc(db, 'prices', `${index + 1}` + item.code)
+            const priceRef = doc(db, 'prices', item.code)
             await setDoc(priceRef, {
                 value: item.value,
                 order: index + 1
             })
         })
         dataArea.forEach(async (item, index) => {
-            const areaRef = doc(db, 'areas', `${index + 1}` + item.code)
+            const areaRef = doc(db, 'areas', item.code)
             await setDoc(areaRef, {
                 value: item.value,
                 order: index + 1

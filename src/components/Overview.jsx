@@ -96,7 +96,7 @@ const Overview = ({ payload, setPayload }) => {
                         setValue={setPayload}
                         name='bathroom'
                         options={optionBathroom}
-                        label='Nhà tắm'
+                        label='Tolet'
                     />
                     <SelectOptions
                         value={payload.parking}

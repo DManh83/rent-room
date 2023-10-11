@@ -3,11 +3,11 @@ import { db } from "../../firebase";
 
 export const fetchPosts = async (dispatch) => {
     try {
-        const postSnapshots = await getDocs(collection(db, 'posts'));
+        const postDocs = await getDocs(collection(db, 'posts'));
 
         const allPosts = [];
 
-        for (const post of postSnapshots.docs) {
+        for (const post of postDocs.docs) {
             const postData = post.data();
 
             const userDoc = await getDoc(doc(db, 'users', postData.userId));
@@ -54,11 +54,11 @@ export const fetchPostsLimit = async (dispatch, param, paramValue) => {
     try {
         const coll = collection(db, 'posts');
         const postsLimit = query(coll, where(`${param}`, '==', `${paramValue}`))
-        const postsLimitSnapshot = await getDocs(postsLimit)
-        // console.log('post limit snapshot: ', postsLimitSnapshot.docs)
+        const postsLimitDoc = await getDocs(postsLimit)
+        // console.log('post limit snapshot: ', postsLimitDoc.docs)
         const allPosts = [];
 
-        for (const post of postsLimitSnapshot.docs) {
+        for (const post of postsLimitDoc.docs) {
             const postData = post.data();
 
             const userDoc = await getDoc(doc(db, 'users', postData.userId));
