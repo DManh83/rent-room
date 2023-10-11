@@ -57,3 +57,22 @@ export const fetchAreas = async (dispatch) => {
         console.log('Lỗi fetch area: ', error)
     }
 }
+
+export const fetchProvinces = async (dispatch) => {
+    try {
+        const provinceSnapshots = await getDocs(collection(db, 'provinces'));
+
+        const allProvinces = [];
+
+        for (const province of provinceSnapshots.docs) {
+            const provinceData = {
+                id: province.id,
+                ...province.data()
+            }
+            allProvinces.push(provinceData)
+        }
+        dispatch({ type: 'GET_PROVINCES', payload: allProvinces.sort((a, b) => { return +a.order - +b.order }) })
+    } catch (error) {
+        console.log('Lỗi fetch province: ', error)
+    }
+}

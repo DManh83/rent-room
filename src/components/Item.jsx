@@ -51,7 +51,7 @@ const Item = ({ post }) => {
                 </chakra.p>
                 <Flex align='center' my={6} justify='space-between'>
                     <Flex align='center' >
-                        <Image src={avatarDefault} alt='avatar' w='30px' h='30px' objectFit='cover' />
+                        <Image src={avatarDefault} alt='avatar' w='30px' h='30px' objectFit='cover' backgroundColor='transparent' />
                         <chakra.p>{post?.user?.name}</chakra.p>
                     </Flex>
                     <Flex align='center' gap={1}>

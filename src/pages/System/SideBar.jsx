@@ -18,7 +18,7 @@ const SideBar = () => {
         logout()
     }
     return (
-        <Flex w='256px' p={4} direction='column' gap={6}>
+        <Flex w='15%' p={4} direction='column' gap={6}>
             <Flex direction='column' gap={4}>
                 <Flex align='center' gap={4}>
                     <Image src={user?.photoURL || AvatarDefault} alt='avatar' borderRadius='full' boxSize='45px' />
@@ -52,16 +52,6 @@ const SideBar = () => {
                                 {item.text}
                             </Link>
                         </Box>
-                        // <Navlink
-                        //     key={item.id}
-                        //     to={item?.path}
-                        //     name={item.text}
-                        //     w='full'
-                        //     leftIcon={item?.icon}
-                        //     align='center'
-                        //     fontWeight='medium'
-
-                        // />
 
                     )
                 })}

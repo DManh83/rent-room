@@ -24,7 +24,8 @@ export const ReducerContextProvider = ({ children }) => {
     const [appData, dispatchApp] = useReducer(appReducer, {
         categories: null,
         prices: null,
-        areas: null
+        areas: null,
+        provinces: null
     })
 
     // console.log('Auth state is', state)

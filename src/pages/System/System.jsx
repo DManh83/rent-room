@@ -12,10 +12,8 @@ const System = () => {
     return (
         <Flex
             w='full'
-            h='100vh'
             direction='column'
             alignItems='center'
-            bg='gray.50'
         >
             <Flex
                 w='full'

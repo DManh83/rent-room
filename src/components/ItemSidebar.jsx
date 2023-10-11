@@ -1,12 +1,14 @@
 import { Box, Flex, Heading, List, ListItem, chakra } from '@chakra-ui/react'
 import React, { memo } from 'react'
 import { GrNext } from 'react-icons/gr'
-import { Link } from 'react-router-dom'
+import { Link, createSearchParams, useLocation, useNavigate } from 'react-router-dom'
 import { formatVietnameseToString } from '../ultils/common/formatVietnameseToString'
 
 
-const ItemSidebar = ({ title, content, isDouble }) => {
-
+const ItemSidebar = ({ title, content, isDouble, type }) => {
+    const location = useLocation()
+    const navigate = useNavigate()
+    // console.log(location)
     const formatContent = () => {
         const oddEl = content?.filter((item, index) => index % 2 !== 0)
         const evenEl = content?.filter((item, index) => index % 2 === 0)
@@ -18,6 +20,16 @@ const ItemSidebar = ({ title, content, isDouble }) => {
         })
 
         return formatContent
+    }
+
+    const handleFilterPosts = (code) => {
+        navigate({
+            pathname: location?.pathname,
+            search: createSearchParams({
+                [type]: code
+            }).toString()
+        })
+        console.log('code: ', code)
     }
 
     return (
@@ -43,11 +55,15 @@ const ItemSidebar = ({ title, content, isDouble }) => {
                     return (
                         <Box key={index} >
                             <Flex align='center' justify='space-around'>
-                                <Flex flex={1} gap={2} align='center' cursor='pointer' _hover={{ textColor: 'orange.500' }} borderBottom='1px' borderColor='gray.200' borderStyle='dashed' paddingBottom='1px'>
+                                <Flex
+                                    onClick={() => handleFilterPosts(item.left.id)}
+                                    flex={1} gap={2} align='center' cursor='pointer' _hover={{ textColor: 'orange.500' }} borderBottom='1px' borderColor='gray.200' borderStyle='dashed' paddingBottom='1px'>
                                     <GrNext size={10} />
                                     <chakra.p fontSize='1rem'>{item.left.value}</chakra.p>
                                 </Flex>
-                                <Flex flex={1} gap={2} align='center' cursor='pointer' _hover={{ textColor: 'orange.500' }} borderBottom='1px' borderColor='gray.200' borderStyle='dashed' paddingBottom='1px' >
+                                <Flex
+                                    onClick={() => handleFilterPosts(item.right.id)}
+                                    flex={1} gap={2} align='center' cursor='pointer' _hover={{ textColor: 'orange.500' }} borderBottom='1px' borderColor='gray.200' borderStyle='dashed' paddingBottom='1px' >
                                     <GrNext size={10} />
                                     <chakra.p fontSize='1rem'>{item.right.value}</chakra.p>
                                 </Flex>

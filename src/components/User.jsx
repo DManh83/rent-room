@@ -8,7 +8,7 @@ const User = () => {
 
     const { user } = useAuth()
 
-    console.log(user)
+    // console.log(user)
     return (
         <HStack justifyContent={'flex-end'}>
             <Image src={user?.photoURL || avatarDefault} alt='avatar' borderRadius='full' boxSize='45px' />

@@ -12,7 +12,7 @@ const HomePage = () => {
         fetchPrices(dispatchApp)
         fetchAreas(dispatchApp)
     }, [dispatchApp])
-    console.log(areas)
+
     return (
         <Flex direction='column' gap={3} w='1100px' justify='space-between' alignItems='center'>
             <Province />
@@ -20,10 +20,10 @@ const HomePage = () => {
                 <Box w='70%'>
                     <List />
                 </Box>
-                <Flex direction='column' w='30%' border='1px' borderColor='green' gap={4} justify='start' align='center'>
+                <Flex direction='column' w='30%' gap={4} justify='start' align='center'>
                     <ItemSidebar title='Danh sách cho thuê' content={categories} />
-                    <ItemSidebar isDouble={true} title='Xem theo giá' content={prices} />
-                    <ItemSidebar isDouble={true} title='Xem theo diện tích' content={areas} />
+                    <ItemSidebar isDouble={true} type='priceCode' title='Xem theo giá' content={prices} />
+                    <ItemSidebar isDouble={true} type='areaCode' title='Xem theo diện tích' content={areas} />
                 </Flex>
             </Flex>
         </Flex>

@@ -2,16 +2,34 @@ import { Box, Button, Flex, Heading, chakra } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { Item } from '../../components'
 import { usePost } from '../../hooks/useReducerContext'
-import { fetchPosts } from '../../store/fetch/post'
+import { fetchPosts, fetchPostsLimit } from '../../store/fetch/post'
+import { useSearchParams } from 'react-router-dom'
 
 const List = () => {
     const { posts, dispatchPost } = usePost()
+    const [searchParams] = useSearchParams()
 
     useEffect(() => {
-        fetchPosts(dispatchPost);
-    }, [dispatchPost])
+        let params = []
+        for (let entry of searchParams.entries()) {
+            params.push(entry)
+        }
+        let searchParamsObject = {}
+        params?.forEach(i => {
+            if (Object.keys(searchParamsObject)?.some(item => item === i[0])) {
+                searchParamsObject[i[0]] = [...searchParamsObject[i[0]], i[1]]
+            } else {
+                searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
+            }
+        })
 
-    // console.log('postData dispatch: ', posts)
+        if (params.length === 0)
+            fetchPosts(dispatchPost)
+        else
+            fetchPostsLimit(dispatchPost, params[0][0], params[0][1])
+        console.log('posts: ', posts)
+    }, [dispatchPost, searchParams])
+
 
     return (
         <Box w='full' p={1} shadow='md' rounded='md'>

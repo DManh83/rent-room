@@ -38,7 +38,7 @@ const DetailPost = () => {
                             <chakra.span>Địa chỉ:</chakra.span>
                             <chakra.span>{post?.address}</chakra.span>
                         </Flex>
-                        <Flex alignItems='center' justifyContent='space-between'>
+                        <Flex alignItems='center' justifyContent='space-between' borderBottom='1px' height='50px' borderColor='gray.300'>
                             <chakra.span display='flex' alignItems='center' gap={1}>
                                 <TbReportMoney />
                                 <chakra.span fontWeight='semibold' fontSize='18px' lineHeight='28px' textColor='green.400'>{post?.attribute?.price}</chakra.span>
@@ -57,6 +57,7 @@ const DetailPost = () => {
                             </chakra.span>
                         </Flex>
                     </Flex>
+
                     <Box mt={8}>
                         <Heading fontSize='xl' fontWeight='bold' my={4}>
                             Thông tin mô tả
@@ -67,6 +68,57 @@ const DetailPost = () => {
                             ))}
                         </Flex>
                     </Box>
+
+                    <Box mt={8} borderTop='1px' borderBottom='1px' borderColor='gray.300'>
+                        <Heading fontSize='xl' fontWeight='bold' my={4}>
+                            Thông tin cho thuê
+                        </Heading>
+                        <Table variant='unstyled'>
+                            <Tbody display='flex' flexWrap='wrap'>
+                                <Tr flexBasis='50%'>
+                                    <Td width='150px'>Liên hệ</Td>
+                                    <Td>{post?.user?.name}</Td>
+                                </Tr>
+                                <Tr flexBasis='50%'>
+                                    <Td width='150px'>Giá cho thuê</Td>
+                                    <Td>{post?.attribute?.price}</Td>
+                                </Tr>
+                                <Tr flexBasis='50%'>
+                                    <Td width='150px'>Email</Td>
+                                    <Td>{post?.user?.email}</Td>
+                                </Tr>
+                                <Tr flexBasis='50%'>
+                                    <Td width='150px'>Diện tích</Td>
+                                    <Td>{post?.attribute?.area}</Td>
+                                </Tr>
+                                <Tr flexBasis='50%'>
+                                    <Td width='150px'>Điện thoại</Td>
+                                    <Td>{post?.user?.phone}</Td>
+                                </Tr>
+                                <Tr flexBasis='50%'>
+                                    <Td width='150px'>Nội thất</Td>
+                                    <Td>{post?.furniture}</Td>
+                                </Tr>
+                                <Tr flexBasis='50%'>
+                                    <Td width='150px'>Zalo</Td>
+                                    <Td>{post?.user?.zalo}</Td>
+                                </Tr>
+                                <Tr flexBasis='50%'>
+                                    <Td width='150px'>Bếp</Td>
+                                    <Td>{post?.kitchen}</Td>
+                                </Tr>
+                                <Tr flexBasis='50%'>
+                                    <Td width='150px'>Nhà vệ sinh</Td>
+                                    <Td>{post?.bathroom}</Td>
+                                </Tr>
+                                <Tr flexBasis='50%'>
+                                    <Td width='150px'>Chỗ để xe</Td>
+                                    <Td>{post?.parking}</Td>
+                                </Tr>
+                            </Tbody>
+                        </Table>
+                    </Box>
+
                     <Box mt={8}>
                         <Heading fontSize='xl' fontWeight='bold' my={4}>
                             Đặc điểm tin đăng
@@ -74,58 +126,60 @@ const DetailPost = () => {
                         <Table>
                             <Tbody>
                                 <Tr>
-                                    <Td>Mã tin</Td>
+                                    <Td width='150px'>Mã tin</Td>
                                     <Td>#{post?.overviewCode}</Td>
                                 </Tr>
                                 <Tr bg='gray.200'>
-                                    <Td>Khu vực</Td>
+                                    <Td width='150px'>Khu vực</Td>
                                     <Td>{post?.overview?.area}</Td>
                                 </Tr>
                                 <Tr>
-                                    <Td>Loại tin rao</Td>
+                                    <Td width='150px'>Loại tin rao</Td>
                                     <Td>{post?.overview?.type}</Td>
                                 </Tr>
                                 <Tr bg='gray.200'>
-                                    <Td>Đối tượng cho thuê</Td>
+                                    <Td width='150px'>Đối tượng cho thuê</Td>
                                     <Td>{post?.overview?.target}</Td>
                                 </Tr>
                                 <Tr>
-                                    <Td>Ngày đăng</Td>
+                                    <Td width='150px'>Ngày đăng</Td>
                                     <Td>{post?.overview?.created}</Td>
                                 </Tr>
                                 <Tr bg='gray.200'>
-                                    <Td>Ngày hết hạn</Td>
+                                    <Td width='150px'>Ngày hết hạn</Td>
                                     <Td>{post?.overview?.expired}</Td>
                                 </Tr>
                             </Tbody>
                         </Table>
                     </Box>
-                    <Box mt={8}>
+
+                    {/* <Box mt={8}>
                         <Heading fontSize='xl' fontWeight='bold' my={4}>
                             Thông tin liên hệ
                         </Heading>
                         <Table>
-                            <Tbody>
-                                <Tr>
-                                    <Td>Liên hệ</Td>
+                            <Tbody display='flex' flexWrap='wrap'>
+                                <Tr flexBasis='50%'>
+                                    <Td width='200px'>Liên hệ</Td>
                                     <Td>{post?.user?.name}</Td>
                                 </Tr>
-                                <Tr bg='gray.200'>
-                                    <Td>Email</Td>
+                                <Tr flexBasis='50%' bg='gray.200'>
+                                    <Td width='200px'>Email</Td>
                                     <Td>{post?.user?.email}</Td>
                                 </Tr>
-                                <Tr >
-                                    <Td>Điện thoại</Td>
+                                <Tr flexBasis='50%'>
+                                    <Td width='200px'>Điện thoại</Td>
                                     <Td>{post?.user?.phone}</Td>
                                 </Tr>
-                                <Tr bg='gray.200'>
-                                    <Td>Zalo</Td>
+                                <Tr bg='gray.200' flexBasis='50%'>
+                                    <Td width='200px'>Zalo</Td>
                                     <Td>{post?.user?.zalo}</Td>
                                 </Tr>
                             </Tbody>
                         </Table>
-                    </Box>
-                    <Box mt={8} h='200px'>
+                    </Box> */}
+
+                    <Box mt={8} h='250px'>
                         <Heading fontSize='xl' fontWeight='bold' my={4}>
                             Bản đồ
                         </Heading>

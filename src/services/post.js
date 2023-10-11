@@ -2,35 +2,41 @@ import { addDoc, collection, doc, getDoc, serverTimestamp, setDoc } from "fireba
 import { dataArea, dataPrice } from "../ultils/data"
 import { db } from "../firebase"
 import generateDate from "../ultils/common/generateDate"
-
-
+import generateCode from "../ultils/common/generateCode"
+import { v4 } from "uuid"
 
 export const createDocPost = async (payload, postId) => {
 
     try {
+        const categoryDoc = await getDoc(doc(db, 'categorys', payload.categoryCode))
+
         let currentPrice = payload.price / 1000000
         let currentArea = payload.area
-        const categoryDoc = await getDoc(doc(db, 'categorys', payload.categoryCode))
+        let attributeId = v4()
+        let overviewId = v4()
+
         const finalPayload = {
             ...payload,
-            labelCode: postId?.match(/\d/g)?.join(''),
-            attributeCode: postId?.match(/\d/g)?.join(''),
-            overviewCode: postId?.match(/\d/g)?.join(''),
+            attributeId,
+            overviewId,
+            labelCode: generateCode(`${categoryDoc?.data().value} ${payload?.address?.split(', ')[1]}`).trim(),
+            provinceCode: generateCode(payload.address.split(',')?.slice(-1)[0]).trim(),
             areaCode: dataArea.find(area => area.max > currentArea && area.min <= currentArea)?.code,
             priceCode: dataPrice.find(area => area.max > currentPrice && area.min <= currentPrice)?.code,
-
         }
+
         const postsRef = doc(db, 'posts', postId)
-        const labelRef = doc(db, 'posts', postId, 'label', postId?.match(/\d/g)?.join(''))
-        const attributeRef = doc(db, 'posts', postId, 'attribute', postId?.match(/\d/g)?.join(''))
-        const overviewRef = doc(db, 'posts', postId, 'overview', postId?.match(/\d/g)?.join(''))
+        const labelRef = doc(db, 'labels', finalPayload.labelCode)
+        const provinceRef = doc(db, 'provinces', finalPayload.provinceCode)
+        const attributeRef = doc(db, 'attributes', finalPayload.attributeId)
+        const overviewRef = doc(db, 'overviews', finalPayload.overviewId)
 
         //add post
         await setDoc(postsRef, { ...finalPayload, createAt: serverTimestamp() })
 
         //add subcollection label
         await setDoc(labelRef, {
-            label: `${categoryDoc?.data().value} ${payload?.address?.split(', ')[1]}`,
+            value: `${categoryDoc?.data().value} ${payload?.address?.split(', ')[1]}`,
             createAt: serverTimestamp()
         })
 
@@ -51,6 +57,13 @@ export const createDocPost = async (payload, postId) => {
             expired: generateDate().expireDay,
             createAt: serverTimestamp()
         })
+
+        //add subcollection province
+        await setDoc(provinceRef, {
+            value: `${payload?.address?.split(', ')[2]}`,
+            createAt: serverTimestamp()
+        })
+
     } catch (error) {
         console.log('Lỗi tạo post', error)
     }

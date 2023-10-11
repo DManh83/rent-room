@@ -51,7 +51,7 @@ const Address = ({ setPayload }) => {
         setPayload(prev => ({
             ...prev,
             address: `${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name},` : ''} ${district ? `${districts?.find(item => item.district_id === district)?.district_name},` : ''} ${province ? provinces?.find(item => item.province_id === province)?.province_name : ''}`,
-            province: province ? provinces?.find(item => item.province_id === province)?.province_name : ''
+            // province: province ? provinces?.find(item => item.province_id === province)?.province_name : ''
         }))
     }, [province, district, ward])
 

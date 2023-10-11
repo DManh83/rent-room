@@ -8,7 +8,7 @@ const generateCode = (value) => {
         .join("")
     let merge = value + 'phongtro'
     let length = merge.length
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
         let index = i === 2 ? Math.floor(merge.length / 2 + length / 2) : Math.floor(length / 2)
         output += merge.charAt(index)
         length = index

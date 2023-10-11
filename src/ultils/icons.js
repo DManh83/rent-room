@@ -6,7 +6,7 @@ import { BiUserPin } from 'react-icons/bi'
 import { AiOutlineLogout } from 'react-icons/ai'
 import { ImBin } from 'react-icons/im'
 import { BsCameraFill, BsChevronRight, BsStopwatch, BsHash } from 'react-icons/bs'
-import { GrNext } from 'react-icons/gr'
+import { GrNext, GrLinkPrevious } from 'react-icons/gr'
 import { HiOutlineLocationMarker, HiLocationMarker } from 'react-icons/hi'
 import { TbReportMoney } from 'react-icons/tb'
 import { RiCrop2Line } from 'react-icons/ri'
@@ -32,6 +32,7 @@ const icons = {
     HiLocationMarker,
     BsStopwatch,
     BsHash,
+    GrLinkPrevious,
 
     ChevronDownIcon,
 
