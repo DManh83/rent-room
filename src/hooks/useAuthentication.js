@@ -76,7 +76,7 @@ export const useAuthentication = () => {
             .then((res) => {
                 const user = res.user
                 const docRef = doc(db, 'users', user.uid)
-                console.log(user)
+                // console.log(user)
                 setDoc(docRef, { email: user.email, name: user.displayName, phone: user.phoneNumber, zalo: user.phoneNumber })
                 dispatchUser({ type: 'LOGIN', payload: user })
             })

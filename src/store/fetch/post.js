@@ -50,10 +50,13 @@ export const fetchPosts = async (dispatch) => {
     }
 };
 
-export const fetchPostsLimit = async (dispatch, param, paramValue) => {
+export const fetchPostsLimit = async (dispatch, param) => {
     try {
         const coll = collection(db, 'posts');
-        const postsLimit = query(coll, where(`${param}`, '==', `${paramValue}`))
+        // const postsLimit = query(coll, where(`${param}`, '==', `${paramValue}`))
+        const postsLimit = query(coll, param.forEach(item => {
+            where(`${item.key}`, '==', `${item.value}`)
+        }))
         const postsLimitDoc = await getDocs(postsLimit)
         // console.log('post limit snapshot: ', postsLimitDoc.docs)
         const allPosts = [];

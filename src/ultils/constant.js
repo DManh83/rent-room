@@ -17,6 +17,7 @@ export const path = {
     DETAIL_POST_TITLE_POSTID: 'chi-tiet/:title/:postId',
     DETAIL: 'chi-tiet',
     DETAIL_ALL: 'chi-tiet/*',
+    SEARCH: 'tim-kiem',
 
     // NOTFOUND: '*',
 

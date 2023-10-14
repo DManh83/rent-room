@@ -3,15 +3,13 @@ import { useLocation } from 'react-router-dom'
 import { SliderCustom } from '../../components'
 import { Box, Flex, Heading, Table, Tbody, Td, Tr, chakra } from '@chakra-ui/react'
 import icons from '../../ultils/icons'
-import { useSelector } from 'react-redux'
-import { usePost } from '../../hooks/useReducerContext'
 
-const { HiLocationMarker, TbReportMoney, RiCrop2Line, MdOutlineHouseSiding, BsStopwatch, BsHash } = icons
+const { HiLocationMarker, TbReportMoney, RiCrop2Line, BsStopwatch, BsHash } = icons
 
 const DetailPost = () => {
     const location = useLocation()
     const { state: post } = location
-    console.log(post)
+    // console.log(post)
 
     return (
         <Flex w='full' gap={4} >

@@ -5,7 +5,7 @@ import { usePost } from '../../hooks/useReducerContext'
 import { fetchPosts, fetchPostsLimit } from '../../store/fetch/post'
 import { useSearchParams } from 'react-router-dom'
 
-const List = () => {
+const List = ({ categoryCode }) => {
     const { posts, dispatchPost } = usePost()
     const [searchParams] = useSearchParams()
 
@@ -14,6 +14,9 @@ const List = () => {
         for (let entry of searchParams.entries()) {
             params.push(entry)
         }
+
+        console.log(params)
+
         let searchParamsObject = {}
         params?.forEach(i => {
             if (Object.keys(searchParamsObject)?.some(item => item === i[0])) {
@@ -22,11 +25,19 @@ const List = () => {
                 searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
             }
         })
+        // const queries = { ...searchParamsObject }
+        // Object.entries(searchParamsObject).forEach(([key, value]) => {
+        //     console.log(`${key} ${value}`)
+        // })
+        // console.log('searchParamsObject', searchParamsObject)
 
-        if (params.length === 0)
-            fetchPosts(dispatchPost)
-        else
-            fetchPostsLimit(dispatchPost, params[0][0], params[0][1])
+        // if (params.length === 0)
+        fetchPosts(dispatchPost)
+        // else
+        // fetchPostsLimit(dispatchPost, params[0][0], params[0][1])
+        // fetchPostsLimit(dispatchPost, searchParamsObject)
+        if (categoryCode) searchParamsObject.categoryCode = categoryCode
+
         console.log('posts: ', posts)
     }, [dispatchPost, searchParams])
 
