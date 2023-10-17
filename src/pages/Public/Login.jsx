@@ -40,6 +40,7 @@ const Login = () => {
     }
     const handleSigninGoogle = () => {
         signInWithGoogle()
+
         navigate(path.HOME)
     }
 

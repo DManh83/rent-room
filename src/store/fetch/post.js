@@ -1,4 +1,4 @@
-import { collection, doc, getCountFromServer, getDoc, getDocs, query, where } from "firebase/firestore";
+import { and, collection, doc, getCountFromServer, getDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
 
 export const fetchPosts = async (dispatch) => {
@@ -50,14 +50,30 @@ export const fetchPosts = async (dispatch) => {
     }
 };
 
-export const fetchPostsLimit = async (dispatch, param) => {
+export const fetchPostsLimit = async (dispatch, params) => {
     try {
         const coll = collection(db, 'posts');
-        // const postsLimit = query(coll, where(`${param}`, '==', `${paramValue}`))
-        const postsLimit = query(coll, param.forEach(item => {
-            where(`${item.key}`, '==', `${item.value}`)
-        }))
+        const postsLimit = query(coll,
+            params?.categoryCode && where('categoryCode', '==', `${params?.categoryCode}`),
+            // params?.provinceCode && where('provinceCode', '==', `${params?.provinceCode}`),
+            // where('priceCode', '==', `${params?.priceCode}`),
+            // where('areaCode', '==', `${params?.areaCode}`),
+            // params?.priceNumber && where('priceNumber', '>=', params?.priceNumber[0]), where('priceNumber', '<=', params?.priceNumber[1]),
+            // params?.areaNumber && where('areaNumber', '>=', params?.areaNumber[0]), where('areaNumber', '<=', params?.areaNumber[1])
+        )
         const postsLimitDoc = await getDocs(postsLimit)
+        // Object.keys(searchParamsObject)?.some(item => {
+        //     if (item ===)
+        // })
+        // const postsLimit = query(coll, Object.entries(params).forEach(([key, value]) => {
+        //     if (key.includes('Code'))
+        //         where(`${key}`, '==', `${value[0]}`)
+        //     else {
+        //         console.log(`${key} ${value[0]} ${value[1]}`)
+        //         where(`${key}`, '>=', `${value[0]}`)
+        //         where(`${key}`, '<=', `${value[0]}`)
+        //     }
+        // }))
         // console.log('post limit snapshot: ', postsLimitDoc.docs)
         const allPosts = [];
 

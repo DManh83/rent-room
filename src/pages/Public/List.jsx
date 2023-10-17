@@ -15,8 +15,6 @@ const List = ({ categoryCode }) => {
             params.push(entry)
         }
 
-        console.log(params)
-
         let searchParamsObject = {}
         params?.forEach(i => {
             if (Object.keys(searchParamsObject)?.some(item => item === i[0])) {
@@ -25,21 +23,16 @@ const List = ({ categoryCode }) => {
                 searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
             }
         })
-        // const queries = { ...searchParamsObject }
-        // Object.entries(searchParamsObject).forEach(([key, value]) => {
-        //     console.log(`${key} ${value}`)
-        // })
-        // console.log('searchParamsObject', searchParamsObject)
-
-        // if (params.length === 0)
-        fetchPosts(dispatchPost)
-        // else
-        // fetchPostsLimit(dispatchPost, params[0][0], params[0][1])
-        // fetchPostsLimit(dispatchPost, searchParamsObject)
         if (categoryCode) searchParamsObject.categoryCode = categoryCode
 
-        console.log('posts: ', posts)
+        if (params.length === 0)
+            fetchPosts(dispatchPost)
+        else {
+            fetchPostsLimit(dispatchPost, searchParamsObject)
+        }
+
     }, [dispatchPost, searchParams])
+    console.log('posts: ', posts)
 
 
     return (

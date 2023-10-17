@@ -10,8 +10,8 @@ export const createDocPost = async (payload) => {
     try {
         const categoryDoc = await getDoc(doc(db, 'categorys', payload.categoryCode))
 
-        let currentPrice = payload.price / 1000000
-        let currentArea = payload.area
+        let currentPrice = payload.priceNumber / 1000000
+        let currentArea = payload.areaNumber / 1
         let attributeId = v4()
         let overviewId = v4()
         let code = v4().replace(/-/g, '').substr(0, 10).match(/\d/g).join('')
@@ -24,6 +24,8 @@ export const createDocPost = async (payload) => {
             provinceCode: generateCode(payload.address.split(',')?.slice(-1)[0]).trim(),
             areaCode: dataArea.find(area => area.max > currentArea && area.min <= currentArea)?.code,
             priceCode: dataPrice.find(area => area.max > currentPrice && area.min <= currentPrice)?.code,
+            areaNumber: currentArea,
+            priceNumber: currentPrice
         }
 
         // const postsRef = doc(db, 'posts', postId)
@@ -43,8 +45,8 @@ export const createDocPost = async (payload) => {
 
         //add subcollection attribute   
         await setDoc(attributeRef, {
-            price: payload.price / 1000000 + ' triệu/tháng',
-            area: payload.area + ' m²',
+            price: currentPrice + ' triệu/tháng',
+            area: currentArea + ' m²',
             hashtag: code,
             published: serverTimestamp(),
             createAt: serverTimestamp()

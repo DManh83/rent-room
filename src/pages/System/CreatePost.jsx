@@ -15,8 +15,8 @@ const CreatePost = () => {
     const [payload, setPayload] = useState({
         categoryCode: '',
         title: '',
-        price: 0,
-        area: 0,
+        priceNumber: 0,
+        areaNumber: 0,
         images: '',
         address: '',
         description: '',
@@ -69,6 +69,8 @@ const CreatePost = () => {
         })
 
     }
+
+    console.log(payload)
 
     return (
         <Flex px={6} direction='column' gap={4}>

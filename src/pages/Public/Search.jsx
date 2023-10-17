@@ -62,7 +62,7 @@ const Search = () => {
     let titleSearch = `${queryTextObj.category
       ? queryTextObj.category
       : 'Cho thuê tất cả'} ${queryTextObj.province
-        ? `tỉnh ${queryTextObj.province}`
+        ? `${queryTextObj.province}`
         : ''} ${queryTextObj.price
           ? `giá ${queryTextObj.price}`
           : ''} ${queryTextObj.area

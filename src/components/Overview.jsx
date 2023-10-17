@@ -59,21 +59,21 @@ const Overview = ({ payload, setPayload }) => {
                 <Flex w='50%' direction='column' gap={2}>
                     <InputForm
                         small='Nhập đầy đủ số, ví dụ 1 triệu thì nhập là 1000000'
-                        type='text'
+                        type='number'
                         id='price'
                         label='Giá cho thuê'
                         unit='đồng'
-                        name='price'
-                        value={payload.price}
+                        name='priceNumber'
+                        value={payload.priceNumber}
                         setValue={setPayload}
                     />
                     <InputForm
-                        type='text'
+                        type='number'
                         id='area'
                         label='Diện tích'
                         unit='m²'
-                        name='area'
-                        value={payload.area}
+                        name='areaNumber'
+                        value={payload.areaNumber}
                         setValue={setPayload}
                     />
                     <InputForm
