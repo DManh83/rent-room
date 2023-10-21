@@ -2,10 +2,10 @@ import { Box, Button, Flex, Heading, chakra } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { Item } from '../../components'
 import { usePost } from '../../hooks/useReducerContext'
-import { fetchPosts, fetchPostsLimit } from '../../store/fetch/post'
+import { fetchPostsLimit } from '../../store/fetch/post'
 import { useSearchParams } from 'react-router-dom'
 
-const List = ({ categoryCode }) => {
+const List = () => {
     const { posts, dispatchPost } = usePost()
     const [searchParams] = useSearchParams()
 
@@ -23,13 +23,7 @@ const List = ({ categoryCode }) => {
                 searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
             }
         })
-        if (categoryCode) searchParamsObject.categoryCode = categoryCode
-
-        if (params.length === 0)
-            fetchPosts(dispatchPost)
-        else {
-            fetchPostsLimit(dispatchPost, searchParamsObject)
-        }
+        fetchPostsLimit(dispatchPost, searchParamsObject)
 
     }, [dispatchPost, searchParams])
     console.log('posts: ', posts)
@@ -49,7 +43,7 @@ const List = ({ categoryCode }) => {
             <Box >
                 {posts && posts.map((post) => {
                     return (
-                        post && post.user && post.id && <Item post={post} key={post.id} />
+                        post && post.userId && post.id && <Item post={post} key={post.id} />
                     )
                 })}
 

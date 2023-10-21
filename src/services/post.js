@@ -5,7 +5,7 @@ import generateDate from "../ultils/common/generateDate"
 import generateCode from "../ultils/common/generateCode"
 import { v4 } from "uuid"
 
-export const createDocPost = async (payload) => {
+export const createDocPost = async (payload, phone) => {
 
     try {
         const categoryDoc = await getDoc(doc(db, 'categorys', payload.categoryCode))
@@ -29,13 +29,24 @@ export const createDocPost = async (payload) => {
         }
 
         // const postsRef = doc(db, 'posts', postId)
+        const userRef = doc(db, 'users', finalPayload.userId)
         const labelRef = doc(db, 'labels', finalPayload.labelCode)
         const provinceRef = doc(db, 'provinces', finalPayload.provinceCode)
         const attributeRef = doc(db, 'attributes', finalPayload.attributeId)
         const overviewRef = doc(db, 'overviews', finalPayload.overviewId)
 
+        const docSnap = await getDoc(userRef)
+        const userData = docSnap.data()
+
         //add post
         await addDoc(collection(db, 'posts'), { ...finalPayload, createAt: serverTimestamp() })
+
+        //add user
+        await setDoc(userRef, {
+            ...userData,
+            phone: phone,
+            zalo: phone
+        })
 
         //add subcollection label
         await setDoc(labelRef, {

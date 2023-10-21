@@ -31,7 +31,7 @@ const ForgotPassword = () => {
         }
     }
     return (
-        <Box>
+        <Box w='full'>
             <Heading textAlign='center' my={12}>
                 Forgot Password
             </Heading>
@@ -62,7 +62,7 @@ const ForgotPassword = () => {
                 </chakra.form>
                 <DividerWithText my={6}>HOẶC</DividerWithText>
                 <Center>
-                    <Button variant='link' onClick={() => { navigate(path.LOGIN) }}>
+                    <Button variant='link' onClick={() => { navigate(`/${path.LOGIN}`) }}>
                         Đăng nhập
                     </Button>
                 </Center>

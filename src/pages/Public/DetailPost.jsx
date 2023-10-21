@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { SliderCustom } from '../../components'
 import { Box, Flex, Heading, Table, Tbody, Td, Tr, chakra } from '@chakra-ui/react'
 import icons from '../../ultils/icons'
+import { usePost } from '../../hooks/useReducerContext'
+import { fetchAllDataWithPost } from '../../store/fetch/post'
 
 const { HiLocationMarker, TbReportMoney, RiCrop2Line, BsStopwatch, BsHash } = icons
 
 const DetailPost = () => {
     const location = useLocation()
-    const { state: post } = location
-    // console.log(post)
+    const { state: postData } = location
+    const { post, dispatchPost } = usePost()
+    useEffect(() => {
+        fetchAllDataWithPost(dispatchPost, postData)
+    }, [dispatchPost, postData])
 
     return (
         <Flex w='full' gap={4} >

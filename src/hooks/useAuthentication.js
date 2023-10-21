@@ -18,6 +18,8 @@ export const useAuthentication = () => {
                     const docSnap = await getDoc(docRef)
                     const userData = docSnap.data()
 
+                    setDoc(docRef, { ...userData, email: user.email, name: user.displayName })
+
                     dispatchUser({ type: 'ISLOGGEDIN', payload: { ...user, ...userData } })
                 } catch (error) {
                     console.error('Lỗi tải thông tin người dùng:', error)

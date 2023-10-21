@@ -7,6 +7,7 @@ import icons from '../../ultils/icons'
 import { useAuth } from '../../hooks/useReducerContext'
 import { v4 } from 'uuid'
 import { createDocPost, createPricesAndAreas } from '../../services'
+import { validate } from '../../ultils/common/validateField'
 
 const { ImBin, BsCameraFill } = icons
 
@@ -27,10 +28,11 @@ const CreatePost = () => {
         furniture: '',
         userId: user.uid
     })
-
+    const [phone, setPhone] = useState(user.phone !== null ? user.phone : '')
     const [imagesPreview, setImagesPreview] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const toast = useToast()
+    const [invalidFields, setInvalidFields] = useState([])
 
     const handleFiles = async (e) => {
         e.stopPropagation()
@@ -60,14 +62,36 @@ const CreatePost = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        createDocPost(payload)
-        toast({
-            description: 'Tạo tin đăng thành công',
-            status: 'success',
-            duration: 9000,
-            isClosable: true,
-        })
-
+        const finalPayload = {
+            ...payload,
+            phone
+        }
+        const result = validate(finalPayload, setInvalidFields)
+        console.log(invalidFields)
+        if (result === 0) {
+            createDocPost(payload, phone)
+            toast({
+                description: 'Tạo tin đăng thành công',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+            })
+            setPayload({
+                categoryCode: '',
+                title: '',
+                priceNumber: 0,
+                areaNumber: 0,
+                images: '',
+                address: '',
+                description: '',
+                target: '',
+                kitchen: '',
+                bathroom: '',
+                parking: '',
+                furniture: '',
+                userId: user.uid
+            })
+        }
     }
 
     console.log(payload)
@@ -79,8 +103,8 @@ const CreatePost = () => {
             </Heading>
             <Flex gap={4}>
                 <Flex py={4} direction='column' gap={4} flex='auto'>
-                    <Address setPayload={setPayload} />
-                    <Overview payload={payload} setPayload={setPayload} />
+                    <Address invalidFields={invalidFields} setInvalidFields={setInvalidFields} setPayload={setPayload} />
+                    <Overview invalidFields={invalidFields} setInvalidFields={setInvalidFields} payload={payload} setPayload={setPayload} phone={phone} setPhone={setPhone} />
                     <Box >
                         <Heading size='lg' py={4}> Hình ảnh </Heading>
                         <chakra.small>Cập nhật hình ảnh rõ ràng sẽ cho thuê nhanh hơn</chakra.small>
@@ -105,7 +129,17 @@ const CreatePost = () => {
                                     size='xl' /> : <BsCameraFill size={50} />}
 
                             </FormLabel>
-                            <Input onChange={handleFiles} hidden type='file' id='file' multiple />
+                            <Input
+                                onChange={handleFiles}
+                                hidden
+                                type='file'
+                                id='file'
+                                multiple
+                                onClick={() => setInvalidFields([])}
+                            />
+                            <chakra.small textColor='red.500' display='block'>
+                                {invalidFields?.some(item => item.name === 'images') && invalidFields?.find(item => item.name === 'images')?.message}
+                            </chakra.small>
                             <Box>
                                 <Heading size='md' py={4}>
                                     Ảnh đã chọn
@@ -136,6 +170,9 @@ const CreatePost = () => {
                         </FormControl>
                     </Box>
                     <Button onClick={handleSubmit} mt={10} bgColor='pink.400'>Tạo mới</Button>
+                    <Box h='200px'>
+
+                    </Box>
                 </Flex>
                 <Flex w='30%' flex='none'>
                     Maps

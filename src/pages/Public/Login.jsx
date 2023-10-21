@@ -36,7 +36,7 @@ const Login = () => {
         mounted.current && setIsSubmitting(false)
     }
     const goRegister = () => {
-        navigate(path.REGISTER)
+        navigate(`/${path.REGISTER}`)
     }
     const handleSigninGoogle = () => {
         signInWithGoogle()

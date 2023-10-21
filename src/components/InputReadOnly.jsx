@@ -1,7 +1,7 @@
 import { FormControl, FormLabel, Input } from '@chakra-ui/react'
 import React from 'react'
 
-const InputReadOnly = ({ label, value }) => {
+const InputReadOnly = ({ label, value, id }) => {
     return (
         <FormControl>
             <FormLabel htmlFor='exactly-address'>
@@ -9,7 +9,7 @@ const InputReadOnly = ({ label, value }) => {
             </FormLabel>
             <Input
                 type='text'
-                id='exactly-address'
+                id={id}
                 readOnly
                 bg='gray.100'
                 // defaultValue='Địa chỉ: '

@@ -1,5 +1,5 @@
-import React from 'react'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom'
 import {
     Home,
     Login,
@@ -14,14 +14,19 @@ import {
     from '../pages/Public'
 import { CreatePost, System, Profile, } from '../pages/System'
 import Notfound from '../pages/Notfound'
-// import RentalRoute from './RentalRoute'
 import { path } from '../ultils/constant'
-import { useAuth } from '../hooks/useReducerContext'
+import { useApp, useAuth } from '../hooks/useReducerContext'
 
 
 
 const AppRouter = () => {
-    const { user, isLoggedIn } = useAuth()
+    const { user } = useAuth()
+    const { dispatchApp } = useApp()
+    useEffect(() => {
+        dispatchApp('GET_PRICES')
+        dispatchApp('GET_AREAS')
+        dispatchApp('GET_PROVINCES')
+    }, [dispatchApp])
 
     return (
 

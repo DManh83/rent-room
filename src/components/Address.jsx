@@ -4,7 +4,7 @@ import SelectOptions from './SelectOptions'
 import { apiGetPublicDistrict, apiGetPublicProvinces, apiGetPublicWard } from '../services'
 import InputReadOnly from './InputReadOnly'
 
-const Address = ({ setPayload }) => {
+const Address = ({ setPayload, invalidFields, setInvalidFields }) => {
 
     const [provinces, setProvinces] = useState([])
     const [districts, setDistricts] = useState([])
@@ -50,7 +50,7 @@ const Address = ({ setPayload }) => {
     useEffect(() => {
         setPayload(prev => ({
             ...prev,
-            address: `${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name},` : ''} ${district ? `${districts?.find(item => item.district_id === district)?.district_name},` : ''} ${province ? provinces?.find(item => item.province_id === province)?.province_name : ''}`,
+            address: `${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name}, ` : ''}${district ? `${districts?.find(item => item.district_id === district)?.district_name}, ` : ''}${province ? provinces?.find(item => item.province_id === province)?.province_name : ''}`
             // province: province ? provinces?.find(item => item.province_id === province)?.province_name : ''
         }))
     }, [province, district, ward])
@@ -66,14 +66,37 @@ const Address = ({ setPayload }) => {
                     alignItems='center'
                     gap={4}
                 >
-                    <SelectOptions type='province' value={province} setValue={setProvince} options={provinces} label='Tỉnh/Thành phố' />
-                    <SelectOptions reset={reset} type='district' value={district} setValue={setDistrict} options={districts} label='Quận/Huyện' />
-                    <SelectOptions reset={reset} type='ward' value={ward} setValue={setWard} options={wards} label='Phường/Xã' />
+                    <SelectOptions invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
+                        type='province'
+                        value={province}
+                        setValue={setProvince}
+                        options={provinces}
+                        label='Tỉnh/Thành phố'
+                    />
+                    <SelectOptions invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
+                        reset={reset}
+                        type='district'
+                        value={district}
+                        setValue={setDistrict}
+                        options={districts} label='Quận/Huyện'
+                    />
+                    <SelectOptions invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
+                        reset={reset}
+                        type='ward'
+                        value={ward}
+                        setValue={setWard}
+                        options={wards}
+                        label='Phường/Xã'
+                    />
                 </Flex>
                 <InputReadOnly
+                    id='exactly-address'
                     label={'Địa chỉ chính xác'}
                     value={
-                        `${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name},` : ''} ${district ? `${districts?.find(item => item.district_id === district)?.district_name},` : ''} ${province ? provinces?.find(item => item.province_id === province)?.province_name : ''}`
+                        `${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name}, ` : ''}${district ? `${districts?.find(item => item.district_id === district)?.district_name}, ` : ''}${province ? provinces?.find(item => item.province_id === province)?.province_name : ''}`
                     }
                 />
             </Flex>

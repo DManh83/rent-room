@@ -3,15 +3,10 @@ import React, { useEffect } from 'react'
 import { ItemSidebar, Province } from '../../components'
 import List from './List'
 import { useApp } from '../../hooks/useReducerContext'
-import { fetchAreas, fetchCategories, fetchPrices } from '../../store/fetch/app'
+// import { fetchAreas, fetchCategories, fetchPrices } from '../../store/fetch/app'
 
 const HomePage = () => {
-    const { categories, prices, areas, dispatchApp } = useApp()
-    useEffect(() => {
-        fetchCategories(dispatchApp)
-        fetchPrices(dispatchApp)
-        fetchAreas(dispatchApp)
-    }, [dispatchApp])
+    const { categories, prices, areas } = useApp()
 
     return (
         <Flex direction='column' gap={3} w='1100px' justify='space-between' alignItems='center'>

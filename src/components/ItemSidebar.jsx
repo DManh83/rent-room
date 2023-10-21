@@ -39,7 +39,7 @@ const ItemSidebar = ({ title, content, isDouble, type }) => {
                 {content?.length > 0 && content.map(item => {
                     return (
                         <Link
-                            to={`${formatVietnameseToString(item.value)}`}
+                            to={`/${formatVietnameseToString(item.value)}?categoryCode=${item.id}`}
                             key={item.id}
                         >
                             <Flex gap={2} align='center' cursor='pointer' _hover={{ textColor: 'orange.500' }} borderBottom='1px' borderColor='gray.200' borderStyle='dashed' paddingBottom='1px'>

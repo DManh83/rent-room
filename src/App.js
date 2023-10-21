@@ -1,4 +1,4 @@
-import { ChakraProvider, ColorModeScript, extendTheme, theme } from "@chakra-ui/react";
+import { Box, ChakraProvider, ColorModeScript, extendTheme, theme } from "@chakra-ui/react";
 import React from "react";
 import { AppRouter } from "./components";
 import { ReducerContextProvider } from "./contexts/ReducerContext";
@@ -19,7 +19,9 @@ function App() {
       <ChakraProvider theme={customTheme}>
         <ColorModeScript initialColorMode={customTheme.config.initialColorMode} />
         <ReducerContextProvider>
-          <AppRouter />
+          <Box overflow='hidden'>
+            <AppRouter />
+          </Box>
         </ReducerContextProvider>
       </ChakraProvider>
     </React.StrictMode>

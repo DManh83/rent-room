@@ -8,13 +8,8 @@ import { fetchAreas, fetchPrices } from '../../store/fetch/app'
 
 
 const SearchDetail = () => {
-    const { prices, areas, dispatchApp } = useApp()
+    const { prices, areas } = useApp()
     const location = useLocation()
-
-    useEffect(() => {
-        fetchAreas(dispatchApp)
-        fetchPrices(dispatchApp)
-    }, [dispatchApp])
 
     return (
         <Flex direction='column' gap={3} w='full'>

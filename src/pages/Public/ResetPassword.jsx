@@ -30,7 +30,7 @@ const ResetPassword = () => {
                 duration: 9000,
                 isClosable: true,
             })
-            navigate(path.LOGIN)
+            navigate(`/${path.LOGIN}`)
         } catch (e) {
             console.log(e.message)
             toast({

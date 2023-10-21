@@ -5,7 +5,8 @@ import { NavLink as Link, useLocation } from 'react-router-dom'
 const Navlink = ({ to, name, ...rest }) => {
     const location = useLocation()
 
-    const isActive = location.pathname === to
+    const isActive = location.pathname + location.search === to
+    // console.log(location.pathname + location.search)
 
     return (
         <Link to={to}>
@@ -13,6 +14,9 @@ const Navlink = ({ to, name, ...rest }) => {
                 as='p'
                 variant={isActive ? 'outline' : 'ghost'}
                 colorScheme={isActive ? 'primary' : 'gray'}
+                overflow='hidden'
+                textOverflow='ellipsis'
+                whiteSpace='nowrap'
                 {...rest}
             >
                 {name}

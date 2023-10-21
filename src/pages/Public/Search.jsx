@@ -89,7 +89,7 @@ const Search = () => {
         <chakra.span onClick={() => handleShowModal(areas, 'area', 'Chọn diện tích')} flex={1} cursor='pointer' >
           <SearchItem leftIcon={<RiCrop2Line />} rightIcon={<BsChevronRight />} text={queries.area} defaultText={'Chọn diện tích'} />
         </chakra.span>
-        <Button flex={1} leftIcon={<FiSearch />} py={2} px={4}
+        <Button flex={1} leftIcon={<FiSearch />} py={2} px={4} overflow='hidden' textOverflow='ellipsis' whiteSpace='nowrap'
           onClick={handleSearch}
         >
           Tìm kiếm

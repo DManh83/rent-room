@@ -5,27 +5,16 @@ import { useLocation } from 'react-router-dom'
 import { formatVietnameseToString } from '../../ultils/common/formatVietnameseToString'
 import { useApp } from '../../hooks/useReducerContext'
 import { Box, Flex, chakra } from '@chakra-ui/react'
-import { fetchAreas, fetchCategories, fetchPrices } from '../../store/fetch/app'
 
 
 const Rental = () => {
-    const { prices, areas, categories, dispatchApp } = useApp()
+    const { prices, areas, categories } = useApp()
     const [categoryCurrent, setCategoryCurrent] = useState({})
-    const [categoryCode, setCategoryCode] = useState('none')
     const location = useLocation()
-    useEffect(() => {
-        fetchAreas(dispatchApp)
-        fetchCategories(dispatchApp)
-        fetchPrices(dispatchApp)
-    }, [dispatchApp])
 
     useEffect(() => {
         const category = categories?.find(item => `/${formatVietnameseToString(item.value)}` === location.pathname)
-        console.log(category)
         setCategoryCurrent(category)
-        if (category) {
-            setCategoryCode(category.code)
-        }
     }, [location])
 
     return (
@@ -37,7 +26,7 @@ const Rental = () => {
             <Province />
             <Flex gap={4} w='full'>
                 <Box w='70%'>
-                    <List categoryCode={categoryCode} />
+                    <List />
                 </Box>
                 <Flex w='30%' direction='column' gap={4} justify='start' align='center'>
                     <ItemSidebar isDouble={true} type='priceCode' content={prices} title='Xem theo giá' />

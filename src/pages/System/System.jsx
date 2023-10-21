@@ -14,6 +14,7 @@ const System = () => {
             w='full'
             direction='column'
             alignItems='center'
+            h='100vh'
         >
             <Flex
                 w='full'
@@ -25,6 +26,7 @@ const System = () => {
             </Flex>
             <Flex
                 w='full'
+                h='100vh'
                 flex='auto'
             >
                 <SideBar />
@@ -32,6 +34,7 @@ const System = () => {
                     flex='auto'
                     shadow='md'
                     p={4}
+                    overflowY='scroll'
                 >
                     <Outlet />
                 </Box>

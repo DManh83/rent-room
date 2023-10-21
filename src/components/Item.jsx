@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Image, Wrap, chakra } from '@chakra-ui/react'
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo } from 'react'
 import avatarDefault from '../assets/avatar-default.jpg'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../ultils/constant'
@@ -10,20 +10,9 @@ const indexs = [0, 1, 2, 3]
 const Item = ({ post }) => {
     const navigate = useNavigate()
 
-    // useEffect(async () => {
-    //     if (post.userId) {
-    //         const userRef = doc(db, 'users', post?.userId)
-    //         const userDoc = await getDoc(userRef)
-    //         console.log(userDoc.data())
-    //     }
-    //     else console.log('userId notfound')
-
-    // }, [])
-
     const handleClick = () => {
         navigate(`/${path.DETAIL}/${formatVietnameseToString(post.title)}/${post.id}`, { state: post })
     }
-    // console.log('post: ', post)
     return (
         <Flex w='full' borderTop='1px' borderTopColor='orange.600' py={4} onClick={handleClick}>
             <Wrap w='40%' spacing='2px' align='center' position='relative' cursor='pointer'>
