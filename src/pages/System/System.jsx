@@ -1,13 +1,20 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Navigate, Outlet } from 'react-router-dom'
 import { Box, Flex } from '@chakra-ui/react'
 import { Navbar } from '../../components'
 import SideBar from './SideBar'
+import { useAuth } from '../../hooks/useReducerContext'
+import { path } from '../../ultils/constant'
 
 const System = () => {
 
-    // const { user } = useAuth()
-    // if (!user) return <Navigate to={`/${path.LOGIN}`} replace={true} />
+    // const { user, isLoggedIn, dispatchUser } = useAuth()
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         user && dispatchUser('ISLOGGEDIN')
+    //     }, 1000)
+    // }, [dispatchUser])
+    // if (!isLoggedIn) return <Navigate to={`/${path.LOGIN}`} replace={true} />
 
     return (
         <Flex

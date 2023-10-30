@@ -31,8 +31,8 @@ const Item = ({ post }) => {
                     </Box>
                 </Flex>
                 <Flex my={2} align='center' justify='space-between' gap={2}>
-                    <chakra.span fontWeight='bold' textColor='green' flex={2} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap' >{post?.attribute?.price}</chakra.span>
-                    <chakra.span flex={1}>{post?.attribute?.area}</chakra.span>
+                    <chakra.span fontWeight='bold' textColor='green' flex={2} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap' >{post?.overview?.price}</chakra.span>
+                    <chakra.span flex={1}>{post?.overview?.acreage}</chakra.span>
                     <chakra.span flex={3} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap' fontSize='sm'>{`${post?.address.split(',')[post?.address.split(',').length - 2]}${post?.address.split(',')[post?.address.split(',').length - 1]}`}</chakra.span>
                 </Flex>
                 <chakra.p textColor='gray.500' w='full' h='100px' textOverflow='ellipsis' overflow='hidden'>

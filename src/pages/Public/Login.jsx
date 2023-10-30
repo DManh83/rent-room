@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Card, DividerWithText } from '../../components'
 import { Box, Button, FormControl, FormLabel, HStack, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import icons from '../../ultils/icons'
 import useMounted from '../../hooks/useMounted'
 import { path } from '../../ultils/constant'
@@ -19,13 +19,16 @@ const Login = () => {
     const navigate = useNavigate()
     const mounted = useMounted()
 
+    // const location = useLocation()
+    // console.log(location)
+
     const handleLogin = (e) => {
         e.preventDefault()
         if (!email || !password) {
             toast({
-                description: 'Credentials not valid.',
+                description: 'Thông tin không hợp lệ.',
                 status: 'error',
-                duration: 9000,
+                duration: 5000,
                 isClosable: true,
             })
             return
@@ -34,14 +37,25 @@ const Login = () => {
         login(email, password)
         navigate(path.HOME)
         mounted.current && setIsSubmitting(false)
+        // toast({
+        //     description: 'Bạn đã đăng nhập thành công.',
+        //     status: 'success',
+        //     duration: 5000,
+        //     isClosable: true,
+        // })
     }
     const goRegister = () => {
         navigate(`/${path.REGISTER}`)
     }
     const handleSigninGoogle = () => {
         signInWithGoogle()
-
         navigate(path.HOME)
+        // toast({
+        //     description: 'Bạn đã đăng nhập thành công.',
+        //     status: 'success',
+        //     duration: 5000,
+        //     isClosable: true,
+        // })
     }
 
     return (

@@ -10,7 +10,6 @@ export const validate = (payload, setInvalidFields) => {
             invalids++
         }
     })
-    console.log(fields)
     fields.forEach(item => {
         switch (item[0]) {
             case 'priceNumber':

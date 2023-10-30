@@ -23,6 +23,8 @@ export const ReducerContextProvider = ({ children }) => {
     const [postData, dispatchPost] = useReducer(postReducer, {
         posts: null,
         post: null,
+        postOfCurrent: null,
+        dataEdit: null,
     })
 
     const [appData, dispatchApp] = useReducer(appReducer, {

@@ -26,14 +26,13 @@ const List = () => {
         fetchPostsLimit(dispatchPost, searchParamsObject)
 
     }, [dispatchPost, searchParams])
-    console.log('posts: ', posts)
+    // console.log('posts: ', posts)
 
 
     return (
         <Box w='full' p={1} shadow='md' rounded='md'>
             <Flex alignItems='center' justifyContent='space-between'>
                 <Heading fontSize='lg' fontWeight='bold' my='1'>Danh sách tin đăng</Heading>
-                <chakra.span fontSize='sm'>Cập nhật: 12:00 13/09/2023</chakra.span>
             </Flex>
             <Flex alignItems='center' gap={2} my={2}>
                 <chakra.span>Sắp xếp:</chakra.span>

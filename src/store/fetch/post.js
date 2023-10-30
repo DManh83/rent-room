@@ -12,21 +12,21 @@ import { db } from "../../firebase";
 //         for (const post of postDocs.docs) {
 //             const postData = post.data();
 //             const userDoc = await getDoc(doc(db, 'users', postData.userId))
-//             const attributeDoc = await getDoc(doc(db, 'attributes', postData.attributeId))
+//             const overviewDoc = await getDoc(doc(db, 'overviews', postData.overviewId))
 
-//             const attributeData = attributeDoc.data()
+//             const overviewData = overviewDoc.data()
 //             const userData = userDoc.data()
 //             const postObj = {
 //                 id: post.id,
 //                 ...postData,
-//                 attribute: attributeData ?? null,
+//                 overview: overviewData ?? null,
 //                 user: userData ?? null,
 //             }
 
 //             allPosts.push(postObj)
 //         }
 
-//         dispatch({ type: 'SET_POSTS', payload: allPosts })
+//         dispatch({ type: 'GET_POSTS', payload: allPosts })
 //     } catch (error) {
 //         console.error('Lỗi truy vấn:', error)
 //     }
@@ -41,20 +41,20 @@ export const fetchPostsLimit = async (dispatch, params) => {
         const postFetchPromises = postDocFilter.map(async (post) => {
             const postData = post.data();
             const userId = postData.userId;
-            const attributeId = postData.attributeId;
+            const overviewId = postData.overviewId;
 
-            const [userDocSnapshot, attributeDocSnapshot] = await Promise.all([
+            const [userDoc, overviewDoc] = await Promise.all([
                 getDoc(doc(db, 'users', userId)),
-                getDoc(doc(db, 'attributes', attributeId)),
+                getDoc(doc(db, 'overviews', overviewId)),
             ]);
 
-            const attributeData = attributeDocSnapshot.exists() ? attributeDocSnapshot.data() : null;
-            const userData = userDocSnapshot.exists() ? userDocSnapshot.data() : null;
+            const overviewData = overviewDoc.exists() ? overviewDoc.data() : null;
+            const userData = userDoc.exists() ? userDoc.data() : null;
 
             return {
                 id: post.id,
                 ...postData,
-                attribute: attributeData,
+                overview: overviewData,
                 user: userData,
             };
         });
@@ -62,7 +62,35 @@ export const fetchPostsLimit = async (dispatch, params) => {
         const allPosts = await Promise.all(postFetchPromises);
 
 
-        dispatch({ type: 'SET_POSTS', payload: allPosts })
+        dispatch({ type: 'GET_POSTS', payload: allPosts })
+    } catch (error) {
+        console.error('Lỗi truy vấn:', error)
+    }
+}
+
+export const fetchPostsLimitUser = async (dispatch, id) => {
+    try {
+        const postDocs = await getDocs(collection(db, 'posts'));
+
+        const allPosts = [];
+        for (const post of postDocs.docs) {
+            const postData = post.data();
+
+            if (postData.userId === id) {
+                const [overviewDoc] = await Promise.all([
+                    getDoc(doc(db, 'overviews', postData.overviewId)),
+                ]);
+                const overviewData = overviewDoc.exists() ? overviewDoc.data() : null;
+                const postUser = {
+                    id: post.id,
+                    ...postData,
+                    overview: overviewData,
+                };
+                allPosts.push(postUser)
+            }
+        };
+
+        dispatch({ type: 'GET_POSTS_USER', payload: allPosts })
     } catch (error) {
         console.error('Lỗi truy vấn:', error)
     }
@@ -72,15 +100,13 @@ export const fetchAllDataWithPost = async (dispatch, post) => {
     try {
         const categoryDocRef = doc(db, 'categorys', post.categoryCode);
         const labelDocRef = doc(db, 'labels', post.labelCode);
-        const overviewDocRef = doc(db, 'overviews', post.overviewId);
         const priceDocRef = doc(db, 'prices', post.priceCode);
         const areaDocRef = doc(db, 'areas', post.areaCode);
         const provinceDocRef = doc(db, 'provinces', post.provinceCode);
 
-        const [categoryDoc, labelDoc, overviewDoc, priceDoc, areaDoc, provinceDoc] = await Promise.all([
+        const [categoryDoc, labelDoc, priceDoc, areaDoc, provinceDoc] = await Promise.all([
             getDoc(categoryDocRef),
             getDoc(labelDocRef),
-            getDoc(overviewDocRef),
             getDoc(priceDocRef),
             getDoc(areaDocRef),
             getDoc(provinceDocRef)
@@ -88,7 +114,6 @@ export const fetchAllDataWithPost = async (dispatch, post) => {
 
         const categoryData = categoryDoc.exists() ? categoryDoc.data() : null;
         const labelData = labelDoc.exists() ? labelDoc.data() : null;
-        const overviewData = overviewDoc.exists() ? overviewDoc.data() : null;
         const priceData = priceDoc.exists() ? priceDoc.data() : null;
         const provinceData = provinceDoc.exists() ? provinceDoc.data() : null;
         const areaData = areaDoc.exists() ? areaDoc.data() : null;
@@ -97,7 +122,6 @@ export const fetchAllDataWithPost = async (dispatch, post) => {
             ...post,
             category: categoryData,
             label: labelData,
-            overview: overviewData,
             priceData: priceData,
             province: provinceData,
             areaData: areaData
@@ -109,6 +133,15 @@ export const fetchAllDataWithPost = async (dispatch, post) => {
         console.error('Lỗi truy vấn:', error)
     }
 }
+
+export const editData = (dataEdit, dispatch) => dispatch({
+    type: 'EDIT_DATA',
+    payload: dataEdit
+})
+
+export const resetDataEdit = (dispatch) => dispatch({
+    type: 'RESET_DATAEDIT',
+})
 
 export const filterPosts = (posts, filterParams) => {
     const { categoryCode, provinceCode, priceCode, areaCode, priceNumber, areaNumber } = filterParams

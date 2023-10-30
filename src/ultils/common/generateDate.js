@@ -9,8 +9,8 @@ const formatDate = (timeObj) => {
 }
 
 const generateDate = () => {
-    let gapExpire = Math.floor(Math.random() * 29) + 1
-
+    // let gapExpire = Math.floor(Math.random() * 29) + 1
+    let gapExpire = 5
     let today = new Date()
     let expireDay = moment(today).add(gapExpire, 'd').toDate()
 

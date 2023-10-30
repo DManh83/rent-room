@@ -8,19 +8,23 @@ import { v4 } from "uuid"
 export const createDocPost = async (payload, phone) => {
 
     try {
-        const categoryDoc = await getDoc(doc(db, 'categorys', payload.categoryCode))
+        const [userDoc, categoryDoc] = await Promise.all([
+            getDoc(doc(db, 'users', payload.userId)),
+            getDoc(doc(db, 'categorys', payload.categoryCode))
+        ])
+        const userData = userDoc.data()
+        const categoryData = categoryDoc.data()
 
         let currentPrice = payload.priceNumber / 1000000
         let currentArea = payload.areaNumber / 1
-        let attributeId = v4()
-        let overviewId = v4()
-        let code = v4().replace(/-/g, '').substr(0, 10).match(/\d/g).join('')
+        let tempId = v4()
+        let code = tempId.replace(/-/g, '').substr(0, 10).match(/\d/g).join('')
 
         const finalPayload = {
             ...payload,
-            attributeId,
-            overviewId,
-            labelCode: generateCode(`${categoryDoc?.data().value} ${payload?.address?.split(', ')[1]}`).trim(),
+            // overviewId: tempId,
+            overviewId: tempId,
+            labelCode: generateCode(`${categoryData.value} ${payload?.address?.split(', ')[1]}`).trim(),
             provinceCode: generateCode(payload.address.split(',')?.slice(-1)[0]).trim(),
             areaCode: dataArea.find(area => area.max > currentArea && area.min <= currentArea)?.code,
             priceCode: dataPrice.find(area => area.max > currentPrice && area.min <= currentPrice)?.code,
@@ -32,41 +36,31 @@ export const createDocPost = async (payload, phone) => {
         const userRef = doc(db, 'users', finalPayload.userId)
         const labelRef = doc(db, 'labels', finalPayload.labelCode)
         const provinceRef = doc(db, 'provinces', finalPayload.provinceCode)
-        const attributeRef = doc(db, 'attributes', finalPayload.attributeId)
+        // const overviewRef = doc(db, 'overviews', finalPayload.overviewId)
         const overviewRef = doc(db, 'overviews', finalPayload.overviewId)
 
-        const docSnap = await getDoc(userRef)
-        const userData = docSnap.data()
-
         //add post
-        await addDoc(collection(db, 'posts'), { ...finalPayload, createAt: serverTimestamp() })
+        const addPostPromise = addDoc(collection(db, 'posts'), { ...finalPayload, createAt: serverTimestamp() })
 
         //add user
-        await setDoc(userRef, {
+        const addUserPromise = setDoc(userRef, {
             ...userData,
             phone: phone,
             zalo: phone
         })
 
         //add subcollection label
-        await setDoc(labelRef, {
-            value: `${categoryDoc?.data().value} ${payload?.address?.split(', ')[1]}`,
-            createAt: serverTimestamp()
-        })
-
-        //add subcollection attribute   
-        await setDoc(attributeRef, {
-            price: currentPrice + ' triệu/tháng',
-            area: currentArea + ' m²',
-            hashtag: code,
-            published: serverTimestamp(),
+        const labelPromise = setDoc(labelRef, {
+            value: `${categoryData.value} ${payload?.address?.split(', ')[1]}`,
             createAt: serverTimestamp()
         })
 
         //add sbcollection overview
-        await setDoc(overviewRef, {
-            area: `${categoryDoc?.data().value} ${payload?.address?.split(', ')[2]}`,
-            type: categoryDoc?.data().value,
+        const overviewPromise = setDoc(overviewRef, {
+            area: `${categoryData.value} ${payload?.address?.split(', ')[2]}`,
+            type: categoryData.value,
+            price: currentPrice + ' triệu/tháng',
+            acreage: currentArea + ' m²',
             code: code,
             target: payload.target,
             created: generateDate().today,
@@ -75,13 +69,93 @@ export const createDocPost = async (payload, phone) => {
         })
 
         //add subcollection province
-        await setDoc(provinceRef, {
+        const provincePromise = setDoc(provinceRef, {
             value: `${payload?.address?.split(', ')[2]}`,
             createAt: serverTimestamp()
         })
 
+        await Promise.all([addPostPromise, addUserPromise, labelPromise, overviewPromise, provincePromise])
+
     } catch (error) {
         console.log('Lỗi tạo post', error)
+    }
+}
+
+export const updateDocPost = async (payload, postId, phone) => {
+
+    try {
+        const postsRef = doc(db, 'posts', postId)
+        const userRef = doc(db, 'users', payload.userId)
+        const [postDoc, userDoc, categoryDoc] = await Promise.all([
+            getDoc(postsRef),
+            getDoc(userRef),
+            getDoc(doc(db, 'categorys', payload.categoryCode))
+        ])
+        const postData = postDoc.data()
+        const userData = userDoc.data()
+        const categoryData = categoryDoc.data()
+
+        let currentPrice = payload.priceNumber / 1000000
+        let currentArea = payload.areaNumber / 1
+        let code = postData.overviewId.replace(/-/g, '').substr(0, 10).match(/\d/g).join('')
+
+        const finalPayload = {
+            ...payload,
+            // overviewId: postData.overviewId,
+            overviewId: postData.overviewId,
+            labelCode: generateCode(`${categoryData.value} ${payload?.address?.split(', ')[1]}`).trim(),
+            provinceCode: generateCode(payload.address.split(',')?.slice(-1)[0]).trim(),
+            areaCode: dataArea.find(area => area.max > currentArea && area.min <= currentArea)?.code,
+            priceCode: dataPrice.find(area => area.max > currentPrice && area.min <= currentPrice)?.code,
+            areaNumber: currentArea,
+            priceNumber: currentPrice
+        }
+        console.log(finalPayload)
+
+        const labelRef = doc(db, 'labels', finalPayload.labelCode)
+        const provinceRef = doc(db, 'provinces', finalPayload.provinceCode)
+        // const overviewRef = doc(db, 'overviews', finalPayload.overviewId)
+        const overviewRef = doc(db, 'overviews', finalPayload.overviewId)
+
+        //add post
+        const setPostsPromise = setDoc(postsRef, { ...finalPayload, createAt: serverTimestamp() })
+
+        //add user
+        const setUserPromise = setDoc(userRef, {
+            ...userData,
+            phone: phone,
+            zalo: phone
+        })
+
+        //add subcollection label
+        const labelPromise = setDoc(labelRef, {
+            value: `${categoryData.value} ${payload?.address?.split(', ')[1]}`,
+            createAt: serverTimestamp()
+        })
+
+        //add sbcollection overview
+        const overviewPromise = setDoc(overviewRef, {
+            area: `${categoryData.value} ${payload?.address?.split(', ')[2]}`,
+            price: currentPrice + ' triệu/tháng',
+            acreage: currentArea + ' m²',
+            type: categoryData.value,
+            code: code,
+            target: payload.target,
+            created: generateDate().today,
+            expired: generateDate().expireDay,
+            createAt: serverTimestamp()
+        })
+
+        //add subcollection province
+        const provincePromise = setDoc(provinceRef, {
+            value: `${payload?.address?.split(', ')[2]}`,
+            createAt: serverTimestamp()
+        })
+
+        await Promise.all([setPostsPromise, setUserPromise, labelPromise, overviewPromise, provincePromise])
+
+    } catch (error) {
+        console.log('Lỗi update post', error)
     }
 }
 

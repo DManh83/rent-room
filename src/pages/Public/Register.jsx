@@ -28,15 +28,20 @@ const Register = () => {
             toast({
                 description: 'Thông tin không hợp lệ',
                 status: 'error',
-                duration: 9000,
+                duration: 5000,
                 isClosable: true,
             })
             return
         }
         setIsSubmitting(true)
         register(email, password, name, phone)
-
         navigate(path.HOME)
+        // toast({
+        //     description: 'Bạn đã đăng ký thành công.',
+        //     status: 'success',
+        //     duration: 5000,
+        //     isClosable: true,
+        // })
         mounted.current && setIsSubmitting(false)
     }
     const goLogin = () => {
@@ -45,6 +50,12 @@ const Register = () => {
     const handleSigninGoogle = async () => {
         signInWithGoogle()
         navigate(path.HOME)
+        // toast({
+        //     description: 'Bạn đã đăng nhập thành công.',
+        //     status: 'success',
+        //     duration: 5000,
+        //     isClosable: true,
+        // })
     }
 
     return (

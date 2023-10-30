@@ -44,13 +44,14 @@ export const useAuthentication = () => {
                     phone,
                     zalo: phone,
                 })
+
                 dispatchUser({ type: 'LOGIN', payload: user })
             })
             .catch((error) => {
                 toast({
                     description: error.message === 'Firebase: Error (auth/invalid-email).' ? 'Email không đúng' : error.message === 'Firebase: Password should be at least 6 characters (auth/weak-password).' ? 'Mật khẩu phải có 6 ký tự' : 'Tài khoản đã tồn tại',
                     status: 'error',
-                    duration: 9000,
+                    duration: 5000,
                     isClosable: true
                 })
             })
@@ -66,7 +67,7 @@ export const useAuthentication = () => {
                 toast({
                     description: error.message,
                     status: 'error',
-                    duration: 9000,
+                    duration: 5000,
                     isClosable: true
                 })
             })
@@ -83,7 +84,7 @@ export const useAuthentication = () => {
                 toast({
                     description: error.message,
                     status: 'error',
-                    duration: 9000,
+                    duration: 5000,
                     isClosable: true
                 })
             })
@@ -101,7 +102,12 @@ export const useAuthentication = () => {
     const logout = () => {
         signOut(auth)
             .then((res) => {
-                console.log('Successfully Logout')
+                toast({
+                    description: 'Bạn đã đăng xuất',
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                })
                 dispatchUser({ type: 'LOGOUT' })
             })
             .catch((error) => {

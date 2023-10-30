@@ -1,20 +1,49 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { SliderCustom } from '../../components'
-import { Box, Flex, Heading, Table, Tbody, Td, Tr, chakra } from '@chakra-ui/react'
+import { Map, SliderCustom } from '../../components'
+import { Box, Flex, Heading, Table, Tbody, Td, Tr, chakra, layout } from '@chakra-ui/react'
 import icons from '../../ultils/icons'
 import { usePost } from '../../hooks/useReducerContext'
 import { fetchAllDataWithPost } from '../../store/fetch/post'
+import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
+import 'moment/locale/vi'
+import moment from 'moment'
+import generateDate from '../../ultils/common/generateDate'
+
 
 const { HiLocationMarker, TbReportMoney, RiCrop2Line, BsStopwatch, BsHash } = icons
+
 
 const DetailPost = () => {
     const location = useLocation()
     const { state: postData } = location
     const { post, dispatchPost } = usePost()
+    const [coords, setCoords] = useState({})
+    // const [datetime, setDatetime] = useState()
+
     useEffect(() => {
         fetchAllDataWithPost(dispatchPost, postData)
     }, [dispatchPost, postData])
+    useEffect(() => {
+        // navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
+        //     setCoords({ lat: latitude, lng: longitude })
+        // })
+        const getCoords = async () => {
+            try {
+                const results = await geocodeByAddress(post?.address)
+                const latLng = await getLatLng(results[0])
+                setCoords(latLng)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        post && getCoords()
+    }, [post])
+
+    // console.log(moment.unix(postData?.createAt?.seconds).fromNow())
+    // console.log(postData?.createAt.toDate())
+
 
     return (
         <Flex w='full' gap={4} >
@@ -44,19 +73,19 @@ const DetailPost = () => {
                         <Flex alignItems='center' justifyContent='space-between' borderBottom='1px' height='50px' borderColor='gray.300'>
                             <chakra.span display='flex' alignItems='center' gap={1}>
                                 <TbReportMoney />
-                                <chakra.span fontWeight='semibold' fontSize='18px' lineHeight='28px' textColor='green.400'>{post?.attribute?.price}</chakra.span>
+                                <chakra.span fontWeight='semibold' fontSize='18px' lineHeight='28px' textColor='green.400'>{post?.overview?.price}</chakra.span>
                             </chakra.span>
                             <chakra.span display='flex' alignItems='center' gap={1}>
                                 <RiCrop2Line />
-                                <chakra.span>{post?.attribute?.area}</chakra.span>
+                                <chakra.span>{post?.overview?.acreage}</chakra.span>
                             </chakra.span>
                             <chakra.span display='flex' alignItems='center' gap={1}>
                                 <BsStopwatch />
-                                <chakra.span>{post?.attribute?.published?.seconds}</chakra.span>
+                                <chakra.span>{moment.unix(postData?.createAt?.seconds).fromNow()}</chakra.span>
                             </chakra.span>
                             <chakra.span display='flex' alignItems='center' gap={1}>
                                 <BsHash />
-                                <chakra.span>{post?.attribute?.hashtag}</chakra.span>
+                                <chakra.span>{post?.overview?.code}</chakra.span>
                             </chakra.span>
                         </Flex>
                     </Flex>
@@ -84,7 +113,7 @@ const DetailPost = () => {
                                 </Tr>
                                 <Tr flexBasis='50%'>
                                     <Td width='150px'>Giá cho thuê</Td>
-                                    <Td>{post?.attribute?.price}</Td>
+                                    <Td>{post?.overview?.price}</Td>
                                 </Tr>
                                 <Tr flexBasis='50%'>
                                     <Td width='150px'>Email</Td>
@@ -92,7 +121,7 @@ const DetailPost = () => {
                                 </Tr>
                                 <Tr flexBasis='50%'>
                                     <Td width='150px'>Diện tích</Td>
-                                    <Td>{post?.attribute?.area}</Td>
+                                    <Td>{post?.overview?.acreage}</Td>
                                 </Tr>
                                 <Tr flexBasis='50%'>
                                     <Td width='150px'>Điện thoại</Td>
@@ -156,11 +185,12 @@ const DetailPost = () => {
                         </Table>
                     </Box>
 
-                    <Box mt={8} h='250px'>
+                    {post && <Box mt={8}>
                         <Heading fontSize='xl' fontWeight='bold' my={4}>
                             Bản đồ
                         </Heading>
-                    </Box>
+                        <Map address={post?.address} coords={coords} />
+                    </Box>}
                 </Box>
             </Box>
             <Box w='30%'>

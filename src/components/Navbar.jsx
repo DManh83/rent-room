@@ -15,7 +15,6 @@ const Navbar = () => {
             borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
         // mb={4}
         >
-
             <HStack py={2} justifyContent='space-between' maxW='1100px' mx='auto'>
                 <Navlink to={`/`} name={'Trang chủ'} />
 

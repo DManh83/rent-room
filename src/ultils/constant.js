@@ -23,6 +23,7 @@ export const path = {
 
     SYSTEM: '/he-thong',
     CREATE_POST: 'tao-tin-dang',
+    MANAGE_POST: 'quan-ly-tin-dang',
 
 }
 

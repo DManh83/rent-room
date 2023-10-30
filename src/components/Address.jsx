@@ -3,15 +3,17 @@ import React, { memo, useEffect, useState } from 'react'
 import SelectOptions from './SelectOptions'
 import { apiGetPublicDistrict, apiGetPublicProvinces, apiGetPublicWard } from '../services'
 import InputReadOnly from './InputReadOnly'
+import { usePost } from '../hooks/useReducerContext'
 
 const Address = ({ setPayload, invalidFields, setInvalidFields }) => {
 
+    const { dataEdit } = usePost()
     const [provinces, setProvinces] = useState([])
     const [districts, setDistricts] = useState([])
     const [wards, setWards] = useState([])
-    const [province, setProvince] = useState()
-    const [district, setDistrict] = useState()
-    const [ward, setWard] = useState()
+    const [province, setProvince] = useState('')
+    const [district, setDistrict] = useState('')
+    const [ward, setWard] = useState('')
     const [reset, setReset] = useState()
 
     useEffect(() => {
@@ -46,6 +48,30 @@ const Address = ({ setPayload, invalidFields, setInvalidFields }) => {
         !district ? setReset(true) : setReset(false)
         !district && setWards([])
     }, [district])
+
+    useEffect(() => {
+        if (dataEdit) {
+            let addressArr = dataEdit?.address?.split(',')
+            let foundProvince = provinces?.length > 0 && provinces?.find(item => item.province_name === addressArr[addressArr.length - 1]?.trim())
+            setProvince(foundProvince ? foundProvince.province_id : '')
+        }
+    }, [provinces, dataEdit])
+
+    useEffect(() => {
+        if (dataEdit) {
+            let addressArr = dataEdit?.address?.split(',')
+            let foundDistrict = districts?.length > 0 && districts?.find(item => item.district_name === addressArr[addressArr.length - 2]?.trim())
+            setDistrict(foundDistrict ? foundDistrict.district_id : '')
+        }
+    }, [districts, dataEdit])
+
+    useEffect(() => {
+        if (dataEdit) {
+            let addressArr = dataEdit?.address?.split(',')
+            let foundWard = wards?.length > 0 && wards?.find(item => item.ward_name === addressArr[addressArr.length - 3]?.trim())
+            setWard(foundWard ? foundWard.ward_id : '')
+        }
+    }, [wards, dataEdit])
 
     useEffect(() => {
         setPayload(prev => ({

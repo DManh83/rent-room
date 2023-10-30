@@ -1,38 +1,53 @@
-import { Box, Button, Flex, FormControl, FormLabel, Heading, Image, Input, Spinner, chakra, useToast } from '@chakra-ui/react'
+import { AspectRatio, Box, Button, Flex, FormControl, FormLabel, Heading, Image, Input, Spinner, chakra, useToast } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { Address, Overview } from '../../components'
 import { storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import icons from '../../ultils/icons'
-import { useAuth } from '../../hooks/useReducerContext'
+import { useAuth, usePost } from '../../hooks/useReducerContext'
 import { v4 } from 'uuid'
-import { createDocPost, createPricesAndAreas } from '../../services'
+import { createDocPost, createPricesAndAreas, updateDocPost } from '../../services'
 import { validate } from '../../ultils/common/validateField'
 
 const { ImBin, BsCameraFill } = icons
 
-const CreatePost = () => {
+const CreatePost = ({ isEdit, setIsEdit }) => {
     const { user } = useAuth()
-    const [payload, setPayload] = useState({
-        categoryCode: '',
-        title: '',
-        priceNumber: 0,
-        areaNumber: 0,
-        images: '',
-        address: '',
-        description: '',
-        target: '',
-        kitchen: '',
-        bathroom: '',
-        parking: '',
-        furniture: '',
-        userId: user.uid
+    const { dataEdit } = usePost()
+
+    const [payload, setPayload] = useState(() => {
+        const initData = {
+            categoryCode: dataEdit?.categoryCode || '',
+            title: dataEdit?.title || '',
+            priceNumber: dataEdit?.priceNumber * 1000000 || 0,
+            areaNumber: dataEdit?.areaNumber || 0,
+            images: dataEdit?.images || '',
+            // videos: '',
+            address: dataEdit?.address || '',
+            description: dataEdit?.description || '',
+            target: dataEdit?.target || '',
+            kitchen: dataEdit?.kitchen || '',
+            bathroom: dataEdit?.bathroom || '',
+            parking: dataEdit?.parking || '',
+            furniture: dataEdit?.furniture || '',
+            userId: user.uid
+        }
+        return initData
     })
     const [phone, setPhone] = useState(user.phone !== null ? user.phone : '')
     const [imagesPreview, setImagesPreview] = useState([])
+    const [postId, setPostId] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const toast = useToast()
     const [invalidFields, setInvalidFields] = useState([])
+
+    useEffect(() => {
+        if (dataEdit) {
+            dataEdit?.images && setImagesPreview(dataEdit?.images)
+            setPostId(dataEdit?.id)
+            // payload.postId = dataEdit?.id
+        }
+    }, [dataEdit])
 
     const handleFiles = async (e) => {
         e.stopPropagation()
@@ -59,7 +74,6 @@ const CreatePost = () => {
             images: prev.images?.filter(item => item !== image)
         }))
     }
-
     const handleSubmit = (e) => {
         e.preventDefault()
         const finalPayload = {
@@ -67,39 +81,57 @@ const CreatePost = () => {
             phone
         }
         const result = validate(finalPayload, setInvalidFields)
-        console.log(invalidFields)
         if (result === 0) {
-            createDocPost(payload, phone)
-            toast({
-                description: 'Tạo tin đăng thành công',
-                status: 'success',
-                duration: 9000,
-                isClosable: true,
-            })
-            setPayload({
-                categoryCode: '',
-                title: '',
-                priceNumber: 0,
-                areaNumber: 0,
-                images: '',
-                address: '',
-                description: '',
-                target: '',
-                kitchen: '',
-                bathroom: '',
-                parking: '',
-                furniture: '',
-                userId: user.uid
-            })
+            if (dataEdit && isEdit) {
+                updateDocPost(payload, postId, phone)
+                setIsEdit(false)
+                toast({
+                    description: 'Cập nhật tin đăng thành công',
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                })
+                resetPayload()
+
+            } else {
+                createDocPost(payload, phone)
+                toast({
+                    description: 'Tạo tin đăng thành công',
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                })
+                resetPayload()
+
+            }
         }
     }
 
-    console.log(payload)
+    const resetPayload = () => {
+        setPayload({
+            categoryCode: '',
+            title: '',
+            priceNumber: 0,
+            areaNumber: 0,
+            images: '',
+            // videos: '',
+            address: '',
+            description: '',
+            target: '',
+            kitchen: '',
+            bathroom: '',
+            parking: '',
+            furniture: '',
+            userId: user.uid
+        })
+    }
+
+    // console.log(payload)
 
     return (
         <Flex px={6} direction='column' gap={4}>
             <Heading borderBottom='1px' borderColor='gray.200' py={4} fontWeight='medium' size='2xl'>
-                Đăng tin mới
+                {isEdit ? 'Chỉnh sửa tin đăng' : 'Đăng tin mới'}
             </Heading>
             <Flex gap={4}>
                 <Flex py={4} direction='column' gap={4} flex='auto'>
@@ -119,7 +151,7 @@ const CreatePost = () => {
                                 rounded='lg'
                                 h='200px'
                                 my={4}
-                                htmlFor='file'
+                                htmlFor='image'
                             >
                                 {isLoading ? <Spinner
                                     thickness='4px'
@@ -133,13 +165,10 @@ const CreatePost = () => {
                                 onChange={handleFiles}
                                 hidden
                                 type='file'
-                                id='file'
+                                id='image'
                                 multiple
-                                onClick={() => setInvalidFields([])}
                             />
-                            <chakra.small textColor='red.500' display='block'>
-                                {invalidFields?.some(item => item.name === 'images') && invalidFields?.find(item => item.name === 'images')?.message}
-                            </chakra.small>
+
                             <Box>
                                 <Heading size='md' py={4}>
                                     Ảnh đã chọn
@@ -169,7 +198,8 @@ const CreatePost = () => {
                             </Box>
                         </FormControl>
                     </Box>
-                    <Button onClick={handleSubmit} mt={10} bgColor='pink.400'>Tạo mới</Button>
+
+                    <Button onClick={handleSubmit} mt={10} bgColor='pink.400'>{isEdit ? 'Cập nhật' : 'Tạo mới'}</Button>
                     <Box h='200px'>
 
                     </Box>

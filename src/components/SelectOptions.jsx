@@ -44,9 +44,9 @@ const SelectOptions = ({ label, options, value, setValue, type, reset, name, inv
                     )
                 })}
             </Select>
-            <chakra.small textColor='red.500'>
+            {invalidFields && <chakra.small textColor='red.500'>
                 {handldErrorText()}
-            </chakra.small>
+            </chakra.small>}
         </FormControl>
     )
 }
