@@ -5,49 +5,91 @@ import { storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import icons from '../../ultils/icons'
 import { useAuth, usePost } from '../../hooks/useReducerContext'
-import { v4 } from 'uuid'
 import { createDocPost, createPricesAndAreas, updateDocPost } from '../../services'
 import { validate } from '../../ultils/common/validateField'
+import { fetchPostsLimitUser } from '../../store/fetch/post'
 
 const { ImBin, BsCameraFill } = icons
 
 const CreatePost = ({ isEdit, setIsEdit }) => {
     const { user } = useAuth()
-    const { dataEdit } = usePost()
+    const { dataEdit, dispatchPost } = usePost()
 
-    const [payload, setPayload] = useState(() => {
-        const initData = {
-            categoryCode: dataEdit?.categoryCode || '',
-            title: dataEdit?.title || '',
-            priceNumber: dataEdit?.priceNumber * 1000000 || 0,
-            areaNumber: dataEdit?.areaNumber || 0,
-            images: dataEdit?.images || '',
-            // videos: '',
-            address: dataEdit?.address || '',
-            description: dataEdit?.description || '',
-            target: dataEdit?.target || '',
-            kitchen: dataEdit?.kitchen || '',
-            bathroom: dataEdit?.bathroom || '',
-            parking: dataEdit?.parking || '',
-            furniture: dataEdit?.furniture || '',
-            userId: user.uid
-        }
-        return initData
-    })
-    const [phone, setPhone] = useState(user.phone !== null ? user.phone : '')
+    const [payload, setPayload] = useState(
+        isEdit
+            ? {
+                categoryCode: dataEdit?.categoryCode,
+                title: dataEdit?.title,
+                priceNumber: dataEdit?.priceNumber * 1000000,
+                areaNumber: dataEdit?.areaNumber,
+                images: dataEdit?.images,
+                // videos: '',
+                address: dataEdit?.address,
+                description: dataEdit?.description,
+                target: dataEdit?.target,
+                kitchen: dataEdit?.kitchen,
+                bathroom: dataEdit?.bathroom,
+                parking: dataEdit?.parking,
+                furniture: dataEdit?.furniture,
+                userId: user.uid
+            }
+            : {
+                categoryCode: '',
+                title: '',
+                priceNumber: 0,
+                areaNumber: 0,
+                images: '',
+                // videos: '',
+                address: '',
+                description: '',
+                target: '',
+                kitchen: '',
+                bathroom: '',
+                parking: '',
+                furniture: '',
+                userId: user.uid
+            }
+    )
+    const [phone, setPhone] = useState(user.phone ? user.phone : '')
+    const [name, setName] = useState(user.name ? user.name : '')
     const [imagesPreview, setImagesPreview] = useState([])
     const [postId, setPostId] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const toast = useToast()
     const [invalidFields, setInvalidFields] = useState([])
+    const [province, setProvince] = useState('')
+    const [district, setDistrict] = useState('')
+    const [ward, setWard] = useState('')
 
     useEffect(() => {
-        if (dataEdit) {
+        if (isEdit && dataEdit) {
             dataEdit?.images && setImagesPreview(dataEdit?.images)
             setPostId(dataEdit?.id)
             // payload.postId = dataEdit?.id
         }
-    }, [dataEdit])
+        else {
+            setPayload({
+                categoryCode: '',
+                title: '',
+                priceNumber: 0,
+                areaNumber: 0,
+                images: '',
+                // videos: '',
+                address: '',
+                description: '',
+                target: '',
+                kitchen: '',
+                bathroom: '',
+                parking: '',
+                furniture: '',
+                userId: user.uid
+            })
+            setImagesPreview([])
+            setProvince('')
+            setDistrict('')
+            setWard('')
+        }
+    }, [dataEdit, isEdit])
 
     const handleFiles = async (e) => {
         e.stopPropagation()
@@ -78,12 +120,13 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
         e.preventDefault()
         const finalPayload = {
             ...payload,
+            name,
             phone
         }
         const result = validate(finalPayload, setInvalidFields)
         if (result === 0) {
             if (dataEdit && isEdit) {
-                updateDocPost(payload, postId, phone)
+                updateDocPost(payload, postId, name, phone)
                 setIsEdit(false)
                 toast({
                     description: 'Cập nhật tin đăng thành công',
@@ -94,7 +137,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
                 resetPayload()
 
             } else {
-                createDocPost(payload, phone)
+                createDocPost(payload, name, phone)
                 toast({
                     description: 'Tạo tin đăng thành công',
                     status: 'success',
@@ -105,6 +148,8 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
 
             }
         }
+        fetchPostsLimitUser(dispatchPost, user.uid)
+
     }
 
     const resetPayload = () => {
@@ -124,6 +169,11 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
             furniture: '',
             userId: user.uid
         })
+        setImagesPreview([])
+        setProvince('')
+        setDistrict('')
+        setWard('')
+        // setInvalidFields([])
     }
 
     // console.log(payload)
@@ -135,8 +185,8 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
             </Heading>
             <Flex gap={4}>
                 <Flex py={4} direction='column' gap={4} flex='auto'>
-                    <Address invalidFields={invalidFields} setInvalidFields={setInvalidFields} setPayload={setPayload} />
-                    <Overview invalidFields={invalidFields} setInvalidFields={setInvalidFields} payload={payload} setPayload={setPayload} phone={phone} setPhone={setPhone} />
+                    <Address isEdit={isEdit} invalidFields={invalidFields} setInvalidFields={setInvalidFields} setPayload={setPayload} province={province} setProvince={setProvince} district={district} setDistrict={setDistrict} ward={ward} setWard={setWard} />
+                    <Overview invalidFields={invalidFields} setInvalidFields={setInvalidFields} payload={payload} setPayload={setPayload} phone={phone} setPhone={setPhone} name={name} setName={setName} />
                     <Box >
                         <Heading size='lg' py={4}> Hình ảnh </Heading>
                         <chakra.small>Cập nhật hình ảnh rõ ràng sẽ cho thuê nhanh hơn</chakra.small>
@@ -149,9 +199,10 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
                                 border={2}
                                 borderStyle='dashed'
                                 rounded='lg'
-                                h='200px'
+                                h='100px'
                                 my={4}
                                 htmlFor='image'
+                                w='30%'
                             >
                                 {isLoading ? <Spinner
                                     thickness='4px'
@@ -176,10 +227,10 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
                                 <Flex gap={4} alignItems='center'>
                                     {imagesPreview?.map(item => {
                                         return (
-                                            <Box key={item} w='30%' h='30%' position='relative'>
+                                            <Box key={item} w='20%' h='20%' position='relative'>
                                                 <Button
                                                     title='Xóa'
-                                                    variant='ghost'
+                                                    // variant='ghost'
                                                     position='absolute'
                                                     right={0} rounded='full' p={2} _hover={{
                                                         textColor: 'red.400'
@@ -199,7 +250,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
                         </FormControl>
                     </Box>
 
-                    <Button onClick={handleSubmit} mt={10} bgColor='pink.400'>{isEdit ? 'Cập nhật' : 'Tạo mới'}</Button>
+                    <Button onClick={handleSubmit} mt={10} bgColor='pink.400'>{isEdit ? 'Cập nhật' : 'Lưu'}</Button>
                     <Box h='200px'>
 
                     </Box>

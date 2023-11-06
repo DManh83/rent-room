@@ -4,7 +4,7 @@ import { auth, db } from '../firebase'
 import { doc, setDoc, getDoc } from 'firebase/firestore'
 import { useToast } from '@chakra-ui/react'
 import { useAuth } from './useReducerContext'
-import { GoogleAuthProvider, confirmPasswordReset, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect, signOut, updateProfile, onAuthStateChanged } from 'firebase/auth'
+import { GoogleAuthProvider, confirmPasswordReset, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect, signOut, updateProfile, onAuthStateChanged, signInWithPopup } from 'firebase/auth'
 
 export const useAuthentication = () => {
     const toast = useToast()
@@ -75,7 +75,7 @@ export const useAuthentication = () => {
 
     const signInWithGoogle = () => {
         const provider = new GoogleAuthProvider()
-        signInWithRedirect(auth, provider)
+        signInWithPopup(auth, provider)
             .then((res) => {
                 const user = res.user
                 dispatchUser({ type: 'LOGIN', payload: user })

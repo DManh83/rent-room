@@ -60,7 +60,7 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
 
         handleSubmit(e, {
             [`${name}Number`]: arrMinMax,
-            [name]: `Từ ${convert100toTarget(sliderValue[0])} - ${convert100toTarget(sliderValue[1])} ${name === 'price' ? 'triệu' : 'm²'}`
+            [name]: `${sliderValue[0] === sliderValue[1] ? `Trên ${convert100toTarget(sliderValue[0])}` : `Từ ${convert100toTarget(sliderValue[0])} - ${convert100toTarget(sliderValue[1])}`} ${name === 'price' ? 'triệu' : 'm²'}`
         }, {
             [`${name}Arr`]: sliderValue
         })
@@ -176,7 +176,7 @@ const Modal = ({ setIsShowModal, content, name, handleSubmit, queries, arrMinMax
                         w='full' bg='yellow.300' fontWeight='medium' roundedBottomLeft='md' roundedBottomRight='md'
                         onClick={handleBeforeSubmit}
                     >
-                        ÁP DỤNG
+                        Chọn
                     </Button>
                 }
             </Box >

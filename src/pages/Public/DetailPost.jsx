@@ -61,7 +61,9 @@ const DetailPost = () => {
                                 fontWeight='medium'
                                 _hover={{
                                     textColor: 'orange.400'
-                                }}>
+                                }}
+                                cursor='pointer'
+                            >
                                 {post?.label?.value}
                             </chakra.span>
                         </Flex>

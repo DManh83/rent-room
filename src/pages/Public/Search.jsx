@@ -57,16 +57,15 @@ const Search = () => {
     queryCodes.forEach(item => { queryCodesObj[item[0]] = item[1] })
     // console.log(queryCodesObj)
     const queryText = Object.entries(queries).filter(item => !item[0].includes('Code') || !item[0].includes('Number'))
+
     let queryTextObj = {}
+
     queryText.forEach(item => { queryTextObj[item[0]] = item[1] })
-    let titleSearch = `${queryTextObj.category
-      ? queryTextObj.category
-      : 'Cho thuê tất cả'} ${queryTextObj.province
-        ? `${queryTextObj.province}`
-        : ''} ${queryTextObj.price
-          ? `giá ${queryTextObj.price}`
-          : ''} ${queryTextObj.area
-            ? `diện tích ${queryTextObj.area}` : ''} `
+
+    let titleSearch = `${queryTextObj.category ? queryTextObj.category : 'Cho thuê tất cả'} 
+                        ${queryTextObj.province ? `${queryTextObj.province.toLowerCase()}` : ''} 
+                        ${queryTextObj.price ? `giá ${queryTextObj.price.toLowerCase()}` : ''} 
+                        ${queryTextObj.area ? `diện tích ${queryTextObj.area.toLowerCase()}` : ''} `
     navigate({
       pathname: path.SEARCH,
       search: createSearchParams(queryCodesObj).toString(),

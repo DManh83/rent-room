@@ -5,6 +5,7 @@ import { editData, fetchPostsLimitUser } from '../../store/fetch/post'
 import moment from 'moment'
 import 'moment/locale/vi'
 import { UpdatePost } from '../../components'
+import { setHiddenPost } from '../../services'
 
 const formatDate = 'DD-MM-YYYY'
 
@@ -12,6 +13,7 @@ const ManagePost = () => {
     const { user } = useAuth()
     const [isEdit, setIsEdit] = useState(false)
     const { postOfCurrent, dataEdit, dispatchPost } = usePost()
+
     useEffect(() => {
         fetchPostsLimitUser(dispatchPost, user.uid)
     }, [dispatchPost])
@@ -21,6 +23,16 @@ const ManagePost = () => {
     }, [dataEdit])
 
     const checkStatus = (datetime) => moment(datetime, formatDate).isAfter(new Date().toDateString())
+
+    const handleEditPost = (item) => {
+        editData(item, dispatchPost)
+        setIsEdit(true)
+    }
+
+    const handleHiddenPost = async (id, hidden) => {
+        setHiddenPost(id, hidden)
+        fetchPostsLimitUser(dispatchPost, user.uid)
+    };
 
     return (
         <Flex direction='column' gap={6} >
@@ -48,7 +60,7 @@ const ManagePost = () => {
                 <Tbody>
                     {!postOfCurrent
                         ? <Tr>
-                            <Td>dfhajhfjafk</Td>
+                            <Td>Bạn chưa có tin đăng nào.</Td>
                         </Tr>
                         : postOfCurrent?.map(item => {
                             return (
@@ -66,17 +78,21 @@ const ManagePost = () => {
                                     <Td border='1px' textAlign='center' p={2}>{checkStatus(item?.overview?.expired?.split(' ')[3]) ? 'Đang hoạt động' : 'Đã hết hạn'}</Td>
                                     <Td border='1px' textAlign='center' p={2}>
                                         <Button bg='green.500'
-                                            onClick={() => {
-                                                editData(item, dispatchPost)
-                                                setIsEdit(true)
-                                            }}
+                                            onClick={() => handleEditPost(item)}
                                         >
                                             Sửa
                                         </Button>
+
                                         <Button bg='red.500'
 
                                         >
                                             Xóa
+                                        </Button>
+
+                                        <Button
+                                            onClick={() => handleHiddenPost(item.id, item.hidden)}
+                                        >
+                                            {!item.hidden ? 'Hiện' : 'Ẩn'}
                                         </Button>
                                     </Td>
                                 </Tr>

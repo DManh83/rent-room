@@ -1,10 +1,8 @@
 import { Box, Flex, FormControl, FormLabel, Heading, Input, Textarea, chakra } from '@chakra-ui/react'
-import React from 'react'
+import React, { memo } from 'react'
 import SelectOptions from './SelectOptions'
-// import optionsCategory from '../ultils/optionsCategory'
 import InputForm from './InputForm'
-import { useApp, useAuth } from '../hooks/useReducerContext'
-import InputReadOnly from './InputReadOnly'
+import { useApp } from '../hooks/useReducerContext'
 
 const targets = [
     { id: 'Tất cả', value: 'Tất cả' },
@@ -24,10 +22,8 @@ const optionParking = [
     { id: 'Không', value: 'Không' }
 ]
 
-const Overview = ({ payload, setPayload, invalidFields, setInvalidFields, phone, setPhone }) => {
-    const { user } = useAuth()
+const Overview = ({ payload, setPayload, invalidFields, setInvalidFields, phone, setPhone, name, setName }) => {
     const { categories } = useApp()
-    // console.log(categories)
     return (
         <Box>
             <Heading size='lg' py={4}>
@@ -142,26 +138,20 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields, phone,
                         setInvalidFields={setInvalidFields}
                     />
 
-                    <InputReadOnly
-                        label='Thông tin liên hệ'
-                        value={user?.displayName}
-                        id='name'
-                    />
-                    {/* <InputForm
-                        type='text'
-                        id='phone'
-                        label='Số điện thoại'
-                        name='phone'
-                        value={phone}
-                        setValue={setPhone}
-                        invalidFields={invalidFields}
-                        setInvalidFields={setInvalidFields}
-                    /> */}
-
-                    {/* <FormControl>
+                    <FormControl>
                         <FormLabel htmlFor='name'>Thông tin liên hệ</FormLabel>
-                        <Input type='text' id='name' defaultValue={user?.displayName} />
-                    </FormControl> */}
+                        <Input
+                            type='text'
+                            id='name'
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            // defaultValue={user?.phone || ''}
+                            onFocus={() => setInvalidFields([])}
+                        />
+                        <chakra.small textColor='red.500' display='block'>
+                            {invalidFields?.some(item => item.name === 'name') && invalidFields?.find(item => item.name === 'name')?.message}
+                        </chakra.small>
+                    </FormControl>
                     <FormControl>
                         <FormLabel htmlFor='phone'>Số điện thoại</FormLabel>
                         <Input
@@ -187,4 +177,4 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields, phone,
     )
 }
 
-export default Overview
+export default memo(Overview)

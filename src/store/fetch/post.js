@@ -1,37 +1,6 @@
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 
-
-// export const fetchPosts = async (dispatch) => {
-//     try {
-//         const batch = db.batch();
-//         const postDocs = await getDocs(collection(db, 'posts'));
-
-//         const allPosts = [];
-
-//         for (const post of postDocs.docs) {
-//             const postData = post.data();
-//             const userDoc = await getDoc(doc(db, 'users', postData.userId))
-//             const overviewDoc = await getDoc(doc(db, 'overviews', postData.overviewId))
-
-//             const overviewData = overviewDoc.data()
-//             const userData = userDoc.data()
-//             const postObj = {
-//                 id: post.id,
-//                 ...postData,
-//                 overview: overviewData ?? null,
-//                 user: userData ?? null,
-//             }
-
-//             allPosts.push(postObj)
-//         }
-
-//         dispatch({ type: 'GET_POSTS', payload: allPosts })
-//     } catch (error) {
-//         console.error('Lỗi truy vấn:', error)
-//     }
-// };
-
 export const fetchPostsLimit = async (dispatch, params) => {
     try {
         const postDocs = await getDocs(collection(db, 'posts'));

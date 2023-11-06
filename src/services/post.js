@@ -1,11 +1,11 @@
-import { addDoc, collection, doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore"
+import { addDoc, collection, doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore"
 import { dataArea, dataPrice } from "../ultils/data"
 import { db } from "../firebase"
 import generateDate from "../ultils/common/generateDate"
 import generateCode from "../ultils/common/generateCode"
 import { v4 } from "uuid"
 
-export const createDocPost = async (payload, phone) => {
+export const createDocPost = async (payload, name, phone) => {
 
     try {
         const [userDoc, categoryDoc] = await Promise.all([
@@ -45,7 +45,8 @@ export const createDocPost = async (payload, phone) => {
         //add user
         const addUserPromise = setDoc(userRef, {
             ...userData,
-            phone: phone,
+            name,
+            phone,
             zalo: phone
         })
 
@@ -77,11 +78,11 @@ export const createDocPost = async (payload, phone) => {
         await Promise.all([addPostPromise, addUserPromise, labelPromise, overviewPromise, provincePromise])
 
     } catch (error) {
-        console.log('Lỗi tạo post', error)
+        console.log('Lỗi tạo post: ', error)
     }
 }
 
-export const updateDocPost = async (payload, postId, phone) => {
+export const updateDocPost = async (payload, postId, name, phone) => {
 
     try {
         const postsRef = doc(db, 'posts', postId)
@@ -123,7 +124,8 @@ export const updateDocPost = async (payload, postId, phone) => {
         //add user
         const setUserPromise = setDoc(userRef, {
             ...userData,
-            phone: phone,
+            name,
+            phone,
             zalo: phone
         })
 
@@ -155,7 +157,16 @@ export const updateDocPost = async (payload, postId, phone) => {
         await Promise.all([setPostsPromise, setUserPromise, labelPromise, overviewPromise, provincePromise])
 
     } catch (error) {
-        console.log('Lỗi update post', error)
+        console.log('Lỗi update post: ', error)
+    }
+}
+
+export const setHiddenPost = async (postId, hidden) => {
+    try {
+        const postsRef = doc(db, 'posts', postId)
+        await updateDoc(postsRef, { hidden: !hidden })
+    } catch (error) {
+        console.log('Lỗi set hiddent post: ', error)
     }
 }
 

@@ -4,7 +4,6 @@ import { List } from './index'
 import { useLocation } from 'react-router-dom'
 import { useApp } from '../../hooks/useReducerContext'
 import { Box, Flex, chakra } from '@chakra-ui/react'
-import { fetchAreas, fetchPrices } from '../../store/fetch/app'
 
 
 const SearchDetail = () => {
@@ -15,7 +14,7 @@ const SearchDetail = () => {
         <Flex direction='column' gap={3} w='full'>
             <Box>
                 <chakra.h1 fontSize='28px' fontWeight='bold'>{location?.state?.titleSearch || 'Kết quả tìm kiếm'}</chakra.h1>
-                <chakra.p fontSize='16px' lineHeight='24px' textColor='gray.700'>{`${location.state?.titleSearch || ''} phòng mới xây, chính chủ gần chợ, trường học, siêu thị, cửa hàng tiện lợi, khu an ninh.`}</chakra.p>
+                <chakra.p fontSize='16px' lineHeight='24px' textColor='gray.700'>{`${location.state?.titleSearch || ''} - Kênh đăng tin cho thuê phòng: giá rẻ, chính chủ, đầy đủ tiện nghi với nhiều mức giá, diện tích khác nhau`}</chakra.p>
             </Box>
             <Province />
             <Flex gap={4} w='full'>

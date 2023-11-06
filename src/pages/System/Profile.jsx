@@ -7,10 +7,8 @@ const Profile = () => {
     return (
         <Box>
             <Heading>
-                Profile
-                <Badge colorScheme='green' fontSize='lg' mx={4}>
-                    Protected Page
-                </Badge>
+                Thông tin cá nhân
+
             </Heading>
             <Container maxW='container.lg' overflowX='auto' py={4}>
                 <chakra.pre p={4}>
