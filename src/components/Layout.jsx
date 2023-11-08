@@ -9,9 +9,6 @@ const Layout = (props) => {
         <Flex direction='column' justifyContent='center' >
             <Header />
             <Navbar />
-            <Flex w='full' justifyContent='center' alignItems='center' >
-                <Search />
-            </Flex>
             <Container maxW='1100px'>{props.children}</Container>
         </Flex>
     )

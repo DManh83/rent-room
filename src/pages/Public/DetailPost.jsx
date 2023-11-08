@@ -5,11 +5,9 @@ import { Box, Flex, Heading, Table, Tbody, Td, Tr, chakra, layout } from '@chakr
 import icons from '../../ultils/icons'
 import { usePost } from '../../hooks/useReducerContext'
 import { fetchAllDataWithPost } from '../../store/fetch/post'
-import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
 import 'moment/locale/vi'
 import moment from 'moment'
-import generateDate from '../../ultils/common/generateDate'
-
+import axios from 'axios'
 
 const { HiLocationMarker, TbReportMoney, RiCrop2Line, BsStopwatch, BsHash } = icons
 
@@ -18,36 +16,41 @@ const DetailPost = () => {
     const location = useLocation()
     const { state: postData } = location
     const { post, dispatchPost } = usePost()
-    const [coords, setCoords] = useState({})
-    // const [datetime, setDatetime] = useState()
+    const [coords, setCoords] = useState(null)
 
     useEffect(() => {
-        fetchAllDataWithPost(dispatchPost, postData)
-    }, [dispatchPost, postData])
+        postData && fetchAllDataWithPost(dispatchPost, postData)
+    }, [postData])
+
     useEffect(() => {
-        // navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
-        //     setCoords({ lat: latitude, lng: longitude })
-        // })
-        const getCoords = async () => {
+        const getResults = async () => {
             try {
-                const results = await geocodeByAddress(post?.address)
-                const latLng = await getLatLng(results[0])
-                setCoords(latLng)
+                const response = await axios.get(
+                    `https://maps.googleapis.com/maps/api/geocode/json?address=${postData?.address}&key=${process.env.REACT_APP_MAP_API}`
+                );
+
+                if (response.data.status === 'OK' && response.data.results.length > 0) {
+                    const location = response.data.results[0].geometry.location;
+                    setCoords({
+                        lat: location.lat,
+                        lng: location.lng,
+                    });
+                } else {
+                    setCoords(null);
+                    alert('Không tìm thấy địa chỉ');
+                }
             } catch (error) {
-                console.log(error)
+                console.error('Lỗi khi gọi API Geocoding:', error);
             }
         }
 
-        post && getCoords()
-    }, [post])
+        postData && getResults()
 
-    // console.log(moment.unix(postData?.createAt?.seconds).fromNow())
-    // console.log(postData?.createAt.toDate())
-
+    }, [postData])
 
     return (
         <Flex w='full' gap={4} >
-            <Box w='70%'>
+            <Box w='75%'>
                 <SliderCustom images={post?.images} />
                 <Box rounded='md' shadow='md' p={4}>
                     <Flex direction='column' gap={2} >
@@ -67,7 +70,7 @@ const DetailPost = () => {
                                 {post?.label?.value}
                             </chakra.span>
                         </Flex>
-                        <Flex alignItems='center' gap={2}>
+                        <Flex alignItems='center' gap={1}>
                             <HiLocationMarker color='blue' />
                             <chakra.span>Địa chỉ:</chakra.span>
                             <chakra.span>{post?.address}</chakra.span>
@@ -195,7 +198,7 @@ const DetailPost = () => {
                     </Box>}
                 </Box>
             </Box>
-            <Box w='30%'>
+            <Box w='25%'>
                 SideBar
             </Box>
         </Flex>

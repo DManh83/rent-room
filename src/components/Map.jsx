@@ -1,18 +1,19 @@
-import { Box, Flex } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import React, { memo } from 'react'
 import GoogleMapReact from 'google-map-react'
 import { HiLocationMarker } from 'react-icons/hi'
 
-const Position = ({ icon }) => <Flex>{icon}</Flex>
+const Position = ({ icon }) => <Box position='absolute'>{icon}</Box>
 
 const Map = ({ coords, address }) => {
+
     return (
         <Box h='300px' w='full' position='relative'>
-            <Box position='absolute' top={0} bg='white' shadow='md' p={2} fontSize='sm' rounded='md'>{address}</Box>
+            <Box position='absolute' top='8px' left='8px' zIndex={50} maxW='300px' bg='white' shadow='md' p={2} fontSize='sm' rounded='md'>{address}</Box>
             <GoogleMapReact
                 bootstrapURLKeys={{ key: process.env.REACT_APP_MAP_API }}
                 defaultCenter={coords}
-                defaultZoom={11}
+                defaultZoom={15}
                 center={coords}
             >
                 <Position

@@ -78,7 +78,7 @@ const Register = () => {
                                 required
                             />
                         </FormControl>
-                        <FormControl className='name'>
+                        <FormControl className='phone'>
                             <FormLabel>PHONE</FormLabel>
                             <Input
                                 name='phone'

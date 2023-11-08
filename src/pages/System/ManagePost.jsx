@@ -5,18 +5,25 @@ import { editData, fetchPostsLimitUser } from '../../store/fetch/post'
 import moment from 'moment'
 import 'moment/locale/vi'
 import { UpdatePost } from '../../components'
-import { setHiddenPost } from '../../services'
+import { deletePost, setHiddenPost } from '../../services'
 
 const formatDate = 'DD-MM-YYYY'
 
 const ManagePost = () => {
     const { user } = useAuth()
     const [isEdit, setIsEdit] = useState(false)
+    const [updateData, setUpdateDate] = useState(false)
+    const [posts, setPosts] = useState([])
     const { postOfCurrent, dataEdit, dispatchPost } = usePost()
 
     useEffect(() => {
-        fetchPostsLimitUser(dispatchPost, user.uid)
-    }, [dispatchPost])
+        !dataEdit && fetchPostsLimitUser(dispatchPost, user.uid)
+    }, [dataEdit, updateData])
+
+    useEffect(() => {
+        setPosts(postOfCurrent)
+    }, [postOfCurrent])
+
 
     useEffect(() => {
         !dataEdit && setIsEdit(false)
@@ -32,16 +39,36 @@ const ManagePost = () => {
     const handleHiddenPost = async (id, hidden) => {
         setHiddenPost(id, hidden)
         fetchPostsLimitUser(dispatchPost, user.uid)
-    };
+    }
+
+    const handleDeletePost = (postId) => {
+        deletePost(postId)
+        setUpdateDate(prev => !prev)
+    }
+
+    const handleFilterByStatus = (statusCode) => {
+        if (statusCode === 1) {
+            const activePost = postOfCurrent?.filter(item => checkStatus(item?.overview?.expired?.split(' ')[3]))
+            setPosts(activePost)
+        } else if (statusCode === 2) {
+            const expiredPost = postOfCurrent?.filter(item => !checkStatus(item?.overview?.expired?.split(' ')[3]))
+            setPosts(expiredPost)
+        } else setPosts(postOfCurrent)
+    }
 
     return (
-        <Flex direction='column' gap={6} >
-            <Flex align='center' justify='space-between' py={4} borderBottom='1px' borderColor='gray.200'>
-                <Heading fontWeight='medium' size='2xl'>
+        <Flex direction='column'>
+            <Flex align='center' justify='space-between' py={4} >
+                <Heading py={4} fontWeight='medium' size='2xl'>
                     Quản lý tin đăng
                 </Heading>
-                <Select outline='none' border='1px' p={2} borderColor='gray.100' rounded='md' w='20%'>
+                <Select
+                    outline='none' border='1px' p={2} borderColor='gray.100' rounded='md' w='20%'
+                    onChange={e => handleFilterByStatus(+e.target.value)}
+                >
                     <option value=''>Lọc theo trạng thái</option>
+                    <option value='1'>Đang hoạt động</option>
+                    <option value='2'>Đã hết hạn</option>
                 </Select>
             </Flex>
             <Table w='full'>
@@ -58,11 +85,11 @@ const ManagePost = () => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {!postOfCurrent
+                    {!posts
                         ? <Tr>
                             <Td>Bạn chưa có tin đăng nào.</Td>
                         </Tr>
-                        : postOfCurrent?.map(item => {
+                        : posts?.map(item => {
                             return (
                                 <Tr key={item.id}>
                                     <Td border='1px' textAlign='center' p={2}>#{item?.overview?.code}</Td>
@@ -84,7 +111,7 @@ const ManagePost = () => {
                                         </Button>
 
                                         <Button bg='red.500'
-
+                                            onClick={() => handleDeletePost(item.id)}
                                         >
                                             Xóa
                                         </Button>

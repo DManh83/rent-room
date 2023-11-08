@@ -8,7 +8,7 @@ const postReducer = (state, action) => {
         case 'GET_POST':
             return { ...state, post: action.payload }
         case 'EDIT_DATA':
-            return { ...state, dataEdit: action.payload }
+            return { ...state, dataEdit: action.payload || null }
         case 'RESET_DATAEDIT':
             return { ...state, dataEdit: null }
         default:

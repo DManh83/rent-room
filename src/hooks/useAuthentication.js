@@ -18,7 +18,7 @@ export const useAuthentication = () => {
                     const docSnap = await getDoc(docRef)
                     const userData = docSnap.data()
 
-                    setDoc(docRef, { ...userData, email: user.email, name: user.displayName })
+                    setDoc(docRef, { ...userData, email: user.email })
 
                     dispatchUser({ type: 'ISLOGGEDIN', payload: { ...user, ...userData } })
                 } catch (error) {

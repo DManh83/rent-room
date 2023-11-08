@@ -7,7 +7,7 @@ import icons from '../../ultils/icons'
 import { useAuth, usePost } from '../../hooks/useReducerContext'
 import { createDocPost, createPricesAndAreas, updateDocPost } from '../../services'
 import { validate } from '../../ultils/common/validateField'
-import { fetchPostsLimitUser } from '../../store/fetch/post'
+import { fetchPostsLimitUser, resetDataEdit } from '../../store/fetch/post'
 
 const { ImBin, BsCameraFill } = icons
 
@@ -15,41 +15,25 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
     const { user } = useAuth()
     const { dataEdit, dispatchPost } = usePost()
 
-    const [payload, setPayload] = useState(
-        isEdit
-            ? {
-                categoryCode: dataEdit?.categoryCode,
-                title: dataEdit?.title,
-                priceNumber: dataEdit?.priceNumber * 1000000,
-                areaNumber: dataEdit?.areaNumber,
-                images: dataEdit?.images,
-                // videos: '',
-                address: dataEdit?.address,
-                description: dataEdit?.description,
-                target: dataEdit?.target,
-                kitchen: dataEdit?.kitchen,
-                bathroom: dataEdit?.bathroom,
-                parking: dataEdit?.parking,
-                furniture: dataEdit?.furniture,
-                userId: user.uid
-            }
-            : {
-                categoryCode: '',
-                title: '',
-                priceNumber: 0,
-                areaNumber: 0,
-                images: '',
-                // videos: '',
-                address: '',
-                description: '',
-                target: '',
-                kitchen: '',
-                bathroom: '',
-                parking: '',
-                furniture: '',
-                userId: user.uid
-            }
-    )
+    const [payload, setPayload] = useState(() => {
+        const initData = {
+            categoryCode: dataEdit?.categoryCode || '',
+            title: dataEdit?.title || '',
+            priceNumber: dataEdit?.priceNumber * 1000000 || 0,
+            areaNumber: dataEdit?.areaNumber || 0,
+            images: dataEdit?.images || '',
+            address: dataEdit?.address || '',
+            description: dataEdit?.description || '',
+            target: dataEdit?.target || '',
+            kitchen: dataEdit?.kitchen || '',
+            bathroom: dataEdit?.bathroom || '',
+            parking: dataEdit?.parking || '',
+            furniture: dataEdit?.furniture || '',
+            userId: user.uid
+        }
+        return initData
+    })
+
     const [phone, setPhone] = useState(user.phone ? user.phone : '')
     const [name, setName] = useState(user.name ? user.name : '')
     const [imagesPreview, setImagesPreview] = useState([])
@@ -60,14 +44,17 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
     const [province, setProvince] = useState('')
     const [district, setDistrict] = useState('')
     const [ward, setWard] = useState('')
+    const [detailAddress, setDetailAddress] = useState('')
 
     useEffect(() => {
-        if (isEdit && dataEdit) {
+        if (dataEdit) {
             dataEdit?.images && setImagesPreview(dataEdit?.images)
             setPostId(dataEdit?.id)
-            // payload.postId = dataEdit?.id
         }
-        else {
+    }, [dataEdit])
+
+    useEffect(() => {
+        if (!isEdit) {
             setPayload({
                 categoryCode: '',
                 title: '',
@@ -88,8 +75,10 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
             setProvince('')
             setDistrict('')
             setWard('')
+            setDetailAddress('')
         }
-    }, [dataEdit, isEdit])
+    }, [isEdit])
+
 
     const handleFiles = async (e) => {
         e.stopPropagation()
@@ -128,6 +117,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
             if (dataEdit && isEdit) {
                 updateDocPost(payload, postId, name, phone)
                 setIsEdit(false)
+                resetDataEdit(dispatchPost)
                 toast({
                     description: 'Cập nhật tin đăng thành công',
                     status: 'success',
@@ -148,8 +138,6 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
 
             }
         }
-        fetchPostsLimitUser(dispatchPost, user.uid)
-
     }
 
     const resetPayload = () => {
@@ -173,6 +161,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
         setProvince('')
         setDistrict('')
         setWard('')
+        setDetailAddress('')
         // setInvalidFields([])
     }
 
@@ -185,7 +174,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
             </Heading>
             <Flex gap={4}>
                 <Flex py={4} direction='column' gap={4} flex='auto'>
-                    <Address isEdit={isEdit} invalidFields={invalidFields} setInvalidFields={setInvalidFields} setPayload={setPayload} province={province} setProvince={setProvince} district={district} setDistrict={setDistrict} ward={ward} setWard={setWard} />
+                    <Address isEdit={isEdit} invalidFields={invalidFields} setInvalidFields={setInvalidFields} setPayload={setPayload} detailAddress={detailAddress} setDetailAddress={setDetailAddress} province={province} setProvince={setProvince} district={district} setDistrict={setDistrict} ward={ward} setWard={setWard} />
                     <Overview invalidFields={invalidFields} setInvalidFields={setInvalidFields} payload={payload} setPayload={setPayload} phone={phone} setPhone={setPhone} name={name} setName={setName} />
                     <Box >
                         <Heading size='lg' py={4}> Hình ảnh </Heading>

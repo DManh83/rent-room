@@ -1,11 +1,11 @@
-import { Box, Flex, Heading } from '@chakra-ui/react'
+import { Box, Flex, FormControl, FormLabel, Heading, Input } from '@chakra-ui/react'
 import React, { memo, useEffect, useState } from 'react'
 import SelectOptions from './SelectOptions'
 import { apiGetPublicDistrict, apiGetPublicProvinces, apiGetPublicWard } from '../services'
 import InputReadOnly from './InputReadOnly'
 import { usePost } from '../hooks/useReducerContext'
 
-const Address = ({ isEdit, setPayload, invalidFields, setInvalidFields, province, setProvince, district, setDistrict, ward, setWard }) => {
+const Address = ({ isEdit, setPayload, invalidFields, setInvalidFields, province, setProvince, district, setDistrict, ward, setWard, detailAddress, setDetailAddress }) => {
 
     const { dataEdit } = usePost()
     const [provinces, setProvinces] = useState([])
@@ -74,10 +74,10 @@ const Address = ({ isEdit, setPayload, invalidFields, setInvalidFields, province
     useEffect(() => {
         setPayload(prev => ({
             ...prev,
-            address: `${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name}, ` : ''}${district ? `${districts?.find(item => item.district_id === district)?.district_name}, ` : ''}${province ? provinces?.find(item => item.province_id === province)?.province_name : ''}`
+            address: `${detailAddress ? `${detailAddress}, ` : ''}${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name}, ` : ''}${district ? `${districts?.find(item => item.district_id === district)?.district_name}, ` : ''}${province ? provinces?.find(item => item.province_id === province)?.province_name : ''}`
             // province: province ? provinces?.find(item => item.province_id === province)?.province_name : ''
         }))
-    }, [province, district, ward])
+    }, [province, district, ward, detailAddress])
 
     // console.log({ province, district })
     return (
@@ -106,6 +106,12 @@ const Address = ({ isEdit, setPayload, invalidFields, setInvalidFields, province
                         setValue={setDistrict}
                         options={districts} label='Quận/Huyện'
                     />
+                </Flex>
+
+                <Flex
+                    alignItems='center'
+                    gap={4}
+                >
                     <SelectOptions invalidFields={invalidFields}
                         setInvalidFields={setInvalidFields}
                         reset={reset}
@@ -115,12 +121,22 @@ const Address = ({ isEdit, setPayload, invalidFields, setInvalidFields, province
                         options={wards}
                         label='Phường/Xã'
                     />
+                    <FormControl className='detailAddress'>
+                        <FormLabel>Đường/Phố, số nhà</FormLabel>
+                        <Input
+                            name='detailAddress'
+                            value={detailAddress}
+                            onChange={(e) => setDetailAddress(e.target.value)}
+                            type='detailAddress'
+                            autoComplete='detailAddress'
+                            required />
+                    </FormControl>
                 </Flex>
                 <InputReadOnly
                     id='exactly-address'
                     label={'Địa chỉ chính xác'}
                     value={
-                        `${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name}, ` : ''}${district ? `${districts?.find(item => item.district_id === district)?.district_name}, ` : ''}${province ? provinces?.find(item => item.province_id === province)?.province_name : ''}`
+                        `${detailAddress ? `${detailAddress}, ` : ''}${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name}, ` : ''}${district ? `${districts?.find(item => item.district_id === district)?.district_name}, ` : ''}${province ? provinces?.find(item => item.province_id === province)?.province_name : ''}`
                     }
                 />
             </Flex>

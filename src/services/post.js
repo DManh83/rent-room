@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore"
 import { dataArea, dataPrice } from "../ultils/data"
 import { db } from "../firebase"
 import generateDate from "../ultils/common/generateDate"
@@ -15,6 +15,7 @@ export const createDocPost = async (payload, name, phone) => {
         const userData = userDoc.data()
         const categoryData = categoryDoc.data()
 
+        let addressArr = payload?.address?.split(', ')
         let currentPrice = payload.priceNumber / 1000000
         let currentArea = payload.areaNumber / 1
         let tempId = v4()
@@ -24,8 +25,8 @@ export const createDocPost = async (payload, name, phone) => {
             ...payload,
             // overviewId: tempId,
             overviewId: tempId,
-            labelCode: generateCode(`${categoryData.value} ${payload?.address?.split(', ')[1]}`).trim(),
-            provinceCode: generateCode(payload.address.split(',')?.slice(-1)[0]).trim(),
+            labelCode: generateCode(`${categoryData.value} ${addressArr[addressArr.length - 2]}`).trim(),
+            provinceCode: generateCode(addressArr?.slice(-1)[0]).trim(),
             areaCode: dataArea.find(area => area.max > currentArea && area.min <= currentArea)?.code,
             priceCode: dataPrice.find(area => area.max > currentPrice && area.min <= currentPrice)?.code,
             areaNumber: currentArea,
@@ -52,13 +53,13 @@ export const createDocPost = async (payload, name, phone) => {
 
         //add subcollection label
         const labelPromise = setDoc(labelRef, {
-            value: `${categoryData.value} ${payload?.address?.split(', ')[1]}`,
+            value: `${categoryData.value} ${addressArr[addressArr.length - 2]}`,
             createAt: serverTimestamp()
         })
 
         //add sbcollection overview
         const overviewPromise = setDoc(overviewRef, {
-            area: `${categoryData.value} ${payload?.address?.split(', ')[2]}`,
+            area: `${categoryData.value} ${addressArr[addressArr.length - 1]}`,
             type: categoryData.value,
             price: currentPrice + ' triệu/tháng',
             acreage: currentArea + ' m²',
@@ -71,7 +72,7 @@ export const createDocPost = async (payload, name, phone) => {
 
         //add subcollection province
         const provincePromise = setDoc(provinceRef, {
-            value: `${payload?.address?.split(', ')[2]}`,
+            value: `${addressArr[addressArr.length - 1]}`,
             createAt: serverTimestamp()
         })
 
@@ -87,74 +88,68 @@ export const updateDocPost = async (payload, postId, name, phone) => {
     try {
         const postsRef = doc(db, 'posts', postId)
         const userRef = doc(db, 'users', payload.userId)
-        const [postDoc, userDoc, categoryDoc] = await Promise.all([
+
+        const [postDoc, categoryDoc] = await Promise.all([
             getDoc(postsRef),
-            getDoc(userRef),
-            getDoc(doc(db, 'categorys', payload.categoryCode))
+            getDoc(doc(db, 'categorys', payload.categoryCode)),
         ])
         const postData = postDoc.data()
-        const userData = userDoc.data()
         const categoryData = categoryDoc.data()
 
+        let addressArr = payload?.address?.split(', ')
         let currentPrice = payload.priceNumber / 1000000
         let currentArea = payload.areaNumber / 1
         let code = postData.overviewId.replace(/-/g, '').substr(0, 10).match(/\d/g).join('')
 
         const finalPayload = {
             ...payload,
-            // overviewId: postData.overviewId,
             overviewId: postData.overviewId,
-            labelCode: generateCode(`${categoryData.value} ${payload?.address?.split(', ')[1]}`).trim(),
-            provinceCode: generateCode(payload.address.split(',')?.slice(-1)[0]).trim(),
+            labelCode: generateCode(`${categoryData.value} ${addressArr[addressArr.length - 2]}`).trim(),
+            provinceCode: generateCode(addressArr?.slice(-1)[0]).trim(),
             areaCode: dataArea.find(area => area.max > currentArea && area.min <= currentArea)?.code,
             priceCode: dataPrice.find(area => area.max > currentPrice && area.min <= currentPrice)?.code,
             areaNumber: currentArea,
             priceNumber: currentPrice
         }
-        console.log(finalPayload)
+        // console.log(finalPayload)
 
         const labelRef = doc(db, 'labels', finalPayload.labelCode)
-        const provinceRef = doc(db, 'provinces', finalPayload.provinceCode)
-        // const overviewRef = doc(db, 'overviews', finalPayload.overviewId)
         const overviewRef = doc(db, 'overviews', finalPayload.overviewId)
+        const provinceRef = doc(db, 'provinces', finalPayload.provinceCode)
 
         //add post
-        const setPostsPromise = setDoc(postsRef, { ...finalPayload, createAt: serverTimestamp() })
+        const postPromise = updateDoc(postsRef, { ...finalPayload })
 
         //add user
-        const setUserPromise = setDoc(userRef, {
-            ...userData,
-            name,
-            phone,
+        const userPromise = updateDoc(userRef, {
+            name: name,
+            phone: phone,
             zalo: phone
         })
 
         //add subcollection label
         const labelPromise = setDoc(labelRef, {
-            value: `${categoryData.value} ${payload?.address?.split(', ')[1]}`,
+            value: `${categoryData.value} ${addressArr[addressArr.length - 2]}`,
             createAt: serverTimestamp()
         })
 
         //add sbcollection overview
-        const overviewPromise = setDoc(overviewRef, {
-            area: `${categoryData.value} ${payload?.address?.split(', ')[2]}`,
+        const overviewPromise = updateDoc(overviewRef, {
+            area: `${categoryData.value} ${addressArr[addressArr.length - 1]}`,
             price: currentPrice + ' triệu/tháng',
             acreage: currentArea + ' m²',
             type: categoryData.value,
             code: code,
             target: payload.target,
-            created: generateDate().today,
-            expired: generateDate().expireDay,
-            createAt: serverTimestamp()
         })
 
         //add subcollection province
         const provincePromise = setDoc(provinceRef, {
-            value: `${payload?.address?.split(', ')[2]}`,
+            value: `${addressArr[addressArr.length - 1]}`,
             createAt: serverTimestamp()
         })
 
-        await Promise.all([setPostsPromise, setUserPromise, labelPromise, overviewPromise, provincePromise])
+        await Promise.all([postPromise, userPromise, labelPromise, overviewPromise, provincePromise])
 
     } catch (error) {
         console.log('Lỗi update post: ', error)
@@ -167,6 +162,15 @@ export const setHiddenPost = async (postId, hidden) => {
         await updateDoc(postsRef, { hidden: !hidden })
     } catch (error) {
         console.log('Lỗi set hiddent post: ', error)
+    }
+}
+
+export const deletePost = async (postId) => {
+    const postRef = doc(db, 'posts', postId)
+    try {
+        await deleteDoc(postRef)
+    } catch (error) {
+        console.log('Lỗi delete post: ', error)
     }
 }
 

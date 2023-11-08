@@ -109,7 +109,7 @@ export const editData = (dataEdit, dispatch) => dispatch({
 })
 
 export const resetDataEdit = (dispatch) => dispatch({
-    type: 'RESET_DATAEDIT',
+    type: 'RESET_DATAEDIT'
 })
 
 export const filterPosts = (posts, filterParams) => {

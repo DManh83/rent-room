@@ -1,9 +1,9 @@
 import { FormControl, FormLabel, Input } from '@chakra-ui/react'
 import React from 'react'
 
-const InputReadOnly = ({ label, value, id }) => {
+const InputReadOnly = ({ label, value, id, ...rest }) => {
     return (
-        <FormControl>
+        <FormControl {...rest}>
             <FormLabel htmlFor='exactly-address'>
                 {label}
             </FormLabel>

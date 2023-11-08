@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Image, Wrap, chakra } from '@chakra-ui/react'
 import React, { memo } from 'react'
-import avatarDefault from '../assets/avatar-default.jpg'
+import avatarDefault from '../assets/avatar-default.png'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../ultils/constant'
 import { formatVietnameseToString } from '../ultils/common/formatVietnameseToString'
@@ -39,8 +39,8 @@ const Item = ({ post }) => {
                     {post?.description}
                 </chakra.p>
                 <Flex align='center' my={6} justify='space-between'>
-                    <Flex align='center' >
-                        <Image src={avatarDefault} alt='avatar' w='30px' h='30px' objectFit='cover' backgroundColor='transparent' />
+                    <Flex align='center' gap={1}>
+                        <Image src={post?.user?.avatar || avatarDefault} alt='avatar' w='30px' h='30px' objectFit='cover' backgroundColor='transparent' rounded='full' />
                         <chakra.p>{post?.user?.name}</chakra.p>
                     </Flex>
                     <Flex align='center' gap={1}>
