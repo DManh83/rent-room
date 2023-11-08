@@ -1,52 +1,32 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import { Map, SliderCustom } from '../../components'
-import { Box, Flex, Heading, Table, Tbody, Td, Tr, chakra, layout } from '@chakra-ui/react'
+import React, { useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { BoxInfo, Map, SliderCustom } from '../../components'
+import { Box, Flex, Heading, Link, Table, Tbody, Td, Tr, chakra, layout } from '@chakra-ui/react'
 import icons from '../../ultils/icons'
-import { usePost } from '../../hooks/useReducerContext'
+import { useApp, usePost } from '../../hooks/useReducerContext'
 import { fetchAllDataWithPost } from '../../store/fetch/post'
 import 'moment/locale/vi'
 import moment from 'moment'
-import axios from 'axios'
+import { formatVietnameseToString } from '../../ultils/common/formatVietnameseToString'
+import { path } from '../../ultils/constant'
+import generateCode from '../../ultils/common/generateCode'
 
 const { HiLocationMarker, TbReportMoney, RiCrop2Line, BsStopwatch, BsHash } = icons
 
 
 const DetailPost = () => {
     const location = useLocation()
+    const navigate = useNavigate()
     const { state: postData } = location
     const { post, dispatchPost } = usePost()
-    const [coords, setCoords] = useState(null)
 
     useEffect(() => {
         postData && fetchAllDataWithPost(dispatchPost, postData)
     }, [postData])
 
-    useEffect(() => {
-        const getResults = async () => {
-            try {
-                const response = await axios.get(
-                    `https://maps.googleapis.com/maps/api/geocode/json?address=${postData?.address}&key=${process.env.REACT_APP_MAP_API}`
-                );
-
-                if (response.data.status === 'OK' && response.data.results.length > 0) {
-                    const location = response.data.results[0].geometry.location;
-                    setCoords({
-                        lat: location.lat,
-                        lng: location.lng,
-                    });
-                } else {
-                    setCoords(null);
-                    alert('Không tìm thấy địa chỉ');
-                }
-            } catch (error) {
-                console.error('Lỗi khi gọi API Geocoding:', error);
-            }
-        }
-
-        postData && getResults()
-
-    }, [postData])
+    const handleClick = () => {
+        navigate(`/tim-kiem?labelCode=${generateCode(post?.label?.value).trim()}`)
+    }
 
     return (
         <Flex w='full' gap={4} >
@@ -66,6 +46,7 @@ const DetailPost = () => {
                                     textColor: 'orange.400'
                                 }}
                                 cursor='pointer'
+                                onClick={handleClick}
                             >
                                 {post?.label?.value}
                             </chakra.span>
@@ -194,12 +175,12 @@ const DetailPost = () => {
                         <Heading fontSize='xl' fontWeight='bold' my={4}>
                             Bản đồ
                         </Heading>
-                        <Map address={post?.address} coords={coords} />
+                        <Map address={post?.address} />
                     </Box>}
                 </Box>
             </Box>
             <Box w='25%'>
-                SideBar
+                <BoxInfo userData={postData?.user} />
             </Box>
         </Flex>
     )

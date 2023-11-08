@@ -35,3 +35,15 @@ export const apiGetPublicWard = (districtId) => new Promise(async (resolve, reje
         reject(error)
     }
 })
+
+export const apiGetCoordsMap = (address) => new Promise(async (resolve, reject) => {
+    try {
+        const response = await axiosDefault({
+            method: 'get',
+            url: `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_MAP_API}`
+        })
+        resolve(response)
+    } catch (error) {
+        reject(error)
+    }
+})

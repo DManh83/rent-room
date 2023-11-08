@@ -41,7 +41,7 @@ export const createDocPost = async (payload, name, phone) => {
         const overviewRef = doc(db, 'overviews', finalPayload.overviewId)
 
         //add post
-        const addPostPromise = addDoc(collection(db, 'posts'), { ...finalPayload, createAt: serverTimestamp() })
+        const addPostPromise = addDoc(collection(db, 'posts'), { ...finalPayload, hidden: false, createAt: serverTimestamp() })
 
         //add user
         const addUserPromise = setDoc(userRef, {
@@ -168,6 +168,9 @@ export const setHiddenPost = async (postId, hidden) => {
 export const deletePost = async (postId) => {
     const postRef = doc(db, 'posts', postId)
     try {
+        const postDoc = await getDoc(postRef)
+        const overviewRef = doc(db, 'overviews', postDoc.data().overviewId)
+        await deleteDoc(overviewRef)
         await deleteDoc(postRef)
     } catch (error) {
         console.log('Lỗi delete post: ', error)

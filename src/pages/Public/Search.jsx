@@ -62,6 +62,8 @@ const Search = () => {
 
     queryText.forEach(item => { queryTextObj[item[0]] = item[1] })
 
+    console.log(queryTextObj)
+
     let titleSearch = `${queryTextObj.category ? queryTextObj.category : 'Cho thuê tất cả'} 
                         ${queryTextObj.province ? `${queryTextObj.province.toLowerCase()}` : ''} 
                         ${queryTextObj.price ? `giá ${queryTextObj.price.toLowerCase()}` : ''} 

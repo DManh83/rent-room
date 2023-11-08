@@ -14,7 +14,7 @@ const SliderCustom = ({ images }) => {
 
 
     return (
-        <Box>
+        <Box h='320px' >
             <Slider {...settings}>
                 {images?.length > 0 && images?.map((item, index) => {
                     return (

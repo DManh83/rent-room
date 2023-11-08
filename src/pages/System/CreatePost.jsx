@@ -1,13 +1,13 @@
-import { AspectRatio, Box, Button, Flex, FormControl, FormLabel, Heading, Image, Input, Spinner, chakra, useToast } from '@chakra-ui/react'
+import { AspectRatio, Box, Button, Flex, FormControl, FormLabel, Heading, Image, Input, Spinner, chakra, effect, useToast } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { Address, Overview } from '../../components'
+import { Address, Map, Overview } from '../../components'
 import { storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import icons from '../../ultils/icons'
 import { useAuth, usePost } from '../../hooks/useReducerContext'
-import { createDocPost, createPricesAndAreas, updateDocPost } from '../../services'
+import { createDocPost, createPricesAndAreas, setHiddenPost, updateDocPost } from '../../services'
 import { validate } from '../../ultils/common/validateField'
-import { fetchPostsLimitUser, resetDataEdit } from '../../store/fetch/post'
+import { editData, fetchPostsLimitUser, resetDataEdit } from '../../store/fetch/post'
 
 const { ImBin, BsCameraFill } = icons
 
@@ -45,6 +45,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
     const [district, setDistrict] = useState('')
     const [ward, setWard] = useState('')
     const [detailAddress, setDetailAddress] = useState('')
+    const [dataEditTemp, setDataEditTemp] = useState(dataEdit)
 
     useEffect(() => {
         if (dataEdit) {
@@ -54,6 +55,10 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
     }, [dataEdit])
 
     useEffect(() => {
+        dataEditTemp && editData(dataEditTemp, dispatchPost)
+    }, [dataEditTemp])
+
+    useEffect(() => {
         if (!isEdit) {
             setPayload({
                 categoryCode: '',
@@ -61,7 +66,6 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
                 priceNumber: 0,
                 areaNumber: 0,
                 images: '',
-                // videos: '',
                 address: '',
                 description: '',
                 target: '',
@@ -105,6 +109,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
             images: prev.images?.filter(item => item !== image)
         }))
     }
+
     const handleSubmit = (e) => {
         e.preventDefault()
         const finalPayload = {
@@ -165,13 +170,23 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
         // setInvalidFields([])
     }
 
-    // console.log(payload)
+    const handleHiddenPost = async (id, hidden) => {
+        setHiddenPost(id, hidden)
+        console.log(hidden)
+        setDataEditTemp(prev => ({ ...prev, hidden: !hidden }))
+        fetchPostsLimitUser(dispatchPost, user.uid)
+    }
 
     return (
         <Flex px={6} direction='column' gap={4}>
-            <Heading borderBottom='1px' borderColor='gray.200' py={4} fontWeight='medium' size='2xl'>
-                {isEdit ? 'Chỉnh sửa tin đăng' : 'Đăng tin mới'}
-            </Heading>
+            <Flex py={4} align='center' justify='space-between' borderBottom='1px' borderColor='gray.200'>
+                <Heading fontWeight='medium' size='2xl'>
+                    {isEdit ? 'Chỉnh sửa tin đăng' : 'Đăng tin mới'}
+                </Heading>
+                {isEdit && <Button onClick={() => handleHiddenPost(dataEdit.id, dataEdit.hidden)}>
+                    {dataEdit?.hidden ? 'Hiện tin đăng' : 'Ẩn tin đăng'}
+                </Button>}
+            </Flex>
             <Flex gap={4}>
                 <Flex py={4} direction='column' gap={4} flex='auto'>
                     <Address isEdit={isEdit} invalidFields={invalidFields} setInvalidFields={setInvalidFields} setPayload={setPayload} detailAddress={detailAddress} setDetailAddress={setDetailAddress} province={province} setProvince={setProvince} district={district} setDistrict={setDistrict} ward={ward} setWard={setWard} />
@@ -207,8 +222,11 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
                                 type='file'
                                 id='image'
                                 multiple
+                                onClick={() => setInvalidFields([])}
                             />
-
+                            <chakra.small textColor='red.500' display='block'>
+                                {invalidFields?.some(item => item.name === 'images') && invalidFields?.find(item => item.name === 'images')?.message}
+                            </chakra.small>
                             <Box>
                                 <Heading size='md' py={4}>
                                     Ảnh đã chọn
@@ -244,8 +262,8 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
 
                     </Box>
                 </Flex>
-                <Flex w='30%' flex='none'>
-                    Maps
+                <Flex w='30%' flex='none' pt={12}>
+                    <Map address={payload.address} />
                 </Flex>
             </Flex>
 

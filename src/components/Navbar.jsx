@@ -1,11 +1,15 @@
 import { Box, HStack, useColorModeValue } from '@chakra-ui/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navlink from './Navlink'
 import { useApp } from '../hooks/useReducerContext'
 import { formatVietnameseToString } from '../ultils/common/formatVietnameseToString'
 
 const Navbar = () => {
-    const { categories } = useApp()
+    const { categories, dispatchApp } = useApp()
+
+    useEffect(() => {
+        dispatchApp('GET_CATEGORIES')
+    }, [dispatchApp])
 
     return (
 

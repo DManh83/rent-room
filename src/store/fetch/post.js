@@ -1,9 +1,11 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
 
 export const fetchPostsLimit = async (dispatch, params) => {
     try {
-        const postDocs = await getDocs(collection(db, 'posts'));
+        const q = query(collection(db, 'posts'), where('hidden', '==', false))
+
+        const postDocs = await getDocs(q);
 
         const postDocFilter = filterPosts(postDocs.docs, params)
 
@@ -113,13 +115,14 @@ export const resetDataEdit = (dispatch) => dispatch({
 })
 
 export const filterPosts = (posts, filterParams) => {
-    const { categoryCode, provinceCode, priceCode, areaCode, priceNumber, areaNumber } = filterParams
+    const { categoryCode, provinceCode, priceCode, areaCode, priceNumber, areaNumber, labelCode } = filterParams
     return posts.filter(p =>
         (!categoryCode || categoryCode.toString() === p.data().categoryCode) &&
         (!provinceCode || provinceCode.toString() === p.data().provinceCode) &&
         (!priceCode || priceCode.toString() === p.data().priceCode) &&
         (!areaCode || areaCode.toString() === p.data().areaCode) &&
-        (!priceNumber || (priceNumber[0] <= p.data().priceNumber && priceNumber[1] >= p.data().priceNumber)) &&
-        (!areaNumber || (areaNumber[0] <= p.data().areaNumber && areaNumber[1] >= p.data().areaNumber))
+        (!priceNumber || (priceNumber[0] === priceNumber[1] && priceNumber[1] <= p.data().priceNumber) || (priceNumber[0] !== priceNumber[1] && priceNumber[0] <= p.data().priceNumber && priceNumber[1] >= p.data().priceNumber)) &&
+        (!areaNumber || (areaNumber[0] === areaNumber[1] && areaNumber[1] <= p.data().areaNumber) || (areaNumber[0] !== areaNumber[1] && areaNumber[0] <= p.data().areaNumber && areaNumber[1] >= p.data().areaNumber)) &&
+        (!labelCode || labelCode.toString() === p.data().labelCode)
     )
 }

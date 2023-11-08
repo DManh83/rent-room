@@ -11,6 +11,7 @@ import { HiOutlineLocationMarker, HiLocationMarker } from 'react-icons/hi'
 import { TbReportMoney } from 'react-icons/tb'
 import { RiCrop2Line } from 'react-icons/ri'
 import { FiSearch } from 'react-icons/fi'
+import { MdBuild, MdCall } from "react-icons/md"
 
 const icons = {
     FaGoogle,
@@ -33,6 +34,7 @@ const icons = {
     BsStopwatch,
     BsHash,
     GrLinkPrevious,
+    MdCall,
 
     ChevronDownIcon,
 
