@@ -25,7 +25,8 @@ const DetailPost = () => {
     }, [postData])
 
     const handleClick = () => {
-        navigate(`/tim-kiem?labelCode=${generateCode(post?.label?.value).trim()}`)
+        let titleSearch = post?.label?.value
+        navigate(`/tim-kiem?labelCode=${generateCode(post?.label?.value).trim()}`, { state: { titleSearch } })
     }
 
     return (
