@@ -3,10 +3,12 @@ import React, { useEffect } from 'react'
 import { ItemSidebar, Province } from '../../components'
 import List from './List'
 import { useApp } from '../../hooks/useReducerContext'
+import { useLocation } from 'react-router-dom'
 // import { fetchAreas, fetchCategories, fetchPrices } from '../../store/fetch/app'
 
 const HomePage = () => {
     const { categories, prices, areas } = useApp()
+
 
     return (
         <Flex direction='column' gap={3} w='1100px' justify='space-between' alignItems='center'>

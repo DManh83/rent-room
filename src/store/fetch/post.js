@@ -1,9 +1,9 @@
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
 
 export const fetchPostsLimit = async (dispatch, params) => {
     try {
-        const q = query(collection(db, 'posts'), where('hidden', '==', false))
+        const q = query(collection(db, 'posts'), orderBy('createAt', 'desc'), where('hidden', '==', false))
 
         const postDocs = await getDocs(q);
 

@@ -4,6 +4,7 @@ import avatarDefault from '../assets/avatar-default.png'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../ultils/constant'
 import { formatVietnameseToString } from '../ultils/common/formatVietnameseToString'
+import moment from 'moment'
 
 const indexs = [0, 1, 2, 3]
 
@@ -29,6 +30,7 @@ const Item = ({ post }) => {
                     <Box fontWeight='medium' textColor='orange.600'>
                         {post?.title}
                     </Box>
+                    <chakra.span fontSize='13px'>{moment.unix(post?.createAt?.seconds).fromNow()}</chakra.span>
                 </Flex>
                 <Flex my={2} align='center' justify='space-between' gap={2}>
                     <chakra.span fontWeight='bold' textColor='green' flex={2} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap' >{post?.overview?.price}</chakra.span>

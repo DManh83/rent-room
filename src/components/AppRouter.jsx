@@ -31,7 +31,7 @@ const AppRouter = () => {
         dispatchApp('GET_PRICES')
         dispatchApp('GET_AREAS')
         dispatchApp('GET_PROVINCES')
-        dispatchApp('GET_CATEGORIES')
+        // dispatchApp('GET_CATEGORIES')
     }, [dispatchApp])
 
     return (

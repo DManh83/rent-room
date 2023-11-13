@@ -176,7 +176,7 @@ const DetailPost = () => {
                         <Heading fontSize='xl' fontWeight='bold' my={4}>
                             Bản đồ
                         </Heading>
-                        <Map address={post?.address} />
+                        <Map address={postData?.address} />
                     </Box>}
                 </Box>
             </Box>

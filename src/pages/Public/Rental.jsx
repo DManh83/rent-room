@@ -23,7 +23,6 @@ const Rental = () => {
                 <chakra.h1 fontSize='28px' fontWeight='bold'>{categoryCurrent?.header}</chakra.h1>
                 <chakra.p fontSize='16px' lineHeight='24px' textColor='gray.700'>{categoryCurrent?.subheader}</chakra.p>
             </Box>
-            <Province />
             <Flex gap={4} w='full'>
                 <Box w='70%'>
                     <List />

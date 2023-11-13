@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card } from '../../components'
 import { Box, Button, FormControl, FormLabel, Heading, Input, Stack, chakra, useToast } from '@chakra-ui/react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { path } from '../../ultils/constant'
+import { useAuthentication } from '../../hooks/useAuthentication'
 import { useAuth } from '../../hooks/useReducerContext'
+import { type } from '@testing-library/user-event/dist/type'
 
 const useQuery = () => {
     const location = useLocation()
@@ -12,16 +14,20 @@ const useQuery = () => {
 
 const ResetPassword = () => {
     const navigate = useNavigate()
-    const { resetPassword } = useAuth()
+    const { resetPassword } = useAuthentication()
+    // const { dispatchUser } = useAuth()
     const query = useQuery()
     const [newPassword, setNewpassword] = useState('')
     const toast = useToast()
     console.log(query.get('mode'))
     console.log(query.get('oobCode'))
     console.log(query.get('continueUrl'))
+    // useEffect(() => {
+    //     dispatchUser({ type: 'LOGOUT' })
+    // }, [dispatchUser])
+
     const handleResetPassword = async (e) => {
         e.preventDefault()
-
         try {
             await resetPassword(query.get('oobCode'), newPassword)
             toast({
@@ -42,7 +48,7 @@ const ResetPassword = () => {
         }
     }
     return (
-        <Box>
+        <Box w='full'>
             <Heading textAlign='center' my={12}>
                 TẠO LẠI MẬT KHẨU
             </Heading>

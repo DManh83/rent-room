@@ -3,11 +3,11 @@ import { Card, DividerWithText } from '../../components'
 import { Button, Center, FormControl, FormLabel, Heading, Input, Stack, useToast, chakra, Box } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../../ultils/constant'
-import { useAuth } from '../../hooks/useReducerContext'
+import { useAuthentication } from '../../hooks/useAuthentication'
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('')
-    const { forgotPassword } = useAuth()
+    const { forgotPassword } = useAuthentication()
     const toast = useToast()
     const navigate = useNavigate()
     const handleSubmit = async (e) => {
