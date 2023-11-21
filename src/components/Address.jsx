@@ -4,7 +4,6 @@ import SelectOptions from './SelectOptions'
 import { apiGetPublicDistrict, apiGetPublicProvinces, apiGetPublicWard } from '../services'
 import InputReadOnly from './InputReadOnly'
 import { usePost } from '../hooks/useReducerContext'
-import { editData } from '../store/fetch/post'
 
 const Address = ({ isEdit, setPayload, invalidFields, setInvalidFields, province, setProvince, district, setDistrict, ward, setWard, detailAddress, setDetailAddress }) => {
 
@@ -15,60 +14,59 @@ const Address = ({ isEdit, setPayload, invalidFields, setInvalidFields, province
     const [reset, setReset] = useState()
 
     useEffect(() => {
-        setProvince('')
+        setProvince(0)
         const fetchPublicProvince = async () => {
             const response = await apiGetPublicProvinces()
             if (response.status === 200)
-                setProvinces(response?.data.results)
+                setProvinces(response?.data)
         }
         fetchPublicProvince()
     }, [])
-
     useEffect(() => {
-        setDistrict('')
+        setDistrict(0)
         const fetchPublicDistrict = async () => {
             const response = await apiGetPublicDistrict(province)
             if (response.status === 200)
-                setDistricts(response?.data.results)
+                setDistricts(response?.data?.districts)
         }
-        province && fetchPublicDistrict()
-        !province ? setReset(true) : setReset(false)
-        !province && setDistricts([])
+        +province > 0 && fetchPublicDistrict()
+            + province === 0 ? setReset(true) : setReset(false)
+            + province === 0 && setDistricts([])
     }, [province])
 
     useEffect(() => {
-        setWard('')
+        setWard(0)
         const fetchPublicWard = async () => {
             const response = await apiGetPublicWard(district)
             if (response.status === 200)
-                setWards(response?.data.results)
+                setWards(response?.data?.wards)
         }
-        district && fetchPublicWard()
-        !district ? setReset(true) : setReset(false)
-        !district && setWards([])
+        +district > 0 && fetchPublicWard()
+            + district === 0 ? setReset(true) : setReset(false)
+            + district === 0 && setWards([])
     }, [district])
 
     useEffect(() => {
         if (isEdit && dataEdit) {
             let addressArr = dataEdit?.address?.split(', ')
-            let foundProvince = provinces?.length > 0 && provinces?.find(item => item.province_name === addressArr[addressArr.length - 1]?.trim())
-            setProvince(foundProvince ? foundProvince.province_id : '')
+            let foundProvince = provinces?.length > 0 && provinces?.find(item => item.name === addressArr[addressArr.length - 1]?.trim())
+            setProvince(foundProvince ? foundProvince.code : 0)
         }
     }, [provinces, dataEdit])
 
     useEffect(() => {
         if (isEdit && dataEdit) {
             let addressArr = dataEdit?.address?.split(', ')
-            let foundDistrict = districts?.length > 0 && districts?.find(item => item.district_name === addressArr[addressArr.length - 2]?.trim())
-            setDistrict(foundDistrict ? foundDistrict.district_id : '')
+            let foundDistrict = districts?.length > 0 && districts?.find(item => item.name === addressArr[addressArr.length - 2]?.trim())
+            setDistrict(foundDistrict ? foundDistrict.code : 0)
         }
     }, [districts, dataEdit])
 
     useEffect(() => {
         if (isEdit && dataEdit) {
             let addressArr = dataEdit?.address?.split(', ')
-            let foundWard = wards?.length > 0 && wards?.find(item => item.ward_name === addressArr[addressArr.length - 3]?.trim())
-            setWard(foundWard ? foundWard.ward_id : '')
+            let foundWard = wards?.length > 0 && wards?.find(item => item.name === addressArr[addressArr.length - 3]?.trim())
+            setWard(foundWard ? foundWard.code : 0)
         }
     }, [wards, dataEdit])
 
@@ -83,7 +81,7 @@ const Address = ({ isEdit, setPayload, invalidFields, setInvalidFields, province
     useEffect(() => {
         setPayload(prev => ({
             ...prev,
-            address: `${detailAddress ? `${detailAddress}, ` : ''}${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name}, ` : ''}${district ? `${districts?.find(item => item.district_id === district)?.district_name}, ` : ''}${province ? provinces?.find(item => item.province_id === province)?.province_name : ''}`
+            address: `${detailAddress ? `${detailAddress}, ` : ''}${+ward > 0 ? `${wards?.find(item => item.code === +ward)?.name}, ` : ''}${+district > 0 ? `${districts?.find(item => item.code === +district)?.name}, ` : ''}${+province > 0 ? provinces?.find(item => item.code === +province)?.name : ''}`
         }))
     }, [province, district, ward, detailAddress])
 
@@ -144,7 +142,7 @@ const Address = ({ isEdit, setPayload, invalidFields, setInvalidFields, province
                     id='exactly-address'
                     label={'Địa chỉ chính xác'}
                     value={
-                        `${detailAddress ? `${detailAddress}, ` : ''}${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name}, ` : ''}${district ? `${districts?.find(item => item.district_id === district)?.district_name}, ` : ''}${province ? provinces?.find(item => item.province_id === province)?.province_name : ''}`
+                        `${detailAddress ? `${detailAddress}, ` : ''}${+ward > 0 ? `${wards?.find(item => item.code === +ward)?.name}, ` : ''}${+district > 0 ? `${districts?.find(item => item.code === +district)?.name}, ` : ''}${+province > 0 ? provinces?.find(item => item.code === +province)?.name : ''}`
                     }
                 />
             </Flex>

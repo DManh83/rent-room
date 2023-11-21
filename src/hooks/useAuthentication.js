@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 
-import { auth, db } from '../firebase'
+import { auth, db } from '../config/firebase'
 import { doc, setDoc, getDoc } from 'firebase/firestore'
 import { useToast } from '@chakra-ui/react'
 import { useAuth } from './useReducerContext'
-import { GoogleAuthProvider, confirmPasswordReset, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithRedirect, signOut, updateProfile, onAuthStateChanged, signInWithPopup } from 'firebase/auth'
+import { GoogleAuthProvider, confirmPasswordReset, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged, signInWithPopup } from 'firebase/auth'
 
 export const useAuthentication = () => {
     const toast = useToast()

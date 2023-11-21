@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image, Select, Table, Tbody, Td, Th, Thead, Tr, useToast, chakra } from '@chakra-ui/react'
+import { Button, Flex, Heading, Image, Select, Table, Tbody, Td, Th, Thead, Tr, useToast, chakra } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { useAuth, usePost } from '../../hooks/useReducerContext'
 import { editData, fetchPostsLimitUser } from '../../store/fetch/post'

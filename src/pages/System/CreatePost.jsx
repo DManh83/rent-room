@@ -1,11 +1,11 @@
-import { AspectRatio, Box, Button, Flex, FormControl, FormLabel, Heading, Image, Input, Spinner, chakra, effect, useToast } from '@chakra-ui/react'
+import { Box, Button, Flex, FormControl, FormLabel, Heading, Image, Input, Spinner, chakra, useToast } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { Address, Map, Overview } from '../../components'
-import { storage } from '../../firebase'
+import { storage } from '../../config/firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import icons from '../../ultils/icons'
 import { useAuth, usePost } from '../../hooks/useReducerContext'
-import { createDocPost, createPricesAndAreas, setHiddenPost, updateDocPost } from '../../services'
+import { createDocPost, setHiddenPost, updateDocPost } from '../../services'
 import { validate } from '../../ultils/common/validateField'
 import { editData, fetchPostsLimitUser, resetDataEdit } from '../../store/fetch/post'
 
@@ -41,9 +41,9 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
     const [isLoading, setIsLoading] = useState(false)
     const toast = useToast()
     const [invalidFields, setInvalidFields] = useState([])
-    const [province, setProvince] = useState('')
-    const [district, setDistrict] = useState('')
-    const [ward, setWard] = useState('')
+    const [province, setProvince] = useState(0)
+    const [district, setDistrict] = useState(0)
+    const [ward, setWard] = useState(0)
     const [detailAddress, setDetailAddress] = useState('')
     const [dataEditTemp, setDataEditTemp] = useState(dataEdit)
 
@@ -76,9 +76,9 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
                 userId: user.uid
             })
             setImagesPreview([])
-            setProvince('')
-            setDistrict('')
-            setWard('')
+            setProvince(0)
+            setDistrict(0)
+            setWard(0)
             setDetailAddress('')
         }
     }, [isEdit])
@@ -163,9 +163,9 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
             userId: user.uid
         })
         setImagesPreview([])
-        setProvince('')
-        setDistrict('')
-        setWard('')
+        setProvince(0)
+        setDistrict(0)
+        setWard(0)
         setDetailAddress('')
         // setInvalidFields([])
     }

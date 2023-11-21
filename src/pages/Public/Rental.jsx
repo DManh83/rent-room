@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Province, ItemSidebar } from '../../components'
+import { ItemSidebar } from '../../components'
 import { List } from './index'
 import { useLocation } from 'react-router-dom'
 import { formatVietnameseToString } from '../../ultils/common/formatVietnameseToString'

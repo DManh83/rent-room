@@ -15,8 +15,8 @@ const Item = ({ post }) => {
         navigate(`/${path.DETAIL}/${formatVietnameseToString(post.title)}/${post.id}`, { state: post })
     }
     return (
-        <Flex w='full' borderTop='1px' borderTopColor='orange.600' py={4} onClick={handleClick}>
-            <Wrap w='40%' spacing='2px' align='center' position='relative' cursor='pointer'>
+        <Flex w='full' borderTop='1px' borderTopColor='orange.600' py={4} >
+            <Wrap w='40%' spacing='2px' align='center' position='relative' cursor='pointer' onClick={handleClick}>
                 {post?.images.length > 0 && post?.images.filter((i, index) => indexs.some(i => i === index))?.map((i, index) => {
                     return (
                         <Image key={index} src={i} alt='preview' w='47%' h='140px' objectFit='cover' />
@@ -26,13 +26,13 @@ const Item = ({ post }) => {
                 <chakra.span bg='rgba(0, 0, 0, 0.5)' textColor='white' px={2} rounded='md' position='absolute' left={1} bottom={2}>{`${post?.images?.length} ảnh`}</chakra.span>
             </Wrap>
             <Box w='60%'>
-                <Flex justify='space-between' gap={4} w='full' cursor='pointer'>
+                <Flex justify='space-between' gap={4} w='full' cursor='pointer' onClick={handleClick}>
                     <Box fontWeight='medium' textColor='orange.600'>
                         {post?.title}
                     </Box>
                     <chakra.span fontSize='13px'>{moment.unix(post?.createAt?.seconds).fromNow()}</chakra.span>
                 </Flex>
-                <Flex my={2} align='center' justify='space-between' gap={2}>
+                <Flex my={2} align='center' justify='space-between' gap={2} onClick={handleClick}>
                     <chakra.span fontWeight='bold' textColor='green' flex={2} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap' >{post?.overview?.price}</chakra.span>
                     <chakra.span flex={1}>{post?.overview?.acreage}</chakra.span>
                     <chakra.span flex={3} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap' fontSize='sm'>{`${post?.address.split(',')[post?.address.split(',').length - 2]}${post?.address.split(',')[post?.address.split(',').length - 1]}`}</chakra.span>
@@ -46,8 +46,22 @@ const Item = ({ post }) => {
                         <chakra.p>{post?.user?.name}</chakra.p>
                     </Flex>
                     <Flex align='center' gap={1}>
-                        <Button bg='blue.300' textColor='white' p={1} variant='solid' colorScheme='blue'>{`Goi ${post?.user?.phone}`}</Button>
-                        <Button textColor='blue.300' variant='outline' colorScheme='blue' px={1}>Nhan Zalo</Button>
+                        <Button bg='blue.300' textColor='white' p={1} variant='solid' colorScheme='blue'>{`Gọi ${post?.user?.phone}`}</Button>
+                        <Button as='a' textColor='blue.300' variant='outline' colorScheme='blue' px={1} href={`https://zalo.me/${post?.user?.phone}`}>Nhắn Zalo</Button>
+                        {/* <Link display='flex'
+                            alignItems='center' justifyContent='center'
+                            h='40px' rounded='md'
+                            bg='white'
+                            _hover={{
+                                bg: 'gray.100'
+                            }}
+                            fontWeight='bold'
+                            border='1px'
+                            borderColor='blue.300'
+                            textColor='blue.300'
+                            href={`https://zalo.me/${post?.user?.phone}`}>
+                            Nhắn Zalo
+                        </Link> */}
                     </Flex>
                 </Flex>
             </Box>

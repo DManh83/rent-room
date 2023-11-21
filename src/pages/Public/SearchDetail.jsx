@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Province, ItemSidebar } from '../../components'
 import { List } from './index'
 import { useLocation } from 'react-router-dom'

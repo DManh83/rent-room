@@ -1,4 +1,4 @@
-import { Box, useToast } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import React, { memo, useEffect, useState } from 'react'
 import GoogleMapReact from 'google-map-react'
 import { HiLocationMarker } from 'react-icons/hi'
@@ -32,7 +32,6 @@ const Map = ({ address }) => {
             })
         }
     }, [address])
-    console.log(coords)
 
     return (
         <Box h='300px' w='full' position='relative'>

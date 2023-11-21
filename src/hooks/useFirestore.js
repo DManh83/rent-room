@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp, setDoc, updateDoc } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp, updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
 import { useState } from "react"
 
@@ -6,16 +6,6 @@ export const useFirestore = (collectionName) => {
     const [document, setDocument] = useState(null)
 
     const collectionRef = collection(db, collectionName)
-
-    const setDocPost = async (document, id) => {
-        // const docRef = doc(db, collectionName, id)
-        try {
-            // const doc = await setDoc(docRef, { ...document, createAt: serverTimestamp() })
-            // setDocument(doc)
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
 
     const addDocument = async (document) => {
         try {

@@ -1,5 +1,5 @@
 import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../config/firebase";
 
 export const fetchPostsLimit = async (dispatch, params) => {
     try {

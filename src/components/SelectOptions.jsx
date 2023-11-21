@@ -25,20 +25,20 @@ const SelectOptions = ({ label, options, value, setValue, type, reset, name, inv
                     return (
                         <option
                             key={
-                                type === 'province' ? item?.province_id :
-                                    type === 'district' ? item?.district_id :
-                                        type === 'ward' ? item?.ward_id : item?.id
+                                type === 'province' ? item?.code :
+                                    type === 'district' ? item?.code :
+                                        type === 'ward' ? item?.code : item?.id
                             }
                             value={
-                                type === 'province' ? item?.province_id :
-                                    type === 'district' ? item?.district_id :
-                                        type === 'ward' ? item?.ward_id : item?.id
+                                type === 'province' ? item?.code :
+                                    type === 'district' ? item?.code :
+                                        type === 'ward' ? item?.code : item?.id
                             }
                         >
                             {
-                                type === 'province' ? item?.province_name :
-                                    type === 'district' ? item?.district_name :
-                                        type === 'ward' ? item?.ward_name : item?.value
+                                type === 'province' ? item?.name :
+                                    type === 'district' ? item?.name :
+                                        type === 'ward' ? item?.name : item?.value
                             }
                         </option>
                     )

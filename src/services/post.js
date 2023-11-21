@@ -1,6 +1,6 @@
 import { addDoc, collection, deleteDoc, doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore"
 import { dataArea, dataPrice } from "../ultils/data"
-import { db } from "../firebase"
+import { db } from "../config/firebase"
 import generateDate from "../ultils/common/generateDate"
 import generateCode from "../ultils/common/generateCode"
 import { v4 } from "uuid"

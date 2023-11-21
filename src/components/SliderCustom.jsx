@@ -1,4 +1,4 @@
-import { Box, Flex, Image } from '@chakra-ui/react'
+import { Box, Image } from '@chakra-ui/react'
 import React, { memo } from 'react'
 import Slider from 'react-slick'
 

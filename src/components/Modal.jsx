@@ -1,8 +1,7 @@
-import { Box, Button, Flex, Input, Radio, RadioGroup, RangeSlider, RangeSliderFilledTrack, RangeSliderThumb, RangeSliderTrack, Stack, Wrap, chakra } from '@chakra-ui/react'
+import { Box, Button, Flex, Radio, RadioGroup, RangeSlider, RangeSliderFilledTrack, RangeSliderThumb, RangeSliderTrack, Stack, Wrap, chakra } from '@chakra-ui/react'
 import React, { memo, useState } from 'react'
 import icons from '../ultils/icons'
 import { getNumbersArea, getNumbersPrice } from '../ultils/common/getNumbers'
-import { getCodes, getCodesArea } from '../ultils/common/getCodes'
 
 const { GrLinkPrevious } = icons
 

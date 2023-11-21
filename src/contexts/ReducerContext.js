@@ -1,10 +1,7 @@
-import React, { createContext, useEffect, useReducer } from 'react'
+import React, { createContext, useReducer } from 'react'
 import userReducer from '../store/reducers/userReducer'
 import postReducer from '../store/reducers/postReducer'
 import appReducer from '../store/reducers/appReducer'
-import { onAuthStateChanged } from 'firebase/auth'
-import { doc, setDoc } from 'firebase/firestore'
-import { auth, db } from '../firebase'
 
 export const AuthContext = createContext()
 
@@ -34,7 +31,7 @@ export const ReducerContextProvider = ({ children }) => {
         provinces: null
     })
 
-    // console.log('Auth state is', state
+    // console.log('Auth state is', state)
 
     return (
         <AuthContext.Provider value={{ ...userData, dispatchUser }}>

@@ -1,7 +1,5 @@
 import { Box, HStack, useColorModeValue } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
 import Navlink from './Navlink'
-import { useApp } from '../hooks/useReducerContext'
 import { formatVietnameseToString } from '../ultils/common/formatVietnameseToString'
 import categories from '../ultils/menuCategory'
 
@@ -13,6 +11,8 @@ const Navbar = () => {
             backgroundColor={useColorModeValue('pink.200')}
             borderBottom='2px'
             borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
+            h='65px'
+            alignItems='center'
         // mb={4}
         >
             <HStack py={2} justifyContent='space-between' maxW='1100px' mx='auto'>

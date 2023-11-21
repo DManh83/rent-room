@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { BoxInfo, Map, SliderCustom } from '../../components'
-import { Box, Flex, Heading, Link, Table, Tbody, Td, Tr, chakra, layout } from '@chakra-ui/react'
+import { Box, Flex, Heading, Table, Tbody, Td, Tr, chakra } from '@chakra-ui/react'
 import icons from '../../ultils/icons'
-import { useApp, usePost } from '../../hooks/useReducerContext'
+import { usePost } from '../../hooks/useReducerContext'
 import { fetchAllDataWithPost } from '../../store/fetch/post'
 import 'moment/locale/vi'
 import moment from 'moment'
-import { formatVietnameseToString } from '../../ultils/common/formatVietnameseToString'
-import { path } from '../../ultils/constant'
 import generateCode from '../../ultils/common/generateCode'
 
 const { HiLocationMarker, TbReportMoney, RiCrop2Line, BsStopwatch, BsHash } = icons
