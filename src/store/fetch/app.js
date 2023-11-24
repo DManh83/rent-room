@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../config/firebase";
 
 export const fetchCategories = async (dispatch) => {
@@ -60,7 +60,11 @@ export const fetchAreas = async (dispatch) => {
 
 export const fetchProvinces = async (dispatch) => {
     try {
-        const provinceSnapshots = await getDocs(collection(db, 'provinces'));
+
+        const q = query(collection(db, 'provinces'), orderBy('createAt', 'desc'))
+        const provinceSnapshots = await getDocs(q);
+
+        // const provinceSnapshots = await getDocs(collection(db, 'provinces'));
 
         const allProvinces = [];
 
