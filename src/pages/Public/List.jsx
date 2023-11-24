@@ -36,7 +36,7 @@ const List = () => {
             </Flex>
             <Flex alignItems='center' gap={2} my={2}>
                 <chakra.span>Sắp xếp:</chakra.span>
-                <Button variant='ghost' fontWeight='normal'>Mặc định</Button>
+                {/* <Button variant='ghost' fontWeight='normal'>Mặc định</Button> */}
                 <Button variant='ghost' fontWeight='normal'>Mới nhất</Button>
             </Flex>
             <Box >
