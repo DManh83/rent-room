@@ -1,7 +1,7 @@
 import { FaGoogle, FaMoon, FaSun } from 'react-icons/fa'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { ImPencil2 } from 'react-icons/im'
-import { MdOutlineLibraryBooks, MdOutlineHouseSiding } from 'react-icons/md'
+import { MdOutlineLibraryBooks, MdOutlineHouseSiding, MdOutlineEmail } from 'react-icons/md'
 import { BiUserPin } from 'react-icons/bi'
 import { AiOutlineLogout } from 'react-icons/ai'
 import { ImBin } from 'react-icons/im'
@@ -37,6 +37,7 @@ const icons = {
     GrLinkPrevious,
     MdCall,
     SiZalo,
+    MdOutlineEmail,
 
     ChevronDownIcon,
 

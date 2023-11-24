@@ -8,7 +8,7 @@ const HomePage = () => {
     const { categories, prices, areas } = useApp()
 
     return (
-        <Flex direction='column' gap={3} w='1100px' justify='space-between' alignItems='center'>
+        <Flex direction='column' gap={3} w='full' justify='space-between' alignItems='center'>
             <Province />
             <Flex w='full' gap={4}>
                 <Box w='70%'>

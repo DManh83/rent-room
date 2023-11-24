@@ -35,7 +35,7 @@ const Layout = (props) => {
             <Box ref={navRef} w='full'>
                 <Navbar />
             </Box>
-            <Container maxW='1100px'>{props.children}</Container>
+            <Container maxW='1200px'>{props.children}</Container>
         </Flex>
     )
 }

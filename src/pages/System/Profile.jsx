@@ -16,7 +16,7 @@ const Profile = () => {
     const toast = useToast()
     const [payload, setPayload] = useState({
         avatar: user?.avatar,
-        name: user?.name || '',
+        name: user?.name || user?.displayName || '',
         phone: user?.phone || '',
         zalo: user?.zalo || ''
     })

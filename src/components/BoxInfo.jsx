@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 import avatarDefault from '../assets/avatar-default.png'
 import icons from '../ultils/icons'
 
-const { MdCall, SiZalo } = icons
+const { MdCall, SiZalo, MdOutlineEmail } = icons
 
 const BoxInfo = ({ userData }) => {
     return (
@@ -16,6 +16,9 @@ const BoxInfo = ({ userData }) => {
                 </Button>
                 <Button as='a' leftIcon={<SiZalo className='bg-blue-500 rounded-full text-3xl text-white p-1' />} w='full' href={`https://zalo.me/${userData?.phone}`}>
                     Nhắn Zalo
+                </Button>
+                <Button as='a' leftIcon={<MdOutlineEmail className=' rounded-full text-3xl p-1' />} w='full' href={`mailto:${userData?.email}`}>
+                    {userData?.email}
                 </Button>
             </Flex>
         </Flex>

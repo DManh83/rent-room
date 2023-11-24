@@ -77,7 +77,7 @@ const Search = () => {
 
   return (
     <>
-      <Flex maxW='1100px' w='full' p={4} bg='yellow.300' rounded='lg' alignItems='center' justifyContent='space-around' gap={2}>
+      <Flex w='full' p={4} bg='yellow.300' rounded='lg' alignItems='center' justifyContent='space-around' gap={2}>
         <chakra.span onClick={() => handleShowModal(categories, 'category', 'Tìm tất cả')} flex={1} cursor='pointer'>
           <SearchItem leftIcon={<MdOutlineHouseSiding />} rightIcon={<BsChevronRight />} fontWeight text={queries.category} defaultText={'Tìm tất cả'} />
         </chakra.span>

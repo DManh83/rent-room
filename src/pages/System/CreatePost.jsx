@@ -35,7 +35,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
     })
 
     const [phone, setPhone] = useState(user.phone ? user.phone : '')
-    const [name, setName] = useState(user.name ? user.name : '')
+    const [name, setName] = useState(user.name ? user.name : user.displayName ? user.displayName : '')
     const [imagesPreview, setImagesPreview] = useState([])
     const [postId, setPostId] = useState('')
     const [isLoading, setIsLoading] = useState(false)

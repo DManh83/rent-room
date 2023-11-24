@@ -18,7 +18,7 @@ const SideBar = () => {
         getUser(dispatchUser, user)
     }, [])
 
-    // console.log(user)
+    console.log(user)
     const handleLogout = (e) => {
         e.preventDefault()
         logout()
@@ -29,7 +29,7 @@ const SideBar = () => {
                 <Flex align='center' gap={4}>
                     <Image src={user?.avatar || AvatarDefault} alt='avatar' borderRadius='full' boxSize='45px' />
                     <Flex direction='column' justify='center'>
-                        <chakra.span fontWeight='semibold'>{user?.name}</chakra.span>
+                        <chakra.span fontWeight='semibold'>{user?.name || user?.displayName}</chakra.span>
                         <chakra.small>{user?.email}</chakra.small>
                     </Flex>
                 </Flex>

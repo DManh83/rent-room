@@ -92,44 +92,44 @@ const DetailPost = () => {
                         </Heading>
                         <Table variant='unstyled'>
                             <Tbody display='flex' flexWrap='wrap'>
-                                <Tr flexBasis='50%'>
-                                    <Td width='150px'>Liên hệ</Td>
+                                {/* <Tr flexBasis='50%'>
+                                    <Td width='200px'>Liên hệ</Td>
                                     <Td>{post?.user?.name}</Td>
-                                </Tr>
+                                </Tr> */}
                                 <Tr flexBasis='50%'>
-                                    <Td width='150px'>Giá cho thuê</Td>
+                                    <Td width='200px'>Giá cho thuê</Td>
                                     <Td>{post?.overview?.price}</Td>
                                 </Tr>
-                                <Tr flexBasis='50%'>
-                                    <Td width='150px'>Email</Td>
+                                {/* <Tr flexBasis='50%'>
+                                    <Td width='200px'>Email</Td>
                                     <Td>{post?.user?.email}</Td>
-                                </Tr>
+                                </Tr> */}
                                 <Tr flexBasis='50%'>
-                                    <Td width='150px'>Diện tích</Td>
+                                    <Td width='200px'>Diện tích</Td>
                                     <Td>{post?.overview?.acreage}</Td>
                                 </Tr>
-                                <Tr flexBasis='50%'>
-                                    <Td width='150px'>Điện thoại</Td>
+                                {/* <Tr flexBasis='50%'>
+                                    <Td width='200px'>Điện thoại</Td>
                                     <Td>{post?.user?.phone}</Td>
-                                </Tr>
+                                </Tr> */}
                                 <Tr flexBasis='50%'>
-                                    <Td width='150px'>Nội thất</Td>
+                                    <Td width='200px'>Nội thất</Td>
                                     <Td>{post?.furniture}</Td>
                                 </Tr>
-                                <Tr flexBasis='50%'>
-                                    <Td width='150px'>Zalo</Td>
+                                {/* <Tr flexBasis='50%'>
+                                    <Td width='200px'>Zalo</Td>
                                     <Td>{post?.user?.zalo}</Td>
-                                </Tr>
+                                </Tr> */}
                                 <Tr flexBasis='50%'>
-                                    <Td width='150px'>Bếp</Td>
+                                    <Td width='200px'>Bếp</Td>
                                     <Td>{post?.kitchen}</Td>
                                 </Tr>
                                 <Tr flexBasis='50%'>
-                                    <Td width='150px'>Nhà vệ sinh</Td>
+                                    <Td width='200px'>Nhà vệ sinh</Td>
                                     <Td>{post?.bathroom}</Td>
                                 </Tr>
                                 <Tr flexBasis='50%'>
-                                    <Td width='150px'>Chỗ để xe</Td>
+                                    <Td width='200px'>Chỗ để xe</Td>
                                     <Td>{post?.parking}</Td>
                                 </Tr>
                             </Tbody>
@@ -143,27 +143,27 @@ const DetailPost = () => {
                         <Table>
                             <Tbody>
                                 <Tr>
-                                    <Td width='150px'>Mã tin</Td>
+                                    <Td width='200px'>Mã tin</Td>
                                     <Td>#{post?.overview?.code}</Td>
                                 </Tr>
                                 <Tr bg='gray.200'>
-                                    <Td width='150px'>Khu vực</Td>
+                                    <Td width='200px'>Khu vực</Td>
                                     <Td>{post?.overview?.area}</Td>
                                 </Tr>
                                 <Tr>
-                                    <Td width='150px'>Loại tin rao</Td>
+                                    <Td width='200px'>Loại tin rao</Td>
                                     <Td>{post?.overview?.type}</Td>
                                 </Tr>
                                 <Tr bg='gray.200'>
-                                    <Td width='150px'>Đối tượng cho thuê</Td>
+                                    <Td width='200px'>Đối tượng cho thuê</Td>
                                     <Td>{post?.overview?.target}</Td>
                                 </Tr>
                                 <Tr>
-                                    <Td width='150px'>Ngày đăng</Td>
+                                    <Td width='200px'>Ngày đăng</Td>
                                     <Td>{post?.overview?.created}</Td>
                                 </Tr>
                                 <Tr bg='gray.200'>
-                                    <Td width='150px'>Ngày hết hạn</Td>
+                                    <Td width='200px'>Ngày hết hạn</Td>
                                     <Td>{post?.overview?.expired}</Td>
                                 </Tr>
                             </Tbody>

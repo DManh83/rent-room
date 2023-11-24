@@ -45,9 +45,7 @@ const List = () => {
                         post && post.userId && post.id && <Item post={post} key={post.id} />
                     )
                 })}
-
             </Box>
-
         </Box>
     )
 }
