@@ -166,11 +166,8 @@ export const setHiddenPost = async (postId, hidden) => {
 }
 
 export const deletePost = async (postId) => {
-    const postRef = doc(db, 'posts', postId)
     try {
-        const postDoc = await getDoc(postRef)
-        const overviewRef = doc(db, 'overviews', postDoc.data().overviewId)
-        await deleteDoc(overviewRef)
+        const postRef = doc(db, 'posts', postId)
         await deleteDoc(postRef)
     } catch (error) {
         console.log('Lỗi delete post: ', error)

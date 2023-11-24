@@ -12,7 +12,7 @@ const formatDate = 'DD-MM-YYYY'
 const ManagePost = () => {
     const { user } = useAuth()
     const [isEdit, setIsEdit] = useState(false)
-    const [updateData, setUpdateDate] = useState(false)
+    const [updateData, setUpdateData] = useState(false)
     const [posts, setPosts] = useState([])
     const { postOfCurrent, dataEdit, dispatchPost } = usePost()
     const toast = useToast()
@@ -61,7 +61,13 @@ const ManagePost = () => {
 
     const handleDeletePost = (postId) => {
         deletePost(postId)
-        setUpdateDate(prev => !prev)
+        setUpdateData(prev => !prev)
+        toast({
+            description: 'Bạn đã xóa tin đăng thành công',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+        })
     }
 
     const handleFilterByStatus = (statusCode) => {
