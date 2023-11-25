@@ -10,6 +10,10 @@ const Home = () => {
     return (
         <Layout>
             {!location.pathname?.includes(path.DETAIL) &&
+                !location.pathname?.includes(path.LOGIN) &&
+                !location.pathname?.includes(path.REGISTER) &&
+                !location.pathname?.includes(path.FORGOTPASSWORD) &&
+                !location.pathname?.includes(path.RESETPASSWORD) &&
                 <Flex w='full' justifyContent='center' alignItems='center' >
                     <Search />
                 </Flex>}
