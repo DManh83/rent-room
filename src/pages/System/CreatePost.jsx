@@ -172,6 +172,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
         setDistrict(0)
         setWard(0)
         setDetailAddress('')
+        setDate('')
         // setInvalidFields([])
     }
 
