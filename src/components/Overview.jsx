@@ -14,8 +14,8 @@ const optionKitchen = [
     { id: 'Chung', value: 'Bếp chung' }
 ]
 const optionBathroom = [
-    { id: 'Riêng', value: 'Khép kín' },
-    { id: 'Chung', value: 'Chung' }
+    { id: 'Riêng', value: 'riêng' },
+    { id: 'Chung', value: 'chung' }
 ]
 const optionParking = [
     { id: 'Có', value: 'Có' },
@@ -109,7 +109,7 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields, phone,
                             setValue={setPayload}
                             name='bathroom'
                             options={optionBathroom}
-                            label='Nhà tắm/vệ sinh'
+                            label='Nhà vệ sinh'
                             invalidFields={invalidFields}
                             setInvalidFields={setInvalidFields}
                         />
