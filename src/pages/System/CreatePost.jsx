@@ -8,8 +8,12 @@ import { useAuth, usePost } from '../../hooks/useReducerContext'
 import { createDocPost, setHiddenPost, updateDocPost } from '../../services'
 import { validate } from '../../ultils/common/validateField'
 import { editData, fetchPostsLimitUser, resetDataEdit } from '../../store/fetch/post'
+import { formatDate } from '../../ultils/common/generateDate'
+import moment from 'moment'
 
 const { ImBin, BsCameraFill } = icons
+
+const formatDay = 'DD-MM-YYYY'
 
 const CreatePost = ({ isEdit, setIsEdit }) => {
     const { user } = useAuth()
@@ -44,6 +48,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
     const [province, setProvince] = useState(0)
     const [district, setDistrict] = useState(0)
     const [ward, setWard] = useState(0)
+    const [date, setDate] = useState('')
     const [detailAddress, setDetailAddress] = useState('')
     const [dataEditTemp, setDataEditTemp] = useState(dataEdit)
 
@@ -115,12 +120,12 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
         const finalPayload = {
             ...payload,
             name,
-            phone
+            phone,
         }
         const result = validate(finalPayload, setInvalidFields)
         if (result === 0) {
             if (dataEdit && isEdit) {
-                updateDocPost(payload, postId, name, phone)
+                updateDocPost(payload, postId, name, phone, date)
                 setIsEdit(false)
                 resetDataEdit(dispatchPost)
                 toast({
@@ -132,7 +137,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
                 resetPayload()
 
             } else {
-                createDocPost(payload, name, phone)
+                createDocPost(payload, name, phone, date)
                 toast({
                     description: 'Tạo tin đăng thành công',
                     status: 'success',
@@ -177,6 +182,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
         fetchPostsLimitUser(dispatchPost, user.uid)
     }
 
+
     return (
         <Flex px={6} direction='column' gap={4}>
             <Flex py={4} align='center' justify='space-between' borderBottom='1px' borderColor='gray.200'>
@@ -190,7 +196,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
             <Flex gap={4}>
                 <Flex py={4} direction='column' gap={4} flex='auto'>
                     <Address isEdit={isEdit} invalidFields={invalidFields} setInvalidFields={setInvalidFields} setPayload={setPayload} detailAddress={detailAddress} setDetailAddress={setDetailAddress} province={province} setProvince={setProvince} district={district} setDistrict={setDistrict} ward={ward} setWard={setWard} />
-                    <Overview invalidFields={invalidFields} setInvalidFields={setInvalidFields} payload={payload} setPayload={setPayload} phone={phone} setPhone={setPhone} name={name} setName={setName} />
+                    <Overview invalidFields={invalidFields} setInvalidFields={setInvalidFields} payload={payload} setPayload={setPayload} phone={phone} setPhone={setPhone} name={name} setName={setName} date={date} setDate={setDate} />
                     <Box >
                         <Heading size='lg' py={4}> Hình ảnh </Heading>
                         <chakra.small>Cập nhật hình ảnh rõ ràng sẽ cho thuê nhanh hơn</chakra.small>

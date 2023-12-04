@@ -15,7 +15,7 @@ const Profile = () => {
     // console.log(user)
     const toast = useToast()
     const [payload, setPayload] = useState({
-        avatar: user?.avatar,
+        avatar: user?.avatar || '',
         name: user?.name || user?.displayName || '',
         phone: user?.phone || '',
         zalo: user?.zalo || ''
@@ -48,6 +48,7 @@ const Profile = () => {
             duration: 5000,
             isClosable: true,
         })
+        console.log(payload)
         setUserCurrent({ ...user, ...payload })
         getUser(dispatchUser, userCurrent)
     }

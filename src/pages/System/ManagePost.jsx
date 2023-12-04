@@ -4,7 +4,7 @@ import { useAuth, usePost } from '../../hooks/useReducerContext'
 import { editData, fetchPostsLimitUser } from '../../store/fetch/post'
 import moment from 'moment'
 import 'moment/locale/vi'
-import { UpdatePost } from '../../components'
+import { Extend, UpdatePost } from '../../components'
 import { deletePost, setHiddenPost } from '../../services'
 
 const formatDate = 'DD-MM-YYYY'
@@ -24,7 +24,6 @@ const ManagePost = () => {
     useEffect(() => {
         setPosts(postOfCurrent)
     }, [postOfCurrent])
-
 
     useEffect(() => {
         !dataEdit && setIsEdit(false)
@@ -116,17 +115,29 @@ const ManagePost = () => {
                         : posts?.map(item => {
                             return (
                                 <Tr key={item.id}>
-                                    <Td border='1px' textAlign='center' p={2}><chakra.span textColor={item.hidden ? 'gray.300' : 'black'}>#{item?.overview?.code}</chakra.span></Td>
+                                    <Td border='1px' textAlign='center' p={2}>
+                                        <chakra.span textColor={item.hidden ? 'gray.300' : 'black'}>#{item?.overview?.code}</chakra.span>
+                                    </Td>
                                     <Td border='1px' textAlign='center' blur='2px' p={2}>
                                         <Flex align='center' justify='center' textColor={item.hidden ? 'gray.300' : 'black'}>
                                             <Image src={item.images[0] || ''} alt='avatar-post' w={10} h={10} objectFit='cover' rounded='md' />
                                         </Flex>
                                     </Td>
-                                    <Td border='1px' textAlign='center' p={2}><chakra.span textColor={item.hidden ? 'gray.300' : 'black'}>{item?.title}</chakra.span></Td>
-                                    <Td border='1px' textAlign='center' p={2}><chakra.span textColor={item.hidden ? 'gray.300' : 'black'}>{item?.priceNumber} Triệu/Tháng</chakra.span></Td>
-                                    <Td border='1px' textAlign='center' p={2}><chakra.span textColor={item.hidden ? 'gray.300' : 'black'}>{item?.overview?.created}</chakra.span></Td>
-                                    <Td border='1px' textAlign='center' p={2}><chakra.span textColor={item.hidden ? 'gray.300' : 'black'}>{item?.overview?.expired}</chakra.span></Td>
-                                    <Td border='1px' textAlign='center' p={2}><chakra.span textColor={item.hidden ? 'gray.300' : 'black'}>{checkStatus(item?.overview?.expired?.split(' ')[3]) ? 'Đang hoạt động' : 'Đã hết hạn'}</chakra.span></Td>
+                                    <Td border='1px' textAlign='center' p={2}>
+                                        <chakra.span textColor={item.hidden ? 'gray.300' : 'black'}>{item?.title}</chakra.span>
+                                    </Td>
+                                    <Td border='1px' textAlign='center' p={2}>
+                                        <chakra.span textColor={item.hidden ? 'gray.300' : 'black'}>{item?.priceNumber} Triệu/Tháng</chakra.span>
+                                    </Td>
+                                    <Td border='1px' textAlign='center' p={2}>
+                                        <chakra.span textColor={item.hidden ? 'gray.300' : 'black'}>{item?.overview?.created}</chakra.span>
+                                    </Td>
+                                    <Td border='1px' textAlign='center' p={2}>
+                                        <chakra.span textColor={item.hidden ? 'gray.300' : 'black'}>{item?.overview?.expired}</chakra.span>
+                                    </Td>
+                                    <Td border='1px' textAlign='center' p={2}>
+                                        <chakra.span textColor={item.hidden ? 'gray.300' : 'black'} >{checkStatus(item?.overview?.expired?.split(' ')[3]) ? 'Đang hoạt động' : 'Đã hết hạn'}</chakra.span>
+                                    </Td>
                                     <Td border='1px' textAlign='center' p={2}>
                                         <Button bg='green.500'
                                             onClick={() => handleEditPost(item)}

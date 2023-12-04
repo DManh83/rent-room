@@ -18,7 +18,6 @@ const SideBar = () => {
         getUser(dispatchUser, user)
     }, [])
 
-    console.log(user)
     const handleLogout = (e) => {
         e.preventDefault()
         logout()

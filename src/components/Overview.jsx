@@ -14,15 +14,15 @@ const optionKitchen = [
     { id: 'Chung', value: 'Bếp chung' }
 ]
 const optionBathroom = [
-    { id: 'Riêng', value: 'Nhà vệ sinh riêng' },
-    { id: 'Chung', value: 'Nhà vệ sinh chung' }
+    { id: 'Riêng', value: 'Khép kín' },
+    { id: 'Chung', value: 'Chung' }
 ]
 const optionParking = [
     { id: 'Có', value: 'Có' },
     { id: 'Không', value: 'Không' }
 ]
 
-const Overview = ({ payload, setPayload, invalidFields, setInvalidFields, phone, setPhone, name, setName }) => {
+const Overview = ({ payload, setPayload, invalidFields, setInvalidFields, phone, setPhone, name, setName, date, setDate }) => {
     const { categories } = useApp()
     return (
         <Box>
@@ -88,56 +88,93 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields, phone,
                         invalidFields={invalidFields}
                         setInvalidFields={setInvalidFields}
                     />
-                    <InputForm
-                        type='text'
-                        id='furniture'
-                        label='Nội thất'
-                        name='furniture'
-                        value={payload.furniture}
-                        setValue={setPayload}
-                        invalidFields={invalidFields}
-                        setInvalidFields={setInvalidFields}
-                    />
-                    <SelectOptions
-                        value={payload.kitchen}
-                        setValue={setPayload}
-                        name='kitchen'
-                        options={optionKitchen}
-                        label='Bếp'
-                        invalidFields={invalidFields}
-                        setInvalidFields={setInvalidFields}
-                    />
+                </Flex>
+                <Flex direction='column' gap={4}>
+                    <Flex
+                        alignItems='center'
+                        gap={4}
+                    >
+                        <SelectOptions
+                            value={payload.kitchen}
+                            setValue={setPayload}
+                            name='kitchen'
+                            options={optionKitchen}
+                            label='Bếp'
+                            invalidFields={invalidFields}
+                            setInvalidFields={setInvalidFields}
+                        />
 
-                    <SelectOptions
-                        value={payload.bathroom}
-                        setValue={setPayload}
-                        name='bathroom'
-                        options={optionBathroom}
-                        label='Tolet'
-                        invalidFields={invalidFields}
-                        setInvalidFields={setInvalidFields}
-                    />
+                        <SelectOptions
+                            value={payload.bathroom}
+                            setValue={setPayload}
+                            name='bathroom'
+                            options={optionBathroom}
+                            label='Nhà tắm/vệ sinh'
+                            invalidFields={invalidFields}
+                            setInvalidFields={setInvalidFields}
+                        />
+                    </Flex>
+                </Flex>
 
-                    <SelectOptions
-                        value={payload.parking}
-                        setValue={setPayload}
-                        name='parking'
-                        options={optionParking}
-                        label='Chỗ để xe'
-                        invalidFields={invalidFields}
-                        setInvalidFields={setInvalidFields}
-                    />
+                <Flex direction='column' gap={4}>
+                    <Flex
+                        alignItems='center'
+                        gap={4}
+                    >
+                        <SelectOptions
+                            value={payload.parking}
+                            setValue={setPayload}
+                            name='parking'
+                            options={optionParking}
+                            label='Chỗ để xe'
+                            invalidFields={invalidFields}
+                            setInvalidFields={setInvalidFields}
+                        />
 
-                    <SelectOptions
-                        value={payload.target}
-                        setValue={setPayload}
-                        name='target'
-                        options={targets}
-                        label='Đối tượng cho thuê'
-                        invalidFields={invalidFields}
-                        setInvalidFields={setInvalidFields}
-                    />
+                        <SelectOptions
+                            value={payload.target}
+                            setValue={setPayload}
+                            name='target'
+                            options={targets}
+                            label='Đối tượng cho thuê'
+                            invalidFields={invalidFields}
+                            setInvalidFields={setInvalidFields}
+                        />
+                    </Flex>
+                </Flex>
 
+                <Flex direction='column' gap={4}>
+                    <Flex
+                        alignItems='center'
+                        gap={4}
+                    >
+                        <InputForm
+                            type='text'
+                            id='furniture'
+                            label='Nội thất'
+                            name='furniture'
+                            value={payload.furniture}
+                            setValue={setPayload}
+                            invalidFields={invalidFields}
+                            setInvalidFields={setInvalidFields}
+                        />
+                        <FormControl>
+                            <FormLabel htmlFor='date'>Ngày hết hạn tin đăng</FormLabel>
+                            <Input
+                                type='datetime-local'
+                                id='date'
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
+                                onFocus={() => setInvalidFields([])}
+                            />
+                            <chakra.small textColor='red.500' display='block'>
+                                {invalidFields?.some(item => item.name === 'date') && invalidFields?.find(item => item.name === 'date')?.message}
+                            </chakra.small>
+                        </FormControl>
+                    </Flex>
+                </Flex>
+
+                <Flex w='50%' direction='column' gap={2}>
                     <FormControl>
                         <FormLabel htmlFor='name'>Thông tin liên hệ</FormLabel>
                         <Input
@@ -166,6 +203,7 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields, phone,
                             {invalidFields?.some(item => item.name === 'phone') && invalidFields?.find(item => item.name === 'phone')?.message}
                         </chakra.small>
                     </FormControl>
+
                 </Flex>
 
             </Flex>
@@ -173,7 +211,7 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields, phone,
 
             </Box>
 
-        </Box>
+        </Box >
     )
 }
 

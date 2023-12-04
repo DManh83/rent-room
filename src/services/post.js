@@ -1,11 +1,12 @@
 import { addDoc, collection, deleteDoc, doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore"
 import { dataArea, dataPrice } from "../ultils/data"
 import { db } from "../config/firebase"
-import generateDate from "../ultils/common/generateDate"
 import generateCode from "../ultils/common/generateCode"
+import {generateDate, formatDate} from '../ultils/common/generateDate'
 import { v4 } from "uuid"
+import moment from "moment"
 
-export const createDocPost = async (payload, name, phone) => {
+export const createDocPost = async (payload, name, phone, date) => {
 
     try {
         const [userDoc, categoryDoc] = await Promise.all([
@@ -66,7 +67,7 @@ export const createDocPost = async (payload, name, phone) => {
             code: code,
             target: payload.target,
             created: generateDate().today,
-            expired: generateDate().expireDay,
+            expired: formatDate(moment(date).toDate()),
             createAt: serverTimestamp()
         })
 
@@ -83,7 +84,7 @@ export const createDocPost = async (payload, name, phone) => {
     }
 }
 
-export const updateDocPost = async (payload, postId, name, phone) => {
+export const updateDocPost = async (payload, postId, name, phone, date) => {
 
     try {
         const postsRef = doc(db, 'posts', postId)
@@ -140,6 +141,7 @@ export const updateDocPost = async (payload, postId, name, phone) => {
             acreage: currentArea + ' m²',
             type: categoryData.value,
             code: code,
+            expired: formatDate(moment(date).toDate()),
             target: payload.target,
         })
 
@@ -158,8 +160,8 @@ export const updateDocPost = async (payload, postId, name, phone) => {
 
 export const setHiddenPost = async (postId, hidden) => {
     try {
-        const postsRef = doc(db, 'posts', postId)
-        await updateDoc(postsRef, { hidden: !hidden })
+        const postRef = doc(db, 'posts', postId)
+        await updateDoc(postRef, { hidden: !hidden })
     } catch (error) {
         console.log('Lỗi set hiddent post: ', error)
     }

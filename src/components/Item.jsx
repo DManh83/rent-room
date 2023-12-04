@@ -47,21 +47,7 @@ const Item = ({ post }) => {
                     </Flex>
                     <Flex align='center' gap={1}>
                         <Button bg='blue.300' textColor='white' p={1} variant='solid' colorScheme='blue'>{`Gọi ${post?.user?.phone}`}</Button>
-                        <Button as='a' textColor='blue.300' variant='outline' colorScheme='blue' px={1} href={`https://zalo.me/${post?.user?.phone}`}>Nhắn Zalo</Button>
-                        {/* <Link display='flex'
-                            alignItems='center' justifyContent='center'
-                            h='40px' rounded='md'
-                            bg='white'
-                            _hover={{
-                                bg: 'gray.100'
-                            }}
-                            fontWeight='bold'
-                            border='1px'
-                            borderColor='blue.300'
-                            textColor='blue.300'
-                            href={`https://zalo.me/${post?.user?.phone}`}>
-                            Nhắn Zalo
-                        </Link> */}
+                        <Button as='a' textColor='blue.300' variant='outline' colorScheme='blue' px={1} href={`https://zalo.me/${post?.user?.zalo || post?.user?.phone}`}>Nhắn Zalo</Button>
                     </Flex>
                 </Flex>
             </Box>
