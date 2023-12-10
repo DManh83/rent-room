@@ -92,7 +92,7 @@ export const useAuthentication = () => {
 
 
     const forgotPassword = (email) => {
-        return sendPasswordResetEmail(auth, email, { url: 'http://localhost:3000/login' })
+        return sendPasswordResetEmail(auth, email, { url: process.env.REACT_APP_URL_LOGIN })
     }
 
     const resetPassword = (oobCode, newPassword) => {
